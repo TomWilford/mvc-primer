@@ -1,0 +1,12 @@
+{
+  "database": {
+    "default": {
+      "type": "mysql",
+      "host": "localhost",
+      "username": "username",
+      "password": "password",
+      "port": "3306",
+      "schema": "main"
+    }
+  }
+}
