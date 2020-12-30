@@ -11,11 +11,13 @@ use Framework\Core\Exception as Exception;
 class Configuration extends Base
 {
     /**
+     * @var
      * @readwrite
      */
     protected $_type;
 
     /**
+     * @var
      * @readwrite
      */
     protected $_options;

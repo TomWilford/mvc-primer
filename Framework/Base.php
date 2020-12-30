@@ -103,6 +103,10 @@ class Base
                 return new Exception\Property("Invalid property");
             case "method":
                 return new Exception\Argument("{$request} method not implemented");
+            case "implementation":
+                return new Exception\Implementation("{$request} method not implemented");
+            case "syntax":
+                return new Exception\Syntax("{$request} method not implemented");
             default:
                 return new Exception("Not sure what's going on here");
         }

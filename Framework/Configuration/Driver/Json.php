@@ -17,7 +17,6 @@ class Json extends Configuration\Driver
         if (empty($path))
         {
             throw new Exception\Argument("\$path argument is not valid");
-
         }
 
         if (!isset($this->_parsed[$path]))
