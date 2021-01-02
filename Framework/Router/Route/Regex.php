@@ -14,6 +14,7 @@ class Regex extends Router\Route
 
     public function matches($url)
     {
+        $url     = $this->returnMatchingAlias($url);
         $pattern = $this->pattern;
 
         preg_match_all("#^{$pattern}$#", $url, $values);

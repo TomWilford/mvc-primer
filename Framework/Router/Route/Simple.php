@@ -10,6 +10,7 @@ class Simple extends Router\Route
 {
     public function matches($url)
     {
+        $url     = $this->returnMatchingAlias($url);
         $pattern = $this->pattern;
 
         // Get Keys

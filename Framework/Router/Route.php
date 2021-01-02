@@ -33,8 +33,24 @@ class Route extends Base
      */
     protected $_parameters = array();
 
+    /**
+     * @var string[]
+     */
+    protected $_aliases = [
+        #"example/url/call" => "path/to/function"
+    ];
+
     public function _getExceptionForImplementation($method)
     {
         return new Exception\Implementation("{$method} method not implemented");
+    }
+
+    public function returnMatchingAlias($url)
+    {
+        if (in_array($url, array_keys($this->_aliases)))
+        {
+            return $this->_aliases[$url];
+        }
+        return $url;
     }
 }
