@@ -7,12 +7,11 @@ use Framework\Database as Database;
 //use Framework\Database\Exception as Exception;
 use Framework\Core\Exception as Exception;
 use PDO;
-use PDOException as PDOException;
+use PDOException;
 
 class Mysql extends Database\Connector
 {
-    protected $_service;
-    public $pdo;
+    protected  $_service;
 
     /**
      * @var
@@ -60,18 +59,13 @@ class Mysql extends Database\Connector
      * @var array
      * @readwrite
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * @var bool
      * @readwrite
      */
     protected $_isConnected = false;
-
-/*    public function __construct($host, $username, $password, $schema, $options)
-    {
-
-    }*/
 
     protected function _isValidService()
     {
@@ -104,7 +98,7 @@ class Mysql extends Database\Connector
             }
             catch (\PDOException $e)
             {
-                throw \PDOException($e->getMessage(), (int)$e->getCode());
+                throw new \PDOException($e->getMessage(), (int)$e->getCode());
             }
 
             $this->_isConnected = true;
@@ -124,14 +118,10 @@ class Mysql extends Database\Connector
         return $this;
     }
 
-    public function query($sql, $args = null)
+    public function query()
     {
-        if (!$args)
-        {
-            return $this->_service->query($sql);
-        }
-        $stmt = $this->_service->prepare($sql);
-        $stmt->execute($args);
-        return $stmt;
+        return new Database\Query\Mysql([
+            "connector" => $this
+        ]);
     }
 }
