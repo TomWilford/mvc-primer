@@ -2,10 +2,10 @@
 
 namespace Framework\Template;
 
-use Framework\Base as Base;
-use Framework\StringMethods as StringMethods;
-//use Framework\Template\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+use Framework\StringMethods;
+//use Framework\Template\Exception;
+use Framework\Core\Exception;
 
 class Implementation extends Base
 {

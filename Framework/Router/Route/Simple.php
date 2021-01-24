@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Framework\Router\Route;
 
-use Framework\Router as Router;
-use Framework\ArrayMethods as ArrayMethods;
+use Framework\Router;
+use Framework\ArrayMethods;
 
 class Simple extends Router\Route
 {

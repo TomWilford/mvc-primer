@@ -2,8 +2,9 @@
 
 namespace Framework\Cache;
 
-use Framework\Base as Base;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+//use Framework\Cache\Exception;
+use Framework\Core\Exception;
 
 class Driver extends Base
 {

@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Base as Base;
-use Framework\Registry as Registry;
-use Framework\Inspector as Inspector;
-//use Framework\Router\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+use Framework\Registry;
+use Framework\Inspector;
+//use Framework\Router\Exception;
+use Framework\Core\Exception;
 
 class Router extends Base
 {

@@ -1,13 +1,13 @@
 <?php
 
-
 namespace Framework\Database\Connector;
 
-use Framework\Database as Database;
-//use Framework\Database\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Database;
+//use Framework\Database\Exception;
+use Framework\Core\Exception;
 use PDO;
 use PDOException;
+use PDOStatement;
 
 class Mysql extends Database\Connector
 {
@@ -54,6 +54,12 @@ class Mysql extends Database\Connector
      * @readwrite
      */
     protected $_dsn;
+
+    /**
+     * @var string
+     * @readwrite
+     */
+    protected $_engine = "InnoDB";
 
     /**
      * @var array
@@ -123,5 +129,140 @@ class Mysql extends Database\Connector
         return new Database\Query\Mysql([
             "connector" => $this
         ]);
+    }
+
+    public function execute($sql)
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
+
+        return $this->_service->query($sql);
+    }
+
+    public function getLastInsertId()
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
+
+        return $this->_service->lastInsertId();
+    }
+
+    /**
+     * @param $result PDOStatement
+     * @return mixed
+     * @throws Exception\Service
+     */
+    public function getAffectedRows($result)
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
+
+        return $result->rowCount();
+    }
+
+    /**
+     * @param $result PDOStatement
+     * @return mixed
+     * @throws Exception\Service
+     */
+    public function getLastErrorMessage($result)
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
+
+        return $result->errorInfo();
+    }
+
+    /**
+     * @param $result PDOStatement
+     * @return mixed
+     * @throws Exception\Service
+     */
+    public function getLastErrorCode($result)
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
+
+        return $result->errorCode();
+    }
+
+    public function sync($model)
+    {
+        $lines    = [];
+        $indices  = [];
+        $columns  = $model->columns;
+        $template = "CREATE TABLE `%s` (\n%s, \n%s\n) ENGINE=%s DEFAULT CHARSET=%s;";
+
+        foreach ($columns as $column)
+        {
+            $raw    = $column["raw"];
+            $name   = $column["name"];
+            $type   = $column["type"];
+            $length = $column["length"];
+
+            if ($column["primary"])
+            {
+                $indices[] = "PRIMARY KEY (`{$name}`)";
+            }
+            if ($column["index"])
+            {
+                $indices[] = "KEY `{$name}` (`{$name}`)";
+            }
+
+            switch ($type)
+            {
+                case "autonumber":
+                    $lines[] = "`{$name}` int(11) NOT NULL AUTO_INCREMENT";
+                    break;
+                case "text":
+                    if ($length !== null && $length <= 255)
+                    {
+                        $lines[] = "`{$name} varchar({$length}) DEFAULT NULL";
+                    }
+                    else
+                    {
+                        $lines[] = "`{$name}` text";
+                    }
+                    break;
+                case "integer":
+                    $lines[] = "`{$name}` int(11) DEFAULT NULL";
+                    break;
+                case "decimal":
+                    $lines[] = "`{$name}` float DEFAULT NULL";
+                    break;
+                case "boolean":
+                    $lines[] = "`{$name}` tinyint(4) DEFAULT NULL";
+                    break;
+                case "datetime":
+                    $lines[] = "`{$name}` datetime DEFAULT NULL";
+            }
+
+            $table = $model->table;
+            $sql = sprintf(
+                $template,
+                $table,
+                join(",\n", $lines),
+                join(",\n", $indices),
+                $this->_engine,
+                $this->_charset
+            );
+
+            $result = $this->execute("DROP TABLE IF EXISTS {$table};");
+            if ($this->getLastErrorCode($result))
+            {
+                $error = $this->getLastErrorMessage($result);
+
+            }
+        }
     }
 }

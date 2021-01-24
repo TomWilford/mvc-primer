@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\Example;
 
-use Framework\Database as Database;
-use Framework\Core\Exception as Exception;
+use Framework\Database;
+use Framework\Core\Exception;
 
 class UserMysqli
 {

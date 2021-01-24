@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Core\Exception as Exception;
-use Framework\Inspector as Inspector;
-use Framework\ArrayMethods as ArrayMethods;
-use Framework\StringMethods as StringMethods;
+use Framework\Core\Exception;
+use Framework\Inspector;
+use Framework\ArrayMethods;
+use Framework\StringMethods;
 
 class Base
 {

@@ -2,7 +2,7 @@
 
 namespace Framework\Router\Route;
 
-use Framework\Router as Router;
+use Framework\Router;
 
 class Regex extends Router\Route
 {

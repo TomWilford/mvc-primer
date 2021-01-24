@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Framework\Database\Query;
 
-use Framework\ArrayMethods as ArrayMethods;
-use Framework\Database as Database;
-//use Framework\Database\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\ArrayMethods;
+use Framework\Database;
+//use Framework\Database\Exception;
+use Framework\Core\Exception;
 
 /**
  * @deprecated

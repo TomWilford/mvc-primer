@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Base as Base;
-use Framework\ArrayMethods as ArrayMethods;
-use Framework\StringMethods as StringMethods;
-//use Framework\Template\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+use Framework\ArrayMethods;
+use Framework\StringMethods;
+//use Framework\Template\Exception;
+use Framework\Core\Exception;
 
 class Template extends Base
 {

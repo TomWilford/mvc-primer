@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\ArrayMethods as ArrayMethods;
-use Framework\StringMethods as StringMethods;
+use Framework\ArrayMethods;
+use Framework\StringMethods;
 
 class Inspector
 {

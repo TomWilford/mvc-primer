@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Framework\Router;
 
-use Framework\Base as Base;
-//use Framework\Router\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+//use Framework\Router\Exception;
+use Framework\Core\Exception;
 
 class Route extends Base
 {

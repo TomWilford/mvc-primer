@@ -2,8 +2,9 @@
 
 namespace Framework\Cache\Driver;
 
-use Framework\Cache as Cache;
-use Framework\Core\Exception as Exception;
+use Framework\Cache;
+//use Framework\Cache\Exception;
+use Framework\Core\Exception;
 
 class Memcached extends Cache\Driver
 {

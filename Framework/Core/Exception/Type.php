@@ -2,7 +2,7 @@
 
 namespace Framework\Core\Exception;
 
-class Action extends \Framework\Core\Exception
+class Type extends \Framework\Core\Exception
 {
 
 }

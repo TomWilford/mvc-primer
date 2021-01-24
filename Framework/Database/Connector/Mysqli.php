@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Framework\Database\Connector;
 
-use Framework\Database as Database;
-//use Framework\Database\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Database;
+//use Framework\Database\Exception;
+use Framework\Core\Exception;
 
 /**
  * @deprecated

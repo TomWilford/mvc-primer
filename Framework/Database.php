@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Base as Base;
-//use Framework\Database as Database;
-//use Framework\Database\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+//use Framework\Database\Exception;
+use Framework\Core\Exception;
 
 class Database extends Base
 {

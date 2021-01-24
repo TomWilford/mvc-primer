@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Base as Base;
+use Framework\Base;
 
 class Controller extends Base
 {

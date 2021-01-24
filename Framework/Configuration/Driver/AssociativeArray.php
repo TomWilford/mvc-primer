@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Framework\Configuration\Driver;
 
-use Framework\ArrayMethods as ArrayMethods;
-use Framework\Configuration as Configuration;
-//use Framework\Configuration\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\ArrayMethods;
+use Framework\Configuration;
+//use Framework\Configuration\Exception;
+use Framework\Core\Exception;
 
 class AssociativeArray extends Configuration\Driver
 {

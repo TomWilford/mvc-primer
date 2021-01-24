@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Framework\Configuration;
 
-use Framework\Base as Base;
-//use Framework\Configuration\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+//use Framework\Configuration\Exception;
+use Framework\Core\Exception;
 
 class Driver extends Base
 {

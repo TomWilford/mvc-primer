@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Example;
 
-use Framework\Database as Database;
+use Framework\Database;
 
 class Base
 {

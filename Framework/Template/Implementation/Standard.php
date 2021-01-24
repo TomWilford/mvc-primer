@@ -2,8 +2,8 @@
 
 namespace Framework\Template\Implementation;
 
-use Framework\Template as Template;
-use Framework\StringMethods as StringMethods;
+use Framework\Template;
+use Framework\StringMethods;
 
 class Standard extends Template\Implementation
 {

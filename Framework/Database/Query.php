@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Framework\Database;
 
-use \Framework\Base as Base;
-use Framework\ArrayMethods as ArrayMethods;
-//use Framework\Database\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use \Framework\Base;
+//use Framework\Database\Exception;
+use Framework\Core\Exception;
 
 class Query extends Base
 {

@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Framework;
 
-use Framework\Base as Base;
-#use Framework\Cache as Cache;
-#use Framework\Cache\Exception as Exception;
-use Framework\Core\Exception as Exception;
+use Framework\Base;
+//use Framework\Cache\Exception;
+use Framework\Core\Exception;
 
 class Cache extends Base
 {
