@@ -5,6 +5,7 @@ namespace Framework\Cache\Driver;
 use Framework\Cache;
 //use Framework\Cache\Exception;
 use Framework\Core\Exception;
+use Memcache;
 
 class Memcached extends Cache\Driver
 {
@@ -32,7 +33,7 @@ class Memcached extends Cache\Driver
 
     protected function _isValidService()
     {
-        $isEmpty = empty($this->_service);
+        $isEmpty    = empty($this->_service);
         $isInstance = $this->_service instanceof \Memcached;
 
         if ($this->isConnected && $isInstance && !$isEmpty)
@@ -45,7 +46,7 @@ class Memcached extends Cache\Driver
     public function connect()
     {
         try {
-            $this->_service = new \Memcache();
+            $this->_service = new Memcache();
             $this->_service->connect(
                 $this->host,
                 $this->port

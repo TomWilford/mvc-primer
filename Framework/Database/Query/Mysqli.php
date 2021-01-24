@@ -50,12 +50,12 @@ class Mysqli extends Database\Query
     /**
      * @read
      */
-    protected $_join = array();
+    protected $_join = [];
 
     /**
      * @read
      */
-    protected $_where = array();
+    protected $_where = [];
 
     protected function _getExceptionForImplementation($method)
     {

@@ -4,19 +4,22 @@ namespace Framework;
 
 use Framework\ArrayMethods;
 use Framework\StringMethods;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
 
 class Inspector
 {
     protected $_class;
 
-    protected $_meta = array(
-        "class"      => array(),
-        "properties" => array(),
-        "methods"    => array()
-    );
+    protected $_meta = [
+        "class"      => [],
+        "properties" => [],
+        "methods"    => []
+    ];
 
-    protected $_properties = array();
-    protected $_methods = array();
+    protected $_properties = [];
+    protected $_methods    = [];
 
     public function __construct($class)
     {
@@ -24,36 +27,36 @@ class Inspector
     }
 
     protected function _getClassComment(){
-        $reflection = new \ReflectionClass($this->_class);
+        $reflection = new ReflectionClass($this->_class);
         return $reflection->getDocComment();
     }
 
     protected function _getClassProperties()
     {
-        $reflection = new \ReflectionClass($this->_class);
+        $reflection = new ReflectionClass($this->_class);
         return $reflection->getProperties();
     }
 
     protected function _getClassMethods()
     {
-        $reflection = new \ReflectionClass($this->_class);
+        $reflection = new ReflectionClass($this->_class);
         return $reflection->getMethods();
     }
 
     protected function _getPropertyComment($property)
     {
-        $reflection = new \ReflectionProperty($this->_class, $property);
+        $reflection = new ReflectionProperty($this->_class, $property);
         return $reflection->getDocComment();
     }
 
     protected function _getMethodComment($method)
     {
-        $reflection = new \ReflectionMethod($this->_class, $method);
+        $reflection = new ReflectionMethod($this->_class, $method);
         return $reflection->getDocComment();
     }
 
     protected function _parse($comment){
-        $meta = array();
+        $meta    = [];
         $pattern = "(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_]*)";
         $matches = StringMethods::match($comment, $pattern);
 
@@ -86,9 +89,8 @@ class Inspector
             {
                 $_properties[] = $property->getName();
             }
-
-            return $_properties;
         }
+        return $_properties;
     }
 
     public function getClassMethods()
@@ -101,9 +103,8 @@ class Inspector
             {
                 $_methods[] = $method->getName();
             }
-
-            return $_methods;
         }
+        return $_methods;
     }
 
     public function getPropertyMeta($property)
@@ -120,9 +121,8 @@ class Inspector
             {
                 $_meta["properties"][$property] = null;
             }
-
-            return $_meta["properties"][$property];
         }
+        return $_meta["properties"][$property];
     }
 
     public function getMethodMeta($method)
@@ -139,8 +139,7 @@ class Inspector
             {
                 $_meta["methods"][$method] = null;
             }
-
-            return $_meta["methods"][$method];
         }
+        return $_meta["methods"][$method];
     }
 }

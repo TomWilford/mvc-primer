@@ -8,7 +8,7 @@ use Framework\Core\Exception;
 
 class Driver extends Base
 {
-    protected $_parsed = array();
+    protected $_parsed = [];
 
     public function initialise()
     {

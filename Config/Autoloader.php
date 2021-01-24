@@ -40,8 +40,8 @@ class Autoloader
     }
 }
 spl_autoload_register('autoload');
-spl_autoload_register(array('autoloader', 'autoload'));
+spl_autoload_register(['autoloader', 'autoload']);
 
 // these can only be called within a class context...
-// spl_autoload_register(array($this, 'autoload'));
+// spl_autoload_register([$this, 'autoload']);
 // spl_autoload_register(__CLASS__.'::load');

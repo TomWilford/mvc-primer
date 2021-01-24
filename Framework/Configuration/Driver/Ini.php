@@ -17,7 +17,7 @@ class Ini extends Configuration\Driver
 
             if (empty($config[$parts[0]]))
             {
-                $config[$parts[0]] = array();
+                $config[$parts[0]] = [];
             }
 
             $config[$parts[0]] = $this->_pair($config[0], $parts[1], $value);
@@ -39,7 +39,7 @@ class Ini extends Configuration\Driver
 
         if (!isset($this->_parsed[$path]))
         {
-            $config = array();
+            $config = [];
 
             ob_start();
                 include ("{$path}.ini");

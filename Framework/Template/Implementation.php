@@ -29,7 +29,7 @@ class Implementation extends Base
         try
         {
             $handler = $this->_handler($node);
-            return call_user_func_array(array($this, $handler), array($node, $content));
+            return call_user_func_array([$this, $handler], [$node, $content]);
         }
         catch (\Exception $e)
         {
@@ -67,9 +67,9 @@ class Implementation extends Base
             return null;
         }
 
-        return array(
+        return [
             "type"      => $type,
             "delimiter" => $delimiter
-        );
+        ];
     }
 }

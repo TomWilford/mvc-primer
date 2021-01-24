@@ -4,7 +4,7 @@ namespace Framework;
 
 class Registry
 {
-    private static $_instances = array();
+    private static $_instances = [];
 
     private function __construct()
     {

@@ -11,7 +11,7 @@ class Base
 {
     private $_inspector;
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->_inspector = new Inspector($this);
 
@@ -19,7 +19,7 @@ class Base
         {
             foreach ($options as $key => $value)
             {
-                $key = ucfirst($key);
+                $key    = ucfirst($key);
                 $method = "set{$key}";
                 $this->$method($value);
             }
@@ -37,7 +37,7 @@ class Base
         if (sizeof($getMatches) > 0)
         {
             $normalized = lcfirst($getMatches[0]);
-            $property = "_{$normalized}";
+            $property   = "_{$normalized}";
         }
 
         if (property_exists($this, $property))
@@ -60,7 +60,7 @@ class Base
         if (sizeof($setMatches) > 0)
         {
             $normalized = lcfirst($setMatches[0]);
-            $property = "_{$normalized}";
+            $property   = "_{$normalized}";
 
             if (property_exists($this, $property))
             {

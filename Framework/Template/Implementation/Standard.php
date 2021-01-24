@@ -7,59 +7,59 @@ use Framework\StringMethods;
 
 class Standard extends Template\Implementation
 {
-    protected $_map = array(
-        "echo" => array(
-            "opener" => "{echo",
-            "closer" => "}",
+    protected $_map = [
+        "echo" => [
+            "opener"  => "{echo",
+            "closer"  => "}",
             "handler" => "_echo"
-        ),
-        "script" => array(
-            "opener" => "{script",
-            "closer" => "}",
+        ],
+        "script" => [
+            "opener"  => "{script",
+            "closer"  => "}",
             "handler" => "_script"
-        ),
-        "statement" => array(
+        ],
+        "statement" => [
             "opener" => "{",
             "closer" => "}",
-            "tags" => array(
-                "foreach" => array(
-                    "isolated" => false,
+            "tags"   => [
+                "foreach" => [
+                    "isolated"  => false,
                     "arguments" => "{element} in {object}",
-                    "handler" => "_each"
-                ),
-                "for" => array(
-                    "isolated" => false,
+                    "handler"   => "_each"
+                ],
+                "for" => [
+                    "isolated"  => false,
                     "arguments" => "{element} in {object}",
-                    "handler" => "_for"
-                ),
-                "if" => array(
-                    "isolated" => false,
+                    "handler"   => "_for"
+                ],
+                "if" => [
+                    "isolated"  => false,
                     "arguments" => null,
-                    "handler" => "_if"
-                ),
-                "elseif" => array(
-                    "isolated" => true,
+                    "handler"   => "_if"
+                ],
+                "elseif" => [
+                    "isolated"  => true,
                     "arguments" => null,
-                    "handler" => "_elif"
-                ),
-                "else" => array(
-                    "isolated" => true,
+                    "handler"   => "_elif"
+                ],
+                "else" => [
+                    "isolated"  => true,
                     "arguments" => null,
-                    "handler" => "_else"
-                ),
-                "macro" => array(
-                    "isolated" => false,
+                    "handler"   => "_else"
+                ],
+                "macro" => [
+                    "isolated"  => false,
                     "arguments" => "{name}({args})",
-                    "handler" => "_macro"
-                ),
-                "literal" => array(
-                    "isolated" => false,
+                    "handler"   => "_macro"
+                ],
+                "literal" => [
+                    "isolated"  => false,
                     "arguments" => null,
-                    "handler" => "_literal"
-                )
-            )
-        )
-    );
+                    "handler"   => "_literal"
+                ]
+            ]
+        ]
+    ];
 
     protected function _echo($tree, $content)
     {
@@ -124,7 +124,7 @@ class Standard extends Template\Implementation
         $args = $arguments["args"];
 
         return "function {$name}({$args}) {
-                \$_text = array();
+                \$_text = [];
                 {$content}
                 return implode(\$_text);
             }";

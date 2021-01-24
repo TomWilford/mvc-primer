@@ -34,7 +34,7 @@ class Router extends Base
      */
     protected $_action;
 
-    protected $_routes = array();
+    protected $_routes = [];
 
     public function _getExceptionForImplementation($method)
     {
@@ -61,7 +61,7 @@ class Router extends Base
 
     public function getRoutes()
     {
-        $list = array();
+        $list = [];
 
         foreach ($this->_routes as $route)
         {
@@ -71,7 +71,7 @@ class Router extends Base
         return $list;
     }
 
-    public function _pass($controller, $action, $parameters = array())
+    public function _pass($controller, $action, $parameters = [])
     {
         $name = ucfirst($controller);
 
@@ -80,9 +80,9 @@ class Router extends Base
 
         try
         {
-            $instance = new $name(array(
+            $instance = new $name([
                 "parameters" => $parameters
-            ));
+            ]);
             Registry::set("controller", $instance);
         }
         catch (\Exception $e)
@@ -98,7 +98,7 @@ class Router extends Base
             throw new Exception\Action("Action {$action} not found");
         }
 
-        $inspector = new Inspector($instance);
+        $inspector  = new Inspector($instance);
         $methodMeta = $inspector->getMethodMeta($action);
 
         if (!empty($methodMeta['@protected']) || !empty($methodMeta['@private']))
@@ -110,7 +110,7 @@ class Router extends Base
         {
             if (isset($meta[$type]))
             {
-                $run = array();
+                $run = [];
 
                 foreach ($meta[$type] as $method)
                 {
@@ -129,10 +129,10 @@ class Router extends Base
 
         $hooks($methodMeta, "@before");
 
-        call_user_func_array(array(
+        call_user_func_array([
             $instance,
             $action
-        ), is_array($parameters) ? $parameters : array());
+        ], is_array($parameters) ? $parameters : []);
 
         $hooks($methodMeta, "@after");
 
@@ -142,7 +142,7 @@ class Router extends Base
     public function dispatch()
     {
         $url        = $this->_url;
-        $parameters = array();
+        $parameters = [];
         $controller = 'index';
         $action     = 'index';
 

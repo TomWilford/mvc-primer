@@ -30,7 +30,7 @@ class Route extends Base
      * @var array
      * @readwrite
      */
-    protected $_parameters = array();
+    protected $_parameters = [];
 
     /**
      * @var string[]

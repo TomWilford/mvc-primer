@@ -110,9 +110,9 @@ class Mysqli extends Database\Connector
 
     public function query()
     {
-        return new Database\Query\Mysqli(array(
+        return new Database\Query\Mysqli([
            "connector" => $this
-        ));
+        ]);
     }
 
     public function execute($sql)

@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use stdClass;
+
 class ArrayMethods
 {
     /**
@@ -42,7 +44,7 @@ class ArrayMethods
 
     public static function toObject($array)
     {
-        $result = new \stdClass();
+        $result = new stdClass();
 
         foreach ($array as $key => $value)
         {
@@ -59,7 +61,7 @@ class ArrayMethods
         return $result;
     }
 
-    public static function flatten($array, $return = array())
+    public static function flatten($array, $return = [])
     {
         foreach ($array as $key => $value)
         {

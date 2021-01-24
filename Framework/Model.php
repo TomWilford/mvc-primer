@@ -43,7 +43,7 @@ class Model extends Base
         return new Exception\Implementation("{$method} method not implemented");
     }
 
-    /*public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
         $this->load();
@@ -52,7 +52,7 @@ class Model extends Base
     public function load()
     {
 
-    }*/
+    }
 
     public function getTable()
     {
@@ -85,11 +85,11 @@ class Model extends Base
     {
         if (empty($_columns)) {
             $primaries = 0;
-            $columns = [];
-            $class = get_class($this);
-            $types = $this->types;
+            $columns   = [];
+            $class     = get_class($this);
+            $types     = $this->types;
 
-            $inspector = new Inspector($this);
+            $inspector  = new Inspector($this);
             $properties = $inspector->getClassProperties();
 
 
@@ -136,7 +136,6 @@ class Model extends Base
                         "index"    => $index,
                         "read"     => $read,
                         "write"    => $write,
-
                         "validate" => $validate,
                         "label"    => $label
                     ];
