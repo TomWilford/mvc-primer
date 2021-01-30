@@ -400,6 +400,7 @@ class Mysqli extends Database\Query
 
         return $row["rows"];
     }
+
     public function all()
     {
         $sql    = $this->_buildSelect();
@@ -419,5 +420,12 @@ class Mysqli extends Database\Query
         }
 
         return $rows;
+    }
+
+    public function run($sql)
+    {
+        $result = $this->connector->execute($sql);
+
+        return $result;
     }
 }
