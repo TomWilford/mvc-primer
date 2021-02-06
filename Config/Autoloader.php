@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @deprecated
+ * */
+
 function autoload($class)
 {
     $paths = explode(PATH_SEPARATOR, get_include_path());

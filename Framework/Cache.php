@@ -9,14 +9,14 @@ use Framework\Core\Exception;
 class Cache extends Base
 {
     /**
-     * @var
-     * @readwrite
+     * @var string $_type Caching engine to use
+     * @readwrite true
      */
     protected $_type;
 
     /**
-     * @var
-     * @readwrite
+     * @var array $_options Settings for caching engine
+     * @readwrite true
      */
     protected $_options;
 

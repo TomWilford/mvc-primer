@@ -9,14 +9,14 @@ use Framework\Core\Exception;
 class Configuration extends Base
 {
     /**
-     * @var
-     * @readwrite
+     * @var string $_type Configuration file type
+     * @readwrite true
      */
     protected $_type;
 
     /**
-     * @var
-     * @readwrite
+     * @var array $_options Additional configuration options
+     * @readwrite true
      */
     protected $_options;
 

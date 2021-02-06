@@ -50,6 +50,7 @@ class Base
             }
 
             if (isset($this->$property)){
+
                 return $this->$property;
             }
 
@@ -65,13 +66,13 @@ class Base
             if (property_exists($this, $property))
             {
                 $meta = $this->_inspector->getPropertyMeta($property);
-
                 if (empty($meta["@readwrite"]) && empty($meta["@write"]))
                 {
                     throw $this->_getException($normalized, "readonly");
                 }
 
                 $this->$property = $arguments[0];
+
                 return $this;
             }
         }
@@ -82,12 +83,14 @@ class Base
     public function __get($name)
     {
         $function = "get".ucfirst($name);
+
         return $this->$function();
     }
 
     public function __set($name, $value)
     {
         $function = "set".ucfirst($name);
+        
         return $this->$function($value);
     }
 
