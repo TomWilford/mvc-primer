@@ -17,7 +17,7 @@ sudo systemctl enable mariadb
 
 # php
 sudo yum -y install php8.0
-sudo yum install libapache2-mod-php8.0 php8.0-fpm libapache2-mod-fcgid php8.0-curl php8.0-dev php8.0-gd php8.0-mbstring php8.0-zip php8.0-mysql php8.0-xml
+sudo yum install libapache2-mod-php8.0 php8.0-fpm libapache2-mod-fcgid php8.0-curl php8.0-dev php8.0-gd php8.0-mbstring php8.0-zip php8.0-mysql php8.0-xml php-simplexml
 sudo yum -y install php php-mysql
 sudo yum -y install epel-release
 sudo yum-config-manager --enable remi-php74
@@ -44,3 +44,26 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 HASH="$(wget -q -O - https://composer.github.io/installer.sig)"
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+mkdir -p ~/.composer
+sudo chown -R $USER ~/.composer
+# cd /var/www/html/
+# composer init
+# composer require --dev vimeo/psalm
+# composer require ext-memcache
+
+# memcached
+sudo yum -y install memcached
+# sudo vi /etc/sysconfig/memcached
+#     PORT="11211"
+#     USER="memcached"
+#     MAXCONN="1024"
+#     CACHESIZE="64"
+#     OPTIONS="-l 127.0.0.1 -U 0"
+# systemctl restart memcached
+systemctl start memcached
+systemctl enable memcachedsud
+sudo yum install php-memcache
+sudo yum install libmemcached
+
+# cli apps
+sudo yum install net-tools

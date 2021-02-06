@@ -1,0 +1,21 @@
+{
+    "name": "jolly-blue-man/mvc-primer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Tom Wilford",
+            "email": "hello@jollyblueman.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "Framework"
+        }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^4.4"
+    },
+    "require": {
+        "ext-memcache": "*"
+    }
+}
