@@ -9,23 +9,26 @@ use Memcache;
 
 class Memcached extends Cache\Driver
 {
+    /**
+     * @var Memcache Memcache
+     */
     protected $_service;
 
     /**
-     * @var string
-     * @readwrite
+     * @var string $_host Memcached host ip
+     * @readwrite true
      */
     protected $_host = "127.0.0.1";
 
     /**
-     * @var string
-     * @readwrite
+     * @var string $_port Memcached default port
+     * @readwrite true
      */
     protected $_port = "11211";
 
     /**
-     * @var bool
-     * @readwrite
+     * @var bool $_isConnected Memcached connection active?
+     * @readwrite true
      */
     protected $_isConnected = false;
 
@@ -34,7 +37,7 @@ class Memcached extends Cache\Driver
     protected function _isValidService()
     {
         $isEmpty    = empty($this->_service);
-        $isInstance = $this->_service instanceof \Memcached;
+        $isInstance = $this->_service instanceof Memcache;
 
         if ($this->isConnected && $isInstance && !$isEmpty)
         {
@@ -51,11 +54,11 @@ class Memcached extends Cache\Driver
                 $this->host,
                 $this->port
             );
-            $this->isconnected = true;
+            $this->isConnected = true;
         }
         catch (\Exception $e)
         {
-            throw new Exception\Service("Unable to connect to service");
+            throw new Exception\Service("Unable to connect to service" . $e->getMessage(), $e->getCode());
         }
 
         return $this;
@@ -65,6 +68,7 @@ class Memcached extends Cache\Driver
     {
         if ($this->_isValidService())
         {
+
             $this->_service->close();
             $this->isConnected = false;
         }
@@ -78,8 +82,11 @@ class Memcached extends Cache\Driver
         {
             throw new Exception\Service("Not connected to a valid service");
         }
+        $flags = 2;
 
-        $value = $this->_service->get($key, MEMCACHE_COMPRESSED);
+        $key = $this->_keyPrefix . $key;
+
+        $value = $this->_service->get($key, $flags);
 
         if ($value)
         {
@@ -107,6 +114,8 @@ class Memcached extends Cache\Driver
         {
             throw new Exception\Service("Not connected to a valid service");
         }
+
+        $key = $this->_keyPrefix . $key;
 
         $this->_service->delete($key);
         return $this;
