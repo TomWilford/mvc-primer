@@ -14,6 +14,10 @@ sudo systemctl enable mariadb
 #   sudo mysql_secure_installation
 #   Enter, pwd, y, y, y, y
 #   mysql -u root -p
+      # CREATE DATABASE prophpmvc;
+      # CREATE USER 'prophpmvc'@localhost IDENTIFIED BY 'prophpmvc';
+      # GRANT ALL PRIVILEGES ON prophpmvc.* TO 'prophpmvc'@localhost;
+      # FLUSH PRIVILEGES;
 
 # php
 sudo yum -y install php8.0
@@ -61,7 +65,7 @@ sudo yum -y install memcached
 #     OPTIONS="-l 127.0.0.1 -U 0"
 # systemctl restart memcached
 systemctl start memcached
-systemctl enable memcachedsud
+systemctl enable memcacheds
 sudo yum install php-memcache
 sudo yum install libmemcached
 
