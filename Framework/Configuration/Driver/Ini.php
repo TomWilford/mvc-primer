@@ -48,8 +48,6 @@ class Ini extends Configuration\Driver
 
             $pairs = parse_ini_string($string);
 
-            var_dump($pairs);
-
             if ($pairs == false)
             {
                 throw new Exception\Syntax("Could not parse ini configuration file");

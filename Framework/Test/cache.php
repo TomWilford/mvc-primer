@@ -42,7 +42,7 @@ Framework\Test::add(
 );
 
 /**
- *    ↓  ↓  ↓  This one should fail  ↓  ↓  ↓
+ *    ↓  ↓  ↓  This one will throw exception ↓  ↓  ↓
  * */
 Framework\Test::add(
     function ()
