@@ -42,7 +42,7 @@ class Test
                 else
                 {
                     $failed[] = [
-                        "set"   => $test["test"],
+                        "set"   => $test["set"],
                         "title" => $test["title"],
                     ];
                 }
@@ -50,9 +50,10 @@ class Test
             catch (\Exception $e)
             {
                 $exceptions[] = [
-                    "set"   => $test["test"],
-                    "title" => $test["title"],
-                    "type"  => get_class($e)
+                    "set"     => $test["set"],
+                    "title"   => $test["title"],
+                    "type"    => get_class($e),
+                    "message" => $e->getCode() . " - " . $e->getMessage()
                 ];
             }
         }
