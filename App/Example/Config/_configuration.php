@@ -3,9 +3,9 @@ $config = [
     "default" => [
         "type"     => "mysql",
         "host"     => "localhost",
-        "username" => "root",
-        "password" => "password",
+        "username" => "prophpmvc",
+        "password" => "prophpmvc",
         "port"     => 3306,
-        "schema"   => "main"
+        "schema"   => "prophpmvc"
     ]
 ];

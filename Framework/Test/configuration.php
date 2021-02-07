@@ -35,7 +35,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("/etc/.config/_configurationTest");
+        $parsed        = $configuration->parse("./../../App/Example/Config/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
@@ -65,7 +65,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("/etc/.config/_configurationTest");
+        $parsed        = $configuration->parse("./../../App/Example/Config/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
@@ -95,7 +95,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("/etc/.config/_configurationTest");
+        $parsed        = $configuration->parse("./../../App/Example/Config/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
