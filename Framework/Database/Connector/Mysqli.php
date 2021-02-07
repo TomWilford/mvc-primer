@@ -11,53 +11,57 @@ use Framework\Core\Exception;
  */
 class Mysqli extends Database\Connector
 {
+    /**
+     * @var \MySQLi $_service connected mysqli service
+     * @readwrite true
+     */
     protected $_service;
 
     /**
-     * @var
-     * @readwrite
+     * @var string $_host mysql host ip
+     * @readwrite true
      */
     protected $_host;
 
     /**
-     * @var
-     * @readwrite
+     * @var string $_username mysql username
+     * @readwrite true
      */
     protected $_username;
 
     /**
-     * @var
-     * @readwrite
+     * @var string $_password mysql user's password
+     * @readwrite true
      */
     protected $_password;
 
     /**
-     * @var
-     * @readwrite
+     * @var string $_schema mysql table name
+     * @readwrite true
      */
     protected $_schema;
 
     /**
-     * @var
-     * @readwrite
+     * @var string $_port mysql port
+     * @readwrite true
      */
     protected $_port = "3306";
 
     /**
-     * @var string
-     * @readwrite
+     * @var string $_charset character set to use
+     * @readwrite true
      */
     protected $_charset = "utf8";
 
     /**
-     * @var string
-     * @readwrite
+     * @var string $_engine mysql engine to use
+     * @readwrite true
      */
     protected $_engine = "InnoDB";
 
     /**
-     * @var bool
-     * @readwrite
+     * @var bool $_isConnected status of current mysql connection
+     * @readwrite true
      */
     protected $_isConnected = false;
 
@@ -94,7 +98,7 @@ class Mysqli extends Database\Connector
             $this->_isConnected = true;
         }
 
-        return true;
+        return $this;
     }
 
     public function disconnect()

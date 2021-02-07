@@ -9,14 +9,14 @@ use Framework\Core\Exception;
 class Database extends Base
 {
     /**
-     * @var
-     * @readwrite
+     * @var string $_type type of database driver to use
+     * @readwrite true
      */
     protected $_type;
 
     /**
      * @var
-     * @readwrite
+     * @readwrite true
      */
     protected $_options = [];
 
@@ -29,20 +29,20 @@ class Database extends Base
     {
         if (!$this->type)
         {
-            //throw new Exception\Argument("Invalid type");
-            $this->type = "pdo";
+            throw new Exception\Argument("Invalid type");
+            //$this->type = "pdo";
         }
 
         if (!$this->options)
         {
-            //TODO - Get from config file
-            $this->options = [
+            throw new Exception\Argument("No options provided");
+            /*$this->options = [
                 "host"     => "localhost",
-                "username" => "root",
-                "password" => "",
-                "schema"   => "mvc_primer",
+                "username" => "prophpmvc",
+                "password" => "prophpmvc",
+                "schema"   => "prophpmvc",
                 "port"     => "3306"
-            ];
+            ];*/
         }
 
         switch ($this->type)
