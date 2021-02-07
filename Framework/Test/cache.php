@@ -45,7 +45,8 @@ Framework\Test::add(
  *    ↓  ↓  ↓  This one should fail  ↓  ↓  ↓
  * */
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -69,7 +70,8 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
            "type" => "memcached"
         ]);
@@ -84,7 +86,8 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
            "type" => "memcached"
         ]);
@@ -99,7 +102,8 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -114,7 +118,8 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -131,7 +136,8 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () {
+    function ()
+    {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -141,7 +147,6 @@ Framework\Test::add(
 
         $cache = $cache->set("hello", "world");
         $cache = $cache->erase("hello");
-        var_dump($cache->get("hello"));
         return ($cache->get("hello") == null && $cache instanceof Framework\Cache\Driver\Memcached);
     },
     "Cache\Driver\Memcached erases value and returns self",

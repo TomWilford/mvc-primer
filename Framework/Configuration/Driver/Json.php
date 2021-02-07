@@ -30,9 +30,10 @@ class Json extends Configuration\Driver
                 throw new Exception\Syntax("Could not parse json configuration file.");
             }
 
-            $this->_parsed[$path] = ArrayMethods::toObject($config);
+            $this->_parsed[$path] = ArrayMethods::toObject($pairs);
 
-            return $this->_parsed[$path];
         }
+
+        return $this->_parsed[$path];
     }
 }

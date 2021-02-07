@@ -20,9 +20,9 @@ class AssociativeArray extends Configuration\Driver
         {
             include_once ("{$path}.php");
             $configurationArray = $config;
-
             $this->_parsed[$path] = ArrayMethods::toObject($configurationArray);
         }
-    }
 
+        return $this->_parsed[$path];
+    }
 }

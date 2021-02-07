@@ -20,11 +20,11 @@ class Ini extends Configuration\Driver
                 $config[$parts[0]] = [];
             }
 
-            $config[$parts[0]] = $this->_pair($config[0], $parts[1], $value);
+            $config[$parts[0]] = $this->_pair($config[$parts[0]], $parts[1], $value);
         }
         else
         {
-            $config[$key = $value];
+            $config[$key] = $value;
         }
 
         return $config;
@@ -47,6 +47,8 @@ class Ini extends Configuration\Driver
             ob_end_clean();
 
             $pairs = parse_ini_string($string);
+
+            var_dump($pairs);
 
             if ($pairs == false)
             {
