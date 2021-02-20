@@ -28,15 +28,19 @@ class Test
 
         foreach (self::$_tests as $test)
         {
+            $executionTime = null;
             try
             {
-                $result = call_user_func($test["callback"]);
+                $start         = microtime(true);
+                $result        = call_user_func($test["callback"]);
+                $executionTime = microtime(true) - $start;
 
                 if ($result)
                 {
                     $passed[] = [
                         "set"   => $test["set"],
-                        "title" => $test["title"]
+                        "title" => $test["title"],
+                        "execution_time"  => $executionTime
                     ];
                 }
                 else
@@ -44,16 +48,19 @@ class Test
                     $failed[] = [
                         "set"   => $test["set"],
                         "title" => $test["title"],
+                        "execution_time"  => $executionTime
                     ];
                 }
             }
             catch (\Exception $e)
             {
+                $errorCode = $e->getCode() ? " - " . $e->getCode() : "";
                 $exceptions[] = [
                     "set"     => $test["set"],
                     "title"   => $test["title"],
+                    "execution_time"  => $executionTime,
                     "type"    => get_class($e),
-                    "message" => $e->getCode() . " - " . $e->getMessage()
+                    "message" => $e->getMessage() . $errorCode . " on " . $e->getFile() .":". $e->getLine()
                 ];
             }
         }
