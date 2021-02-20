@@ -75,6 +75,9 @@ class MysqlPDO extends Database\Connector
      */
     protected $_isConnected = false;
 
+    /**
+     * @return bool
+     */
     protected function _isValidService()
     {
         $isEmpty = empty($this->_service);
@@ -88,6 +91,9 @@ class MysqlPDO extends Database\Connector
         return false;
     }
 
+    /**
+     * @return $this
+     */
     public function connect()
     {
         if (!$this->_isValidService())
@@ -115,6 +121,9 @@ class MysqlPDO extends Database\Connector
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function disconnect()
     {
         if ($this->_isValidService())
@@ -126,6 +135,9 @@ class MysqlPDO extends Database\Connector
         return $this;
     }
 
+    /**
+     * @return Database\Query\MysqlPDO
+     */
     public function query()
     {
         return new Database\Query\MysqlPDO([
@@ -134,6 +146,7 @@ class MysqlPDO extends Database\Connector
     }
 
     /**
+     * Runs sql query without escaping
      * @param $sql
      * @return false|PDOStatement
      * @throws Exception\Service
@@ -145,16 +158,34 @@ class MysqlPDO extends Database\Connector
             throw new Exception\Service("Not connected to a valid service");
         }
 
-        /*$stmt = $this->_service->prepare($sql);
-        if (!$stmt)
-        {
-            return $stmt;
-        }
-        return $stmt->execute();*/
         return $this->_service->query($sql);
     }
 
+    /**
+     * @param $sql
+     * @param array $arguments
+     * @return bool|PDOStatement
+     * @throws Exception\Service
+     */
+    public function q($sql, $arguments = [])
+    {
+        if (!$this->_isValidService())
+        {
+            throw new Exception\Service("Not connected to a valid service");
+        }
 
+        if (!$arguments)
+        {
+            return $this->_service->query($sql);
+        }
+        $statement = $this->_service->prepare($sql);
+        return $statement->execute($arguments);
+    }
+
+    /**
+     * @return string id of last inserted data
+     * @throws Exception\Service
+     */
     public function getLastInsertId()
     {
         if (!$this->_isValidService())
@@ -167,7 +198,7 @@ class MysqlPDO extends Database\Connector
 
     /**
      * @param $result PDOStatement
-     * @return mixed
+     * @return int number of rows affected by query
      * @throws Exception\Service
      */
     public function getAffectedRows($result)
@@ -178,36 +209,6 @@ class MysqlPDO extends Database\Connector
         }
 
         return $result->rowCount();
-    }
-
-    /**
-     * @param $result PDOStatement
-     * @return mixed
-     * @throws Exception\Service
-     */
-    public function getLastErrorMessage($result)
-    {
-        if (!$this->_isValidService())
-        {
-            throw new Exception\Service("Not connected to a valid service");
-        }
-
-        return $result->errorInfo();
-    }
-
-    /**
-     * @param $result PDOStatement
-     * @return mixed
-     * @throws Exception\Service
-     */
-    public function getLastErrorCode($result)
-    {
-        if (!$this->_isValidService())
-        {
-            throw new Exception\Service("Not connected to a valid service");
-        }
-
-        return $result->errorCode();
     }
 
     public function sync($model)
@@ -272,11 +273,8 @@ class MysqlPDO extends Database\Connector
             );
 
             $result = $this->execute("DROP TABLE IF EXISTS {$table};");
-            if ($this->getLastErrorCode($result))
-            {
-                $error = $this->getLastErrorMessage($result);
 
-            }
+            //TODO Finish this
         }
     }
 }

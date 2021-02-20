@@ -10,15 +10,23 @@ use Framework\Database\Exception;
  */
 class MysqlPDO extends Database\Query
 {
-    public function run($sql, $args = [])
-    {
-        if (!$args)
-        {
-            return $this->connector->query($sql);
-        }
-        $stmt = $this->connector->prepare($sql);
-        $stmt->execute($args);
+    /**
+     * @var Database\Connector\MysqlPDO $_connector
+     * @readwrite
+     */
+    protected $_connector;
 
-        return $stmt;
+    public function run($sql, $arguments = [])
+    {
+        return $this->connector->q($sql, $arguments);
+    }
+
+    public function countAllFrom($table)
+    {
+        $result = $this->connector->execute("
+            SELECT COUNT(*) FROM {$table}
+        ");
+
+        return $result->fetchColumn();
     }
 }
