@@ -7,7 +7,7 @@ use Framework\Database;
 class Base
 {
     /**
-     * @var Database\Connector\Mysql
+     * @var Database\Connector\MysqlPDO $database
      */
     protected $database;
 

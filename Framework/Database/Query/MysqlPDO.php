@@ -6,9 +6,9 @@ use Framework\Database;
 use Framework\Database\Exception;
 
 /**
- * @property Database\Connector\Mysql connector
+ * @property Database\Connector\MysqlPDO connector
  */
-class Mysql extends Database\Query
+class MysqlPDO extends Database\Query
 {
     public function run($sql, $args = [])
     {

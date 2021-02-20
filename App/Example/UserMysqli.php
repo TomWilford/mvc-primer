@@ -3,13 +3,12 @@
 namespace App\Example;
 
 use Framework\Database;
-use Framework\Core\Exception;
 
 class UserMysqli
 {
 
     /**
-     * @var Database\Connector\Mysql
+     * @var Database\Connector\MysqlPDO
      */
     protected $database;
 

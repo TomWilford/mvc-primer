@@ -29,7 +29,7 @@ class Database extends Base
         if (!$this->type)
         {
             throw new Exception\Argument("Invalid type");
-            //$this->type = "pdo";
+            //$this->type = "mysql_pdo";
         }
 
         if (!$this->options)
@@ -49,8 +49,8 @@ class Database extends Base
             case "mysqli":
                 return new Database\Connector\Mysqli($this->options);
                 break;
-            case "pdo":
-                return new Database\Connector\Mysql($this->options);
+            case "mysql_pdo":
+                return new Database\Connector\MysqlPDO($this->options);
                 break;
             default:
                 throw new Exception\Argument("Invalid type");

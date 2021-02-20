@@ -8,7 +8,7 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
-class Mysql extends Database\Connector
+class MysqlPDO extends Database\Connector
 {
     protected  $_service;
 
@@ -125,7 +125,7 @@ class Mysql extends Database\Connector
 
     public function query()
     {
-        return new Database\Query\Mysql([
+        return new Database\Query\MysqlPDO([
             "connector" => $this
         ]);
     }
