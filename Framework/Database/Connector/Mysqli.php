@@ -13,55 +13,55 @@ class Mysqli extends Database\Connector
 {
     /**
      * @var \MySQLi $_service connected mysqli service
-     * @readwrite true
+     * @readwrite
      */
     protected $_service;
 
     /**
      * @var string $_host mysql host ip
-     * @readwrite true
+     * @readwrite
      */
     protected $_host;
 
     /**
      * @var string $_username mysql username
-     * @readwrite true
+     * @readwrite
      */
     protected $_username;
 
     /**
      * @var string $_password mysql user's password
-     * @readwrite true
+     * @readwrite
      */
     protected $_password;
 
     /**
      * @var string $_schema mysql table name
-     * @readwrite true
+     * @readwrite
      */
     protected $_schema;
 
     /**
      * @var string $_port mysql port
-     * @readwrite true
+     * @readwrite
      */
     protected $_port = "3306";
 
     /**
      * @var string $_charset character set to use
-     * @readwrite true
+     * @readwrite
      */
     protected $_charset = "utf8";
 
     /**
      * @var string $_engine mysql engine to use
-     * @readwrite true
+     * @readwrite
      */
     protected $_engine = "InnoDB";
 
     /**
      * @var bool $_isConnected status of current mysql connection
-     * @readwrite true
+     * @readwrite
      */
     protected $_isConnected = false;
 

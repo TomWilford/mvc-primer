@@ -4,63 +4,66 @@ namespace Framework\Database\Query;
 
 use Framework\ArrayMethods;
 use Framework\Database;
-//use Framework\Database\Exception;
-use Framework\Core\Exception;
+use Framework\Database\Exception;
 
 /**
  * @deprecated
  */
 class Mysqli extends Database\Query
 {
+    /**
+     * @var mixed $_connector Connects mysqli to the query generator
+     * @readwrite 
+     */
+    protected $_connector;
 
     /**
-     * @var
+     * @var mixed $_from Table to select data from
      * @read
      */
     protected $_from;
 
     /**
-     * @var
+     * @var mixed $_fields Fields to use in query
      * @read
      */
     protected $_fields;
 
     /**
-     * @var
+     * @var mixed $_limit Limit rows returned by query
      * @read
      */
     protected $_limit;
 
     /**
-     * @var
+     * @var mixed $_offset Optional offset for the limit
      * @read
      */
     protected $_offset;
 
     /**
+     * @var mixed $_order Order for rows returned by query
      * @read
      */
     protected $_order;
 
     /**
+     * @var mixed $_direction Optional direction for order
      * @read
      */
     protected $_direction;
 
     /**
+     * @var array $_join Additional tables to join on
      * @read
      */
-    protected $_join = [];
+    protected array $_join = [];
 
     /**
+     * @var array $_where Parameters to filter results returned by query
      * @read
      */
-    protected $_where = [];
-
-    protected function _getExceptionForImplementation($method)
-    {
-        return new Exception\Implementation("{$method} method not implemented");
-    }
+    protected array $_where = [];
 
     protected function _quote($value)
     {
@@ -72,7 +75,7 @@ class Mysqli extends Database\Query
 
         if (is_array($value))
         {
-            $buffer = array();
+            $buffer = [];
 
             foreach ($value as $i)
             {
@@ -96,7 +99,7 @@ class Mysqli extends Database\Query
         return $this->connector->escape($value);
     }
 
-    public function from($from, $fields = array("*"))
+    public function from($from, $fields = ["*"])
     {
         if (empty($from))
         {
@@ -113,7 +116,7 @@ class Mysqli extends Database\Query
         return $this;
     }
 
-    public function join($join, $on, $fields = array())
+    public function join($join, $on, $fields = [])
     {
         if (empty($join))
         {
@@ -125,7 +128,7 @@ class Mysqli extends Database\Query
             throw new Exception\Argument("Invalid argument");
         }
 
-        $this->_fields += array($join => $fields);
+        $this->_fields += [$join => $fields];
         $this->_join[]  = "JOIN {$join} ON {$on}";
 
         return $this;
@@ -146,7 +149,7 @@ class Mysqli extends Database\Query
 
     public function order($order, $direction = "asc")
     {
-        if (empty($join))
+        if (empty($order))
         {
             throw new Exception\Argument("Invalid argument");
         }
@@ -180,7 +183,7 @@ class Mysqli extends Database\Query
 
     protected function _buildSelect()
     {
-        $fields   = array();
+        $fields   = [];
         $where    = $order = $limit = $join = "";
         $template = "SELECT %s FROM %s %s %s %s %s";
 
@@ -194,7 +197,7 @@ class Mysqli extends Database\Query
                 }
                 else
                 {
-                    $field[]  = $alias;
+                    $fields[]  = $alias;
                 }
             }
         }
@@ -232,7 +235,7 @@ class Mysqli extends Database\Query
             }
             else
             {
-                $limit = "LIMIT {$limit}";
+                $limit = "LIMIT {$_limit}";
             }
         }
 
@@ -241,9 +244,9 @@ class Mysqli extends Database\Query
 
     protected function _buildInsert($data)
     {
-        $fields   = array();
-        $values   = array();
-        $template = "INSERT INTO '%s' ('%s') VALUES (%s)";
+        $fields   = [];
+        $values   = [];
+        $template = "INSERT INTO `%s` (%s) VALUES (%s)";
 
         foreach ($data as $field => $value)
         {
@@ -251,7 +254,7 @@ class Mysqli extends Database\Query
             $values[] =$this->_quote($value);
         }
 
-        $fields = join("', '", $fields);
+        $fields = join(", ", $fields);
         $values = join(", ", $values);
 
         return sprintf($template, $this->from, $fields, $values);
@@ -259,7 +262,7 @@ class Mysqli extends Database\Query
 
     protected function _buildUpdate($data)
     {
-        $parts    = array();
+        $parts    = [];
         $where    = $limit = "";
         $template = "UPDATE %s SET %s %s %s";
 
@@ -312,7 +315,6 @@ class Mysqli extends Database\Query
     public function save($data)
     {
         $isInsert = sizeof($this->_where) == 0;
-
         if ($isInsert)
         {
             $sql = $this->_buildInsert($data);
@@ -378,7 +380,7 @@ class Mysqli extends Database\Query
         $offset = $this->offset;
         $fields = $this->fields;
 
-        $this->_fields = array($this->from => array("COUNT(1)" => "rows"));
+        $this->_fields = [$this->from => array("COUNT(1)" => "rows")];
 
         $this->limit(1);
         $row = $this->first();
@@ -404,7 +406,7 @@ class Mysqli extends Database\Query
     public function all()
     {
         $sql    = $this->_buildSelect();
-        $result = $this->connector->execte($sql);
+        $result = $this->connector->execute($sql);
 
         if ($result === false)
         {
@@ -412,7 +414,7 @@ class Mysqli extends Database\Query
             throw new Exception\Sql("There was an error with your SQL query: {$error}");
         }
 
-        $rows  = array();
+        $rows = [];
 
         for ($i = 0; $i < $result->num_rows; $i++)
         {
