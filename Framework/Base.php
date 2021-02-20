@@ -9,6 +9,9 @@ use Framework\StringMethods;
 
 class Base
 {
+    /**
+     * @var \Framework\Inspector
+     */
     private $_inspector;
 
     public function __construct($options = [])
@@ -33,11 +36,14 @@ class Base
             throw new Exception("Call parent::__construct!");
         }
 
+        $normalised = '';
+        $property   = '';
+
         $getMatches = StringMethods::match($name, "^get([a-zA-Z0-9]+)$");
-        if (sizeof($getMatches) > 0)
+        if (!empty($getMatches))
         {
-            $normalized = lcfirst($getMatches[0]);
-            $property   = "_{$normalized}";
+            $normalised = lcfirst($getMatches[0]);
+            $property   = "_{$normalised}";
         }
 
         if (property_exists($this, $property))
@@ -46,7 +52,7 @@ class Base
 
             if (empty($meta["@readwrite"]) && empty($meta["@read"]))
             {
-                throw $this->_getException($normalized, "writeonly");
+                throw $this->_getException($normalised, "writeonly");
             }
 
             if (isset($this->$property)){
@@ -58,17 +64,17 @@ class Base
         }
 
         $setMatches = StringMethods::match($name, "^set([a-zA-Z0-9]+)$");
-        if (sizeof($setMatches) > 0)
+        if (!empty($setMatches))
         {
-            $normalized = lcfirst($setMatches[0]);
-            $property   = "_{$normalized}";
+            $normalised = lcfirst($setMatches[0]);
+            $property   = "_{$normalised}";
 
             if (property_exists($this, $property))
             {
                 $meta = $this->_inspector->getPropertyMeta($property);
                 if (empty($meta["@readwrite"]) && empty($meta["@write"]))
                 {
-                    throw $this->_getException($normalized, "readonly");
+                    throw $this->_getException($normalised, "readonly");
                 }
 
                 $this->$property = $arguments[0];
