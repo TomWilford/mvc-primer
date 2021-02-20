@@ -35,7 +35,7 @@ class Mysqli extends Database\Connector
     protected $_password;
 
     /**
-     * @var string $_schema mysql table name
+     * @var string $_schema mysql database name
      * @readwrite
      */
     protected $_schema;
