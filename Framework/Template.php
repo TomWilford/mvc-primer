@@ -5,8 +5,7 @@ namespace Framework;
 use Framework\Base;
 use Framework\ArrayMethods;
 use Framework\StringMethods;
-//use Framework\Template\Exception;
-use Framework\Core\Exception;
+use Framework\Template\Exception;
 
 class Template extends Base
 {

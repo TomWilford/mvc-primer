@@ -3,9 +3,11 @@
 namespace Framework\Database\Query;
 
 use Framework\Database;
-//use Framework\Database\Exception;
-use Framework\Core\Exception;
+use Framework\Database\Exception;
 
+/**
+ * @property Database\Connector\Mysql connector
+ */
 class Mysql extends Database\Query
 {
     public function run($sql, $args = [])

@@ -6,8 +6,7 @@ use Framework\Base;
 use Framework\Registry;
 use Framework\Inspector;
 use Framework\StringMethods;
-//use Framework\Model\Exception;
-use Framework\Core\Exception;
+use Framework\Model\Exception;
 
 class Model extends Base
 {

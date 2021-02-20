@@ -3,8 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
-//use Framework\Configuration\Exception;
-use Framework\Core\Exception;
+use Framework\Configuration\Exception;
 
 class Configuration extends Base
 {

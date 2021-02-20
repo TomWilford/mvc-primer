@@ -3,8 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
-//use Framework\Database\Exception;
-use Framework\Core\Exception;
+use Framework\Database\Exception;
 
 class Database extends Base
 {

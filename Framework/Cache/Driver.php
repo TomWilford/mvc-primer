@@ -3,8 +3,7 @@
 namespace Framework\Cache;
 
 use Framework\Base;
-//use Framework\Cache\Exception;
-use Framework\Core\Exception;
+use Framework\Cache\Exception;
 
 class Driver extends Base
 {

@@ -3,8 +3,7 @@
 namespace Framework\Database\Connector;
 
 use Framework\Database;
-//use Framework\Database\Exception;
-use Framework\Core\Exception;
+use Framework\Database\Exception;
 use PDO;
 use PDOException;
 use PDOStatement;

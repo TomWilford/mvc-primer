@@ -51,9 +51,6 @@ Framework\Test::add(
     "Database\Connector\Mysqli"
 );
 
-/**
- *    ↓  ↓  ↓  This one will fail? ↓  ↓  ↓
- * */
 Framework\Test::add(
     function () use ($options)
     {
@@ -66,7 +63,7 @@ Framework\Test::add(
         {
             $database->execute("SELECT 1");
         }
-        catch (Framework\Core\Exception\Service $e)
+        catch (Framework\Database\Exception\Service $e)
         {
             return ($database instanceof Framework\Database\Connector\Mysqli);
         }

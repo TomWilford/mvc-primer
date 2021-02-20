@@ -3,16 +3,15 @@
 namespace Framework\Database;
 
 use \Framework\Base;
-//use Framework\Database\Exception;
-use Framework\Core\Exception;
+use Framework\Database;
+use Framework\Database\Exception;
 
 class Query extends Base
 {
     /**
-     * @var
+     * @var Connector $_connector
      * @readwrite
      */
     protected $_connector;
-
 
 }

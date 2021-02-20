@@ -3,8 +3,7 @@
 namespace Framework\Router;
 
 use Framework\Base;
-//use Framework\Router\Exception;
-use Framework\Core\Exception;
+use Framework\Router\Exception;
 
 class Route extends Base
 {

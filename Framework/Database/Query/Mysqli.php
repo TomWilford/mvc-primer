@@ -7,6 +7,7 @@ use Framework\Database;
 use Framework\Database\Exception;
 
 /**
+ * @property Database\Connector\Mysqli connector
  * @deprecated
  */
 class Mysqli extends Database\Query

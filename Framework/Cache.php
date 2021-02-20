@@ -3,8 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
-//use Framework\Cache\Exception;
-use Framework\Core\Exception;
+use Framework\Cache\Exception;
 
 class Cache extends Base
 {

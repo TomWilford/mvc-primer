@@ -5,8 +5,7 @@ namespace Framework;
 use Framework\Base;
 use Framework\Registry;
 use Framework\Inspector;
-//use Framework\Router\Exception;
-use Framework\Core\Exception;
+use Framework\Router\Exception;
 
 class Router extends Base
 {

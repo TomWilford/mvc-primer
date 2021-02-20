@@ -17,6 +17,7 @@
     },
     "require": {
         "ext-memcache": "*",
-        "ext-mysqli": "*"
+        "ext-mysqli": "*",
+        "ext-pdo": "*"
     }
 }

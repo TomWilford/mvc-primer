@@ -41,9 +41,6 @@ Framework\Test::add(
     "Cache\Driver\Memcached"
 );
 
-/**
- *    ↓  ↓  ↓  This one will throw exception ↓  ↓  ↓
- * */
 Framework\Test::add(
     function ()
     {

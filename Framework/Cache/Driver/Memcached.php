@@ -3,8 +3,7 @@
 namespace Framework\Cache\Driver;
 
 use Framework\Cache;
-//use Framework\Cache\Exception;
-use Framework\Core\Exception;
+use Framework\Cache\Exception;
 use Memcache;
 
 class Memcached extends Cache\Driver

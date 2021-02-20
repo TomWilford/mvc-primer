@@ -3,8 +3,7 @@
 namespace Framework\Configuration;
 
 use Framework\Base;
-//use Framework\Configuration\Exception;
-use Framework\Core\Exception;
+use Framework\Configuration\Exception;
 
 class Driver extends Base
 {

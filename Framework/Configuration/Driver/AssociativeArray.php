@@ -4,8 +4,7 @@ namespace Framework\Configuration\Driver;
 
 use Framework\ArrayMethods;
 use Framework\Configuration;
-//use Framework\Configuration\Exception;
-use Framework\Core\Exception;
+use Framework\Configuration\Exception;
 
 class AssociativeArray extends Configuration\Driver
 {
