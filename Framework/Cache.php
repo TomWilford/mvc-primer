@@ -10,13 +10,13 @@ class Cache extends Base
 {
     /**
      * @var string $_type Caching engine to use
-     * @readwrite true
+     * @readwrite
      */
     protected $_type;
 
     /**
      * @var array $_options Settings for caching engine
-     * @readwrite true
+     * @readwrite
      */
     protected $_options;
 

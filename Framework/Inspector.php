@@ -72,7 +72,7 @@ class Inspector
 
                 $meta[$parts[0]] = ArrayMethods::clean(
                     ArrayMethods::trim(
-                        StringMethods::split($parts[1], ",")
+                        StringMethods::split($parts[0], ",")
                     )
                 );
             }

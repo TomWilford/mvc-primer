@@ -10,13 +10,13 @@ class Database extends Base
 {
     /**
      * @var string $_type type of database driver to use
-     * @readwrite true
+     * @readwrite
      */
     protected $_type;
 
     /**
      * @var
-     * @readwrite true
+     * @readwrite
      */
     protected $_options = [];
 

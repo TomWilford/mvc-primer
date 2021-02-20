@@ -10,13 +10,13 @@ class Configuration extends Base
 {
     /**
      * @var string $_type Configuration file type
-     * @readwrite true
+     * @readwrite
      */
     protected $_type;
 
     /**
      * @var array $_options Additional configuration options
-     * @readwrite true
+     * @readwrite
      */
     protected $_options;
 

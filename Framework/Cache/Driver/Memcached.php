@@ -16,19 +16,19 @@ class Memcached extends Cache\Driver
 
     /**
      * @var string $_host Memcached host ip
-     * @readwrite true
+     * @readwrite
      */
     protected $_host = "127.0.0.1";
 
     /**
      * @var string $_port Memcached default port
-     * @readwrite true
+     * @readwrite
      */
     protected $_port = "11211";
 
     /**
      * @var bool $_isConnected Memcached connection active?
-     * @readwrite true
+     * @readwrite
      */
     protected $_isConnected = false;
 
