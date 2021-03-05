@@ -81,7 +81,7 @@ class MysqlPDO extends Database\Connector
     protected function _isValidService()
     {
         $isEmpty = empty($this->_service);
-        $isInstance = $this->_service instanceof \PDO;
+        $isInstance = $this->_service instanceof PDO;
 
         if ($this->_isConnected && $isInstance && !$isEmpty)
         {
@@ -106,13 +106,13 @@ class MysqlPDO extends Database\Connector
             ];
             try
             {
-                $this->_service = new \PDO(
+                $this->_service = new PDO(
                     $this->_dsn, $this->_username, $this->_password, $this->_options
                 );
             }
-            catch (\PDOException $e)
+            catch (PDOException $e)
             {
-                throw new \PDOException($e->getMessage(), (int)$e->getCode());
+                throw new PDOException($e->getMessage(), (int)$e->getCode());
             }
 
             $this->_isConnected = true;
@@ -215,6 +215,7 @@ class MysqlPDO extends Database\Connector
 
     public function sync($model)
     {
+        /*TODO - Finish this*/
         $lines    = [];
         $indices  = [];
         $columns  = $model->columns;
