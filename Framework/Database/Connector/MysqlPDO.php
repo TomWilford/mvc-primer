@@ -167,7 +167,7 @@ class MysqlPDO extends Database\Connector
      * @return array|false
      * @throws Exception\Service
      */
-    public function prepareAndExecute($sql, $arguments)
+    public function prepareAndExecute($sql, $arguments = [])
     {
         if (!$this->_isValidService())
         {
