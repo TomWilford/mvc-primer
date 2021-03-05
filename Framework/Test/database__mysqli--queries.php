@@ -23,10 +23,10 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $database->execute("
+        $database->q("
             DROP TABLE IF EXISTS `tests`;
         ");
-        $database->execute("
+        $database->q("
             CREATE TABLE `tests` (
                 `id`      int(11)      NOT NULL AUTO_INCREMENT,
                 `number`  int(11)      NOT NULL,
@@ -51,7 +51,7 @@ Framework\Test::add(
 
         for ($i = 0; $i < 4; $i++)
         {
-            $database->execute("
+            $database->q("
                 INSERT INTO tests (`number`, `text`, `boolean`) VALUES ('42069{$i}', 'text {$i}', '0');
             ");
         }
@@ -70,7 +70,7 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $database->execute("
+        $database->q("
             UPDATE `tests` SET `number` = 42069;
         ");
 
@@ -117,8 +117,8 @@ Framework\Test::add(
         $database = $database->connect();
 
         $rows     = $database->query()
-            ->from("tests")
-            ->first();
+                             ->from("tests")
+                             ->first();
 
         return ($rows["id"] == 1);
     },
@@ -134,8 +134,8 @@ Framework\Test::add(
         $database = $database->connect();
 
         $rows     = $database->query()
-            ->from("tests")
-            ->all();
+                             ->from("tests")
+                             ->all();
 
         return (count($rows) == 4);
     },
@@ -151,8 +151,8 @@ Framework\Test::add(
         $database = $database->connect();
 
         $count    = $database->query()
-            ->from("tests")
-            ->count();
+                             ->from("tests")
+                             ->count();
 
         return ($count == 4);
     },
@@ -168,10 +168,10 @@ Framework\Test::add(
         $database = $database->connect();
 
         $rows     = $database->query()
-            ->from("tests")
-            ->limit(1, 2)
-            ->order("id", "desc")
-            ->all();
+                             ->from("tests")
+                             ->limit(1, 2)
+                             ->order("id", "desc")
+                             ->all();
 
         return (count($rows) == 1 && $rows[0]["id"] == 3);
     },
@@ -187,13 +187,11 @@ Framework\Test::add(
         $database = $database->connect();
 
         $rows     = $database->query()
-            ->from("tests")
-            ->where("id != ?", 1)
-            ->where("id != ?", 3)
-            ->where("id != ?", 4)
-            ->all();
-
-        var_dump($rows);
+                             ->from("tests")
+                             ->where("id != ?", 1)
+                             ->where("id != ?", 3)
+                             ->where("id != ?", 4)
+                             ->all();
 
         return (count($rows) == 1 && $rows[0]["id"] == 2);
     },
@@ -208,11 +206,11 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $rows    = $database->query()
-            ->from("tests", [
-                "id" => "foo"
-            ])
-            ->all();
+        $rows     = $database->query()
+                             ->from("tests", [
+                                 "id" => "foo"
+                             ])
+                             ->all();
 
         return (count($rows) && isset($rows[0]["foo"]) && $rows[0]["foo"] == 1);
     },
@@ -227,14 +225,14 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $rows    = $database->query()
-            ->from("tests", [
-                "tests.id" => "foo"
-            ])
-            ->join("tests AS baz", "tests.id = baz.id",[
-                "baz.id" => "bar"
-            ])
-            ->all();
+        $rows     = $database->query()
+                             ->from("tests", [
+                                 "tests.id" => "foo"
+                             ])
+                             ->join("tests AS baz", "tests.id = baz.id", [
+                                 "baz.id" => "bar"
+                             ])
+                             ->all();
 
         return (count($rows) && $rows[0]->foo == $rows[0]->bar);
     },
@@ -249,13 +247,13 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $result     = $database->query()
-            ->from("tests")
-            ->save([
-                "number"  => 3,
-                "text"    => "foo",
-                "boolean" => false
-            ]);
+        $result    = $database->query()
+                              ->from("tests")
+                              ->save([
+                                  "number"  => 3,
+                                  "text"    => "foo",
+                                  "boolean" => false
+                              ]);
 
         return ($result == 5);
     },
@@ -271,8 +269,8 @@ Framework\Test::add(
         $database = $database->connect();
 
         $database->query()
-            ->from("tests")
-            ->delete();
+                 ->from("tests")
+                 ->delete();
 
         return ($database->query()->from("tests")->count() == 0);
     },

@@ -31,7 +31,7 @@ class UserMysqli
     }
 
     public function getAll(){
-        $this->database->query()->run("SELECT * FROM users;");
+        $this->database->query()->string("SELECT * FROM users;");
 
     }
 

@@ -9,7 +9,7 @@ class UserMysql extends Base
     protected $data;
 
     public function getAll(){
-        return $this->database->query()->run("SELECT * FROM users");
+        return $this->database->query()->string("SELECT * FROM users");
     }
 
 }

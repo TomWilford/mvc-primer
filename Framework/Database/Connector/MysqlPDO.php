@@ -151,7 +151,7 @@ class MysqlPDO extends Database\Connector
      * @return false|PDOStatement
      * @throws Exception\Service
      */
-    public function execute($sql)
+    public function q($sql)
     {
         if (!$this->_isValidService())
         {
@@ -164,22 +164,24 @@ class MysqlPDO extends Database\Connector
     /**
      * @param $sql
      * @param array $arguments
-     * @return bool|PDOStatement
+     * @return array|false
      * @throws Exception\Service
      */
-    public function q($sql, $arguments = [])
+    public function prepareAndExecute($sql, $arguments)
     {
         if (!$this->_isValidService())
         {
             throw new Exception\Service("Not connected to a valid service");
         }
 
-        if (!$arguments)
-        {
-            return $this->_service->query($sql);
-        }
         $statement = $this->_service->prepare($sql);
-        return $statement->execute($arguments);
+        $result = $statement->execute($arguments);
+
+        if ($result)
+        {
+            return $statement;
+        }
+        return false;
     }
 
     /**
@@ -272,7 +274,7 @@ class MysqlPDO extends Database\Connector
                 $this->_charset
             );
 
-            $result = $this->execute("DROP TABLE IF EXISTS {$table};");
+            $result = $this->q("DROP TABLE IF EXISTS {$table};");
 
             //TODO Finish this
         }

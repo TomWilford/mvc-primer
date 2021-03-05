@@ -57,7 +57,7 @@ Framework\Test::add(
 
         try
         {
-            $database->execute("SELECT 1");
+            $database->q("SELECT 1");
         }
         catch (\Framework\Database\Exception\Service $e)
         {
@@ -78,7 +78,7 @@ Framework\Test::add(
 
         try
         {
-            $database->execute("
+            $database->q("
                 THIS IS NOT SQL
             ");
         }
