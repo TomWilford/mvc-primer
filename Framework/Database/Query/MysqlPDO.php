@@ -71,6 +71,12 @@ class MysqlPDO extends Database\Query
     protected array $_where = [];
 
     /**
+     * @var array $_whereArguments Arguments for prepared where clause
+     * @read
+     */
+    protected array $_whereArguments = [];
+
+    /**
      * @var array $_arguments Arguments for prepared query
      * @read
      */
@@ -147,7 +153,7 @@ class MysqlPDO extends Database\Query
         }
 
         $this->_where[] = $arguments[0];
-        $this->_arguments[] = $arguments[1];
+        $this->_whereArguments[] = $arguments[1];
 
         return $this;
     }
@@ -183,7 +189,7 @@ class MysqlPDO extends Database\Query
 
         $this->_table   = $from;
         $this->_clause = "SELECT";
-        $this->_fields = ["COUNT(*) AS count"];
+        $this->_fields = ["COUNT(*) AS total"];
 
         return $this;
     }
@@ -247,7 +253,15 @@ class MysqlPDO extends Database\Query
                 break;
             case "INSERT":
                 return $this->string($this->_buildInsert(), $this->_arguments);
-
+                break;
+            case "UPDATE":
+                return $this->string($this->_buildUpdate(), $this->_arguments);
+                break;
+            case "DELETE":
+                return $this->string($this->_buildDelete(), $this->_arguments);
+                break;
+            default:
+                throw new Exception\Argument("Invalid argument");
         }
     }
 
@@ -262,19 +276,16 @@ class MysqlPDO extends Database\Query
 
         $_where = implode(" AND ", $this->_where);
         $where  = ($_where) ? "WHERE {$_where}" : "";
+        foreach ($this->_whereArguments as $whereArgument) {
+            $this->_arguments[] = $whereArgument;
+        }
 
         $_order = $this->_order;
         $order  = ($_order) ? "ORDER BY {$_order} {$this->_direction}" : "";
 
-        $_limit = $this->_limit;
-        $limit  = "";
-        if ($_limit)
-        {
-            $_offset = $this->_offset;
-            $limit = ($_offset) ? "LIMIT {$_limit}, {$_offset}" : "LIMIT {$_limit}";
-        }
+        $limit = $this->_buildLimit($this->_limit, $this->_offset);
 
-        return "{$select} {$fields} {$from}  {$join}  {$where} {$order} {$limit}";
+        return "{$select} {$fields} {$from} {$join} {$where} {$order} {$limit}";
     }
 
     private function _buildInsert()
@@ -292,9 +303,65 @@ class MysqlPDO extends Database\Query
         }
         $values = implode(", ", $_values);
 
-        $sql = "{$insertInto} {$table} ({$fields}) VALUES ({$values})";
+        return "{$insertInto} {$table} ({$fields}) VALUES ({$values})";
+    }
 
-        return $sql;
+    private function _buildUpdate()
+    {
+        $update = $this->_clause;
+        $table  = $this->_table;
+
+        $_fields = [];
+        foreach ($this->_fields as $field) {
+            $_fields[] = "{$field} = ?";
+        }
+        $fields = implode(", ", $_fields);
+
+        foreach ($this->_values as $value)
+        {
+            $this->_arguments[] = $value;
+        }
+
+        $where = $this->_buildWhere($this->_where);
+        foreach ($this->_whereArguments as $whereArgument) {
+            $this->_arguments[] = $whereArgument;
+        }
+
+        $limit = $this->_buildLimit($this->_limit, $this->_offset);
+
+        return "{$update} {$table} SET {$fields} {$where} {$limit}";
+    }
+
+    private function _buildDelete()
+    {
+        $delete = $this->_clause;
+        $table  = $this->_table;
+        $where  = $this->_buildWhere($this->_where);
+        foreach ($this->_whereArguments as $whereArgument) {
+            $this->_arguments[] = $whereArgument;
+        }
+        $limit  = $this->_buildLimit($this->_limit, $this->_offset);
+
+        var_dump("{$delete} FROM {$table} {$where} {$limit}");
+
+        return "{$delete} FROM {$table} {$where} {$limit}";
+    }
+
+    private function _buildWhere($where)
+    {
+
+        $_where = implode(" AND ", $where);
+        var_dump($_where);
+        return ($_where) ? "WHERE {$_where}" : "";
+    }
+
+    private function _buildLimit($limit, $offset)
+    {
+        if ($limit)
+        {
+            return ($offset) ? "LIMIT {$limit}, {$offset}" : "LIMIT {$limit}";
+        }
+        return "";
     }
 
 }

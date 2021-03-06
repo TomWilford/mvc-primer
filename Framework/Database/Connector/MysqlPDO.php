@@ -181,6 +181,7 @@ class MysqlPDO extends Database\Connector
         {
             return $statement;
         }
+
         return false;
     }
 
@@ -215,7 +216,6 @@ class MysqlPDO extends Database\Connector
 
     public function sync($model)
     {
-        /*TODO - Finish this*/
         $lines    = [];
         $indices  = [];
         $columns  = $model->columns;
@@ -276,8 +276,20 @@ class MysqlPDO extends Database\Connector
             );
 
             $result = $this->q("DROP TABLE IF EXISTS {$table};");
+            if ($result === false)
+            {
+                $error = $this->lastError;
+                throw new Exception\Sql("There was an error in the query: {$error}");
+            }
 
-            //TODO Finish this
+            $result = $this->execute($sql);
+            if ($result === false)
+            {
+                $error = $this->lastError;
+                throw new Exception\Sql("There was an error in the query: {$error}");
+            }
+
+            return $this;
         }
     }
 }

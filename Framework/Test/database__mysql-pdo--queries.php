@@ -167,7 +167,7 @@ Framework\Test::add(
         $result   = $database->query()->countAll("tests")->run();
         $count    = $result->fetch();
 
-        return ($count["count"] == 4);
+        return ($count["total"] == 4);
     },
     "Database\Query\MysqlPDO count all rows",
     "Database\Query\MysqlPDO"
@@ -307,14 +307,34 @@ Framework\Test::add(
         $database = $database->initialise();
         $database = $database->connect();
 
-        $result   = $database->query()->delete("tests")->run();
+        $result   = $database->query()->delete("tests")->where("id = ?", 4)->run();
+        $affected = $database->getAffectedRows($result);
 
         $result = $database->query()->countAll("tests")->run();
         $count  = $result->fetch();
 
-        return ($count[0]['count'] == 0);
+        return ($affected == 1 && $count['total'] == 4);
     },
-    "Database\Query\MysqlPDO deletes rows",
+    "Database\Query\MysqlPDO deletes row",
+    "Database\Query\MysqlPDO"
+);
+
+Framework\Test::add(
+    function () use ($options)
+    {
+        $database = new Framework\Database($options);
+        $database = $database->initialise();
+        $database = $database->connect();
+
+        $result   = $database->query()->delete("tests")->run();
+        $affected = $database->getAffectedRows($result);
+
+        $result = $database->query()->countAll("tests")->run();
+        $count  = $result->fetch();
+
+        return ($affected == 4 && $count['total'] == 0);
+    },
+    "Database\Query\MysqlPDO deletes all rows",
     "Database\Query\MysqlPDO"
 );
 
