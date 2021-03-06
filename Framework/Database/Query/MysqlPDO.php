@@ -342,8 +342,6 @@ class MysqlPDO extends Database\Query
         }
         $limit  = $this->_buildLimit($this->_limit, $this->_offset);
 
-        var_dump("{$delete} FROM {$table} {$where} {$limit}");
-
         return "{$delete} FROM {$table} {$where} {$limit}";
     }
 
@@ -351,7 +349,6 @@ class MysqlPDO extends Database\Query
     {
 
         $_where = implode(" AND ", $where);
-        var_dump($_where);
         return ($_where) ? "WHERE {$_where}" : "";
     }
 
