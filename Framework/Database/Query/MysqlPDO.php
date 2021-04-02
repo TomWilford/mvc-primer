@@ -139,6 +139,11 @@ class MysqlPDO extends Database\Query
      */
     public function selectFirst($from, $fields = ["*"])
     {
+        if (empty($from))
+        {
+            throw new Exception\Argument("Invalid argument");
+        }
+
         $this->select($from, $fields);
         $this->limit(1);
 
@@ -227,6 +232,29 @@ class MysqlPDO extends Database\Query
 
         $this->_table  = $table;
         $this->_clause = "UPDATE";
+        $this->_processArguments($arguments);
+
+        return $this;
+    }
+
+    /**
+     * Simple Query Generator:
+     * - Sets generator variables for ambiguous insert/update queries
+     * - Sorts arguments into fields & values
+     * @param $table
+     * @param $arguments
+     * @return $this
+     * @throws Exception\Argument
+     */
+    public function save($table, $arguments)
+    {
+        if (empty($table))
+        {
+            throw new Exception\Argument("Invalid argument");
+        }
+
+        $this->_table  = $table;
+        $this->_clause = "SAVE";
         $this->_processArguments($arguments);
 
         return $this;
@@ -362,6 +390,13 @@ class MysqlPDO extends Database\Query
             case "DELETE":
                 return $this->string($this->_buildDelete(), $this->_arguments);
                 break;
+            case "SAVE":
+                if ($this->_where)
+                {
+                    return $this->string($this->_buildUpdate(), $this->_arguments);
+                }
+                return $this->string($this->_buildInsert(), $this->_arguments);
+                break;
             default:
                 throw new Exception\Argument("Invalid argument");
         }
@@ -374,7 +409,6 @@ class MysqlPDO extends Database\Query
      */
     private function _buildSelect()
     {
-        $select = $this->_clause;
         $fields = implode(",", $this->_fields);
         $from   = "FROM " . $this->_table;
 
@@ -392,7 +426,7 @@ class MysqlPDO extends Database\Query
 
         $limit = $this->_buildLimit($this->_limit, $this->_offset);
 
-        return "{$select} {$fields} {$from} {$join} {$where} {$order} {$limit}";
+        return "SELECT {$fields} {$from} {$join} {$where} {$order} {$limit}";
     }
 
     /**
@@ -402,9 +436,7 @@ class MysqlPDO extends Database\Query
      */
     private function _buildInsert()
     {
-        $insertInto = $this->_clause . " INTO";
-        $table      = $this->_table;
-
+        $table   = $this->_table;
         $fields  = implode(", ", $this->_fields);
 
         $_values = [];
@@ -415,7 +447,7 @@ class MysqlPDO extends Database\Query
         }
         $values = implode(", ", $_values);
 
-        return "{$insertInto} {$table} ({$fields}) VALUES ({$values})";
+        return "INSERT INTO {$table} ({$fields}) VALUES ({$values})";
     }
 
     /**
@@ -425,8 +457,7 @@ class MysqlPDO extends Database\Query
      */
     private function _buildUpdate()
     {
-        $update = $this->_clause;
-        $table  = $this->_table;
+        $table   = $this->_table;
 
         $_fields = [];
         foreach ($this->_fields as $field) {
@@ -446,7 +477,7 @@ class MysqlPDO extends Database\Query
 
         $limit = $this->_buildLimit($this->_limit, $this->_offset);
 
-        return "{$update} {$table} SET {$fields} {$where} {$limit}";
+        return "UPDATE {$table} SET {$fields} {$where} {$limit}";
     }
 
     /**
@@ -456,7 +487,6 @@ class MysqlPDO extends Database\Query
      */
     private function _buildDelete()
     {
-        $delete = $this->_clause;
         $table  = $this->_table;
         $where  = $this->_buildWhere($this->_where);
         foreach ($this->_whereArguments as $whereArgument) {
@@ -464,7 +494,7 @@ class MysqlPDO extends Database\Query
         }
         $limit  = $this->_buildLimit($this->_limit, $this->_offset);
 
-        return "{$delete} FROM {$table} {$where} {$limit}";
+        return "DELETE FROM {$table} {$where} {$limit}";
     }
 
     /**
