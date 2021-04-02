@@ -3,11 +3,15 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Database\Connector\MysqlPDO;
 use Framework\Registry;
 use Framework\Inspector;
 use Framework\StringMethods;
 use Framework\Model\Exception;
 
+/**
+ * @property MysqlPDO connector
+ */
 class Model extends Base
 {
     /**
@@ -56,11 +60,11 @@ class Model extends Base
 
         if (!empty($this->$raw))
         {
-            $previous = $this->connector->query()->run(
-                "SELECT * FROM {$this->table} 
-                 WHERE {$name} = {$this->$raw}
-                 LIMIT 1"
-            );
+            $previous = $this->connector->query()
+                        ->selectFirst($this->table)
+                        ->where("{$name} = ?", $this->$raw)
+                        ->run();
+
 
             if ($previous == null)
             {
@@ -76,6 +80,36 @@ class Model extends Base
                 }
             }
         }
+    }
+
+    public function delete()
+    {
+        $primary = $this->primaryColumn;
+
+        $raw     = $primary["raw"];
+        $name    = $primary["name"];
+
+        if (!empty($this->$raw))
+        {
+            return $this->connector->query()
+                    ->delete($this->table)
+                    ->where("{$name} = ?", $this->$raw)
+                    ->run();
+        }
+    }
+
+    public static function deleteAll($where = [])
+    {
+        $instance    = new static();
+
+        $query = $instance->connector->query()->delete($instance->table);
+
+        foreach ($where as $clause => $value)
+        {
+            $query->where($clause, $value);
+        }
+
+        return $query->run();
     }
 
     public function save()
@@ -102,140 +136,21 @@ class Model extends Base
             }
         }
 
+        $query = $this->connector->query()->save($this->table, $data);
+
         if (!empty($this->$raw))
         {
-            $setString = implode(" = ?, ", array_keys($data));
-
-            $result = $this->connector->query()->run(
-                "UPDATE {$this->table} SET
-                {$setString}
-                WHERE {$name} = {$this->$raw}",
-                array_values($data)
-            );
+            $query->where("{$name} = ?", $this->$raw);
         }
-        else
+
+        $result = $query->run();
+
+        if ($result > 0)
         {
-            $columnNames  = implode(", ", array_keys($data));
-
-            $placeholders = [];
-            foreach ($data as $key => $value)
-            {
-                $placeholders[] = "?";
-            }
-            $placeholders = implode(", ", $placeholders);
-
-            $result = $this->connector->query()->run(
-                "INSERT INTO {$this->table}
-                ({$columnNames}) 
-                VALUES
-                ({$placeholders})",
-                array_values($data)
-            );
+            $this->$raw = $result;
         }
 
         return $result;
-    }
-
-    public function delete()
-    {
-        $primary = $this->primaryColumn;
-
-        $raw     = $primary["raw"];
-        $name    = $primary["name"];
-
-        if (!empty($this->$raw))
-        {
-            return $this->connector->query()->run(
-                "DELETE FROM {$this->table}
-                 WHERE {$name} = {$this->$raw}"
-            );
-        }
-    }
-
-    public static function deleteAll($where = [])
-    {
-        $instance    = new static();
-        $whereString = $instance->_getWhereString($where);
-
-        return $instance->connector->query()->run(
-            "DELETE FROM {$instance->table}
-            {$whereString}"
-        );
-    }
-
-    public static function all($where = [], $fields = ["*"], $order = null, $direction = null, $limit = null, $page = null)
-    {
-        $model = new static();
-
-        return $model->_all($where, $fields, $order, $direction, $limit, $page);
-    }
-
-    protected function _all($where = [], $fields = ["*"], $order = null, $direction = null, $limit = null, $page = null)
-    {
-        $whereString  = $this->_getWhereString($where);
-        $fieldsString = implode(", ", $fields);
-        $orderString  = ($order != null) ? $this->_getOrderString($order, $direction) : "";
-        $limitString  = ($limit != null) ? $this->_getLimitString($limit, $page)      : "";
-
-        $rows    = [];
-        $class   = get_class($this);
-
-        $results = $this->connector->query()->run(
-            "SELECT {$fieldsString} FROM {$this->table}
-            {$whereString}
-            {$orderString}
-            {$limitString}"
-        );
-
-        foreach ($results as $row)
-        {
-            $rows[] = new $class(
-                $row
-            );;
-        }
-
-        return $rows;
-    }
-
-    public static function count($where = [])
-    {
-        $model = new static();
-
-        return $model->_count($where);
-    }
-
-    protected function _count($where = [])
-    {
-        $whereString = $this->_getWhereString($where);
-
-        return $this->connector->query()->run(
-            "SELECT count(*) FROM {$this->table}
-            {$whereString}"
-        );
-    }
-
-    protected function _getWhereString($where = [])
-    {
-        $wheres   = [];
-
-        foreach ($where as $clause => $value)
-        {
-            $wheres[] = "WHERE {$clause} {$value}";
-        }
-
-        return implode(" AND ", $wheres);
-    }
-
-    protected function _getOrderString($order, $direction = "ASC")
-    {
-        return "ORDER BY {$order} {$direction}";
-    }
-
-    protected function _getLimitString($limit, $page = 1)
-    {
-        $offset = $limit * ($page - 1);
-
-        return "LIMIT {$limit} {$offset}, {$page}";
     }
 
     public function getTable()
@@ -367,4 +282,100 @@ class Model extends Base
 
         return $this->_primary;
     }
+
+    public static function first($where = array(), $fields = array("*"), $order = null, $direction = null)
+    {
+        $model = new static();
+        return $model->_first($where, $fields, $order, $direction);
+    }
+
+    protected function _first($where = [], $fields = ["*"], $order = null, $direction = null)
+    {
+        $query = $this->connector->query()->selectFirst($this->table, $fields);
+
+        foreach ($where as $clause => $value)
+        {
+            $query->where($clause, $value);
+        }
+
+        if ($order != null)
+        {
+            $query->order($order, $direction);
+        }
+
+        $first = $query->run();
+        $class = get_class($first);
+
+        if ($first)
+        {
+            return new $class(
+                $query->run()
+            );
+        }
+
+        return null;
+    }
+
+    public static function all($where = [], $fields = ["*"], $order = null, $direction = null, $limit = null, $page = null)
+    {
+        $model = new static();
+
+        return $model->_all($where, $fields, $order, $direction, $limit, $page);
+    }
+
+    protected function _all($where = [], $fields = ["*"], $order = null, $direction = null, $limit = null, $page = null)
+    {
+        $query = $this->connector->query()->select($this->table, $fields);
+
+        foreach ($where as $clause => $value)
+        {
+            $query->where($clause, $value);
+        }
+
+        if ($order != null)
+        {
+            $query->order($order, $direction);
+        }
+
+        if ($limit != null)
+        {
+            $query->limit($limit, $page);
+        }
+
+        $rows  = [];
+        $class = get_class($this);
+
+        $results = $query->run();
+
+        foreach ($results->fetchAll() as $row)
+        {
+            $rows[] = new $class(
+                $row
+            );
+        }
+
+        return $rows;
+    }
+
+    public static function count($where = [])
+    {
+        $model = new static();
+
+        return $model->_count($where);
+    }
+
+    protected function _count($where = [])
+    {
+        $query = $this->connector->query()->countAll($this->table);
+
+        foreach ($where as $clause => $value)
+        {
+            $query->where($clause, $value);
+        }
+
+        $result = $query->run();
+
+        return $result->fetchAll();
+    }
+
 }
