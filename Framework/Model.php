@@ -144,6 +144,7 @@ class Model extends Base
         }
 
         $result = $query->run();
+        $result = $result->fetchAll();
 
         if ($result > 0)
         {
@@ -305,14 +306,15 @@ class Model extends Base
             $query->order($order, $direction);
         }
 
-        $first = $query->run();
-        $class = get_class($first);
+        $result = $query->run();
+        $first  = $result->fetch();
+        $class = get_class($this);
 
         if ($first)
         {
-            return new $class(
-                $query->run()
-            );
+            return (new $class(
+                $first
+            ));
         }
 
         return null;
@@ -351,9 +353,9 @@ class Model extends Base
 
         foreach ($results->fetchAll() as $row)
         {
-            $rows[] = new $class(
+            $rows[] = (new $class(
                 $row
-            );
+            ));
         }
 
         return $rows;
@@ -377,7 +379,7 @@ class Model extends Base
 
         $result = $query->run();
 
-        return $result->fetchAll();
+        return $result->fetchAll()[0]['total'];
     }
 
 }

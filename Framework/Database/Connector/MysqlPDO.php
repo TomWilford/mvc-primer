@@ -274,7 +274,7 @@ class MysqlPDO extends Database\Connector
             $error = $this->lastError;
             throw new Exception\Sql("There was an error in the query: {$error}");
         }
-var_dump($sql);
+
         $result = $this->q($sql);
         if ($result === false)
         {
