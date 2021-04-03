@@ -70,10 +70,18 @@ class Inspector
                     )
                 );
 
+                $value = ArrayMethods::trim(
+                    StringMethods::split($parts[0], ",")
+                );
+                if (count($parts) > 1)
+                {
+                    $value = ArrayMethods::trim(
+                        StringMethods::split($parts[1], ",")
+                    );
+                }
+
                 $meta[$parts[0]] = ArrayMethods::clean(
-                    ArrayMethods::trim(
-                        StringMethods::split($parts[0], ",")
-                    )
+                    $value
                 );
             }
         }
