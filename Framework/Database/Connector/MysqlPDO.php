@@ -221,34 +221,27 @@ class MysqlPDO extends Database\Connector
         $columns  = $model->columns;
         $template = "CREATE TABLE `%s` (\n%s, \n%s\n) ENGINE=%s DEFAULT CHARSET=%s;";
 
-        foreach ($columns as $column)
-        {
-            $raw    = $column["raw"];
-            $name   = $column["name"];
-            $type   = $column["type"];
+        foreach ($columns as $column) {
+            $raw = $column["raw"];
+            $name = $column["name"];
+            $type = $column["type"];
             $length = $column["length"];
 
-            if ($column["primary"])
-            {
+            if ($column["primary"]) {
                 $indices[] = "PRIMARY KEY (`{$name}`)";
             }
-            if ($column["index"])
-            {
+            if ($column["index"]) {
                 $indices[] = "KEY `{$name}` (`{$name}`)";
             }
 
-            switch ($type)
-            {
+            switch ($type) {
                 case "autonumber":
                     $lines[] = "`{$name}` int(11) NOT NULL AUTO_INCREMENT";
                     break;
                 case "text":
-                    if ($length !== null && $length <= 255)
-                    {
-                        $lines[] = "`{$name} varchar({$length}) DEFAULT NULL";
-                    }
-                    else
-                    {
+                    if ($length !== null && $length <= 255) {
+                        $lines[] = "`{$name}` varchar({$length}) DEFAULT NULL";
+                    } else {
                         $lines[] = "`{$name}` text";
                     }
                     break;
@@ -264,32 +257,31 @@ class MysqlPDO extends Database\Connector
                 case "datetime":
                     $lines[] = "`{$name}` datetime DEFAULT NULL";
             }
-
-            $table = $model->table;
-            $sql = sprintf(
-                $template,
-                $table,
-                join(",\n", $lines),
-                join(",\n", $indices),
-                $this->_engine,
-                $this->_charset
-            );
-
-            $result = $this->q("DROP TABLE IF EXISTS {$table};");
-            if ($result === false)
-            {
-                $error = $this->lastError;
-                throw new Exception\Sql("There was an error in the query: {$error}");
-            }
-
-            $result = $this->execute($sql);
-            if ($result === false)
-            {
-                $error = $this->lastError;
-                throw new Exception\Sql("There was an error in the query: {$error}");
-            }
-
-            return $this;
         }
+        $table = $model->table;
+        $sql = sprintf(
+            $template,
+            $table,
+            join(",\n", $lines),
+            join(",\n", $indices),
+            $this->_engine,
+            $this->_charset
+        );
+
+        $result = $this->q("DROP TABLE IF EXISTS {$table};");
+        if ($result === false)
+        {
+            $error = $this->lastError;
+            throw new Exception\Sql("There was an error in the query: {$error}");
+        }
+var_dump($sql);
+        $result = $this->q($sql);
+        if ($result === false)
+        {
+            $error = $this->lastError;
+            throw new Exception\Sql("There was an error in the query: {$error}");
+        }
+
+        return $this;
     }
 }

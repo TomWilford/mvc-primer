@@ -191,9 +191,10 @@ class Model extends Base
             $inspector  = new Inspector($this);
             $properties = $inspector->getClassProperties();
 
-
-            $first = function ($array, $key) {
-                if (!empty($array[$key]) && sizeof($array[$key]) == 1) {
+            $first = function ($array, $key)
+            {
+                if (!empty($array[$key]) && sizeof($array[$key]) == 1)
+                {
                     return $array[$key][0];
                 }
                 return null;
@@ -202,7 +203,7 @@ class Model extends Base
             foreach ($properties as $property) {
                 $propertyMeta = $inspector->getPropertyMeta($property);
 
-                if (!empty($property["@column"]))
+                if (!empty($propertyMeta["@column"]))
                 {
                     $name      = preg_replace("#^_#", "", $property);
                     $primary   = !empty($propertyMeta["@primary"]);
@@ -215,6 +216,7 @@ class Model extends Base
 
                     $validate  = !empty($propertyMeta["@validate"]) ? $propertyMeta["@validate"] : false;
                     $label     = $first($propertyMeta, "@label");
+
 
                     if (!in_array($type, $types))
                     {
@@ -268,7 +270,7 @@ class Model extends Base
         {
             $primary = null;
 
-            foreach ($this->_columns as $column)
+            foreach ($this->columns as $column)
             {
                 if ($column["primary"])
                 {
