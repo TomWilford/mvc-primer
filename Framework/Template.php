@@ -19,13 +19,13 @@ class Template extends Base
      * @var string
      * @readwrite
      */
-    protected $_header = "if (is_array(\$_data) && sizeof(\$_data)) extract(\$_data); \$_text = [];";
+    protected $_header = "if (is_array(\$_data) && sizeof(\$_data)){ extract(\$_data);} \$_text = [];";
 
     /**
      * @var string
      * @readwrite
      */
-    protected $_footer = "return implode(\$_text);";
+    protected $_footer = "return implode(' ', \$_text);";
 
     /**
      * @var
@@ -47,12 +47,12 @@ class Template extends Base
     protected function _arguments($source, $expression)
     {
         //TODO - Figure out what this is supposed to be
-        $args = $this->_array($expression, [
+        $args = $this->_array([$expression, [
             $expression => [
                 "opener" => "{",
-                "closer" => "}",
+                "closer" => "}"
             ]
-        ]);
+        ]]);
 
         $tags      = $args["tags"];
         $arguments = [];
@@ -125,9 +125,9 @@ class Template extends Base
         {
             $arguments = $this->_arguments($extract, $type["arguments"]);
         }
-        else if ($tag && isset($type["tags"][$tag]["arguements"]))
+        else if ($tag && isset($type["tags"][$tag]["arguments"]))
         {
-            $arguments = $this->_arguments($extract, $type["tags"][$tag]["arguements"]);
+            $arguments = $this->_arguments($extract, $type["tags"][$tag]["arguments"]);
         }
 
         return [
@@ -142,33 +142,36 @@ class Template extends Base
 
     protected function _array($source)
     {
-        $parts     = [];
-        $tags      = [];
-        $all       = [];
+        $parts       = [];
+        $tags        = [];
+        $all         = [];
 
-        $type      = null;
-        $delimiter = null;
+        $type        = null;
+        $delimiter   = null;
 
-        while ($source)
+
+        foreach ($source as $item)
         {
-            $match     = $this->_implementation->match($source);
-
-            $type      = $match["match"];
+            $match     = $this->_implementation->match($item);
+            $type      = $match["type"];
             $delimiter = $match["delimiter"];
 
-            $opener    = strpos($source, $type["opener"]);
-            $closer    = strpos($source, $type["closer"] + strlen($type["closer"]));
+            $opener    = strpos($item, $type["opener"]);
 
             if ($opener !== false)
             {
-                $parts[] = substr($source, 0, $opener);
-                $tags[]  = substr($source, $opener, $closer - $opener);
-                $source  = substr($source, $closer);
+                $closer       = strpos($item, $type["closer"]) + strlen($type["closer"]);
+                $openerLength = strlen($type["opener"]);
+                $closerLength = strlen($type["closer"]);
+                $extract      = (strlen($item) - $openerLength) - $closerLength;
+
+                $parts[] = substr($item, $openerLength, $extract);
+                $tags[]  = $type["opener"];
+                $tags[]  = $type["closer"];
             }
             else
             {
-                $parts[] = $source;
-                $source  = "";
+                $parts[] = $item;
             }
         }
 
@@ -231,7 +234,7 @@ class Template extends Base
                     {
                         $start             = $current["index"] + 1;
                         $length            = $i - $start;
-                        $current["source"] = implode(array_slice($array, $start, $length));
+                        $current["source"] = implode(" ", array_slice($array, $start, $length));
                         $current           =& $current["parent"];
                     }
                 }
@@ -265,7 +268,7 @@ class Template extends Base
         if (is_string($tree))
         {
             $tree = addslashes($tree);
-            return "\$_text[] = \"{$tree}\";";
+            return "\$text[] = \"{$tree}\";";
         }
 
         if (sizeof($tree["children"]) > 0)
@@ -278,10 +281,10 @@ class Template extends Base
 
         if (isset($tree["parent"]))
         {
-            return $this->_implementation->handle($tree, implode($content));
+            return $this->_implementation->handle($tree, implode(" ", $content));
         }
 
-        return implode($content);
+        return implode(" ", $content);
     }
 
     public function parse($template)
@@ -290,12 +293,16 @@ class Template extends Base
         {
             throw new Exception\Implementation();
         }
-
-        $array = $this->_array($template);
-        $tree  = $this->_tree($array["all"]);
-
+        $array           = $this->_array($template);
+        $tree            = $this->_tree($array["all"]);
         $this->_code     = $this->header.$this->_script($tree).$this->footer;
-        $this->_function = create_function("\$_data", $this->code);
+        $data            = "\$_data";
+        $this->_function = function($_data)
+        {
+            // If eval() is the answer, you're almost certainly asking the wrong question. -- Rasmus Lerdorf
+            // Sorry! -- Tom Wilford
+            return eval($this->code);
+        };
 
         return $this;
     }
@@ -310,6 +317,7 @@ class Template extends Base
         try
         {
             $function = $this->_function;
+
             return $function($data);
         }
         catch (\Exception $e)
@@ -317,4 +325,6 @@ class Template extends Base
             throw new Exception\Parser($e);
         }
     }
+
+
 }
