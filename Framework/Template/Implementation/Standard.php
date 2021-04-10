@@ -9,8 +9,8 @@ class Standard extends Template\Implementation
 {
     protected $_map = [
         "echo" => [
-            "opener"  => "{echo",
-            "closer"  => "}",
+            "opener"  => "{echo '",
+            "closer"  => "'}",
             "handler" => "_echo"
         ],
         "script" => [
@@ -64,7 +64,7 @@ class Standard extends Template\Implementation
     protected function _echo($tree, $content)
     {
         $raw = $this->_script($tree, $content);
-        return "\$_text[] = {$raw}";
+        return " {$raw}";
     }
 
     protected function _script($tree, $content)
@@ -78,7 +78,7 @@ class Standard extends Template\Implementation
         $object  = $tree["arguments"]["object"];
         $element = $tree["arguments"]["element"];
 
-        return $tree->_loop(
+        return $this->_loop(
             $tree,
             "foreach ({$object} as {$element}_i => {$element}) {
                 {$content}
@@ -139,8 +139,8 @@ class Standard extends Template\Implementation
     protected function _loop($tree, $inner)
     {
         $number   = $tree["number"];
-        $object   = $tree["argumets"]["object"];
-        $children = $tree["argumets"]["children"];
+        $object   = $tree["arguments"]["object"];
+        $children = $tree["parent"]["children"];
 
         if (!empty($children[$number + 1]["tag"] && $children[$number + 1]["tag"] == "else"))
         {
