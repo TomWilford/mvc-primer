@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Configuration\Driver\Ini;
 use Framework\Database\Exception;
 
 class Database extends Base
@@ -24,8 +25,31 @@ class Database extends Base
         return new Exception\Implementation("{$method} method not implemented");
     }
 
+    /**
+     * @throws Configuration\Exception\Argument
+     * @throws Exception\Argument
+     */
     public function initialise()
     {
+        if (!$this->type)
+        {
+            /** @var false | Configuration $configuration */
+            $configuration = Registry::get("configuration");
+
+            if ($configuration)
+            {
+                $configuration = $configuration->initialise();
+                $parsed        = $configuration->parse("Configuration/_database");
+
+                if (!empty($parsed->database->default) && !empty($parsed->database->default->type))
+                {
+                    $this->type    = $parsed->database->default->type;
+                    unset($parsed->database->default->type);
+                    $this->options = (array) $parsed->database->default;
+                }
+            }
+        }
+
         if (!$this->type)
         {
             throw new Exception\Argument("Invalid type");

@@ -1,7 +1,7 @@
 <?php
 $config = [
     "default" => [
-        "type"     => "mysql",
+        "type"     => "mysql_pdo",
         "host"     => "localhost",
         "username" => "prophpmvc",
         "password" => "prophpmvc",
