@@ -26,12 +26,33 @@ class Cache extends Base
 
     public function initialise()
     {
-        if (!$this->type)
+        $type = $this->type;
+
+        if (!$type)
+        {
+            /** @var Configuration $configuration */
+            $configuration = Registry::get("configuration");
+
+            if ($configuration)
+            {
+                $configuration = $configuration->initialise();
+                $parsed        = $configuration->parse("Configuration/_cache");
+
+                if (!empty($parsed->cache->default) && !empty($parsed->cache->default->type))
+                {
+                    $this->type    = $parsed->cache->default->type;
+                    unset($parsed->cache->default->type);
+                    $this->options = (array) $parsed->cache->default;
+                }
+            }
+        }
+
+        if (!$type)
         {
             throw new Exception\Argument("Invalid type");
         }
 
-        switch ($this->type)
+        switch ($type)
         {
             case "memcached":
                 return new Cache\Driver\Memcached($this->options);
