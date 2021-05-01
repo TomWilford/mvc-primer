@@ -7,11 +7,12 @@ use Framework\Base;
 use Framework\ArrayMethods;
 use Framework\StringMethods;
 use Framework\Template\Exception;
+use Framework\Template\Implementation;
 
 class Template extends Base
 {
     /**
-     * @var
+     * @var Implementation
      * @readwrite
      */
     protected $_implementation;
@@ -29,13 +30,13 @@ class Template extends Base
     protected $_footer = "return implode(' ', \$_text);";
 
     /**
-     * @var
+     * @var string
      * @read
      */
     protected $_code;
 
     /**
-     * @var
+     * @var string
      * @read
      */
     protected $_function;
@@ -45,6 +46,12 @@ class Template extends Base
         return new Exception\Implementation("{$method} method not implemented");
     }
 
+    /**
+     * Retrieves arguments for template expressions
+     * @param $source
+     * @param $expression
+     * @return array
+     */
     protected function _arguments($source, $expression)
     {
         $args      = $this->_array([$expression]);
@@ -74,8 +81,8 @@ class Template extends Base
     {
         $tag       = null;
         $arguments = [];
+        $match     = $this->_implementation->match($source);
 
-        $match = $this->_implementation->match($source);
         if ($match == null)
         {
             return false;
@@ -90,8 +97,7 @@ class Template extends Base
 
         if (isset($type["tags"]))
         {
-
-            $tags = implode("|", array_keys($type["tags"]));
+            $tags  = implode("|", array_keys($type["tags"]));
             $regex = "#^(/){0,1}({$tags})\s*(.*)$#";
 
             if (!preg_match($regex, $extract, $matches))
@@ -135,6 +141,11 @@ class Template extends Base
         ];
     }
 
+    /**
+     * Loops over template expression string to determine functionality
+     * @param $sourceArray
+     * @return array
+     */
     protected function _array($sourceArray)
     {
         $parts       = [];
@@ -184,6 +195,11 @@ class Template extends Base
         ];
     }
 
+    /**
+     * Creates an array of information about the current template expression
+     * @param $array
+     * @return array|array[]|mixed
+     */
     protected function _tree($array)
     {
         $root = [
@@ -254,6 +270,12 @@ class Template extends Base
         return $root;
     }
 
+    /**
+     * Locates php functionality that corresponds to the template expression functionality
+     * @param $tree
+     * @return false|mixed|string
+     * @throws Exception\Implementation
+     */
     protected function _script($tree)
     {
         $content = [];
@@ -280,6 +302,12 @@ class Template extends Base
         return implode(" ", $content);
     }
 
+    /**
+     * Interprets template expression saves corresponding php as a function
+     * @param $template
+     * @return $this
+     * @throws Exception\Implementation
+     */
     public function parse($template)
     {
         if (!is_a($this->_implementation, "Framework\Template\Implementation"))
@@ -293,7 +321,6 @@ class Template extends Base
         $data            = "\$_data";
         $this->_function = function($_data)
         {
-            var_dump($this->code);
             // If eval() is the answer, you're almost certainly asking the wrong question. -- Rasmus Lerdorf
             // Sorry! -- Tom Wilford
             return eval($this->code);
@@ -302,6 +329,12 @@ class Template extends Base
         return $this;
     }
 
+    /**
+     * Runs the template expression's corresponding php with provided data
+     * @param array $data
+     * @return mixed
+     * @throws Exception\Parser
+     */
     public function process($data = [])
     {
         if ($this->_function == null)
