@@ -3,6 +3,8 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Controller\Exception;
+use Framework\Router\Route;
 
 class Controller extends Base
 {
@@ -11,4 +13,139 @@ class Controller extends Base
      * @readwrite
      */
     protected $_parameters;
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_layoutView;
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_actionView;
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_willRenderLayout = true;
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_willRenderActionView = true;
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_defaultPath = "application/views";
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_defaultLayout = "layouts/standard";
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_defaultExtension = "html";
+
+    /**
+     * @var
+     * @readwrite
+     */
+    protected $_defaultContentType = "text/htm";
+
+    protected function _getExceptionForImplementation($method)
+    {
+        return new Exception\Implementation("{$method} method not implemented");
+    }
+
+    protected function _getExceptionForArgument()
+    {
+        return new Exception\Argument("Invalid argument");
+    }
+
+    public function render()
+    {
+        $defaultContentType = $this->getDefaultContentType();
+        $results  = null;
+
+        $doAction = $this->getWillRenderActionView() && $this->getActionView();
+        $doLayout = $this->getWillRenderLayout && $this->getLayoutView();
+
+        try
+        {
+            if ($doAction)
+            {
+                $view    = $this->getActionView();
+                $results = $view->render();
+            }
+
+            if ($doLayout)
+            {
+                $view    = $this->getLayoutView();
+                $view->set("template", $results);
+                $results = $view->render();
+
+                header("Content-type: {$defaultContentType}");
+                echo $results;
+            }
+            elseif ($doAction)
+            {
+                header("Content-type: {$defaultContentType}");
+                echo $results;
+
+                $this->setWillRenderLayoutView(false);
+                $this->setWillRenderActionView(false);
+            }
+        }
+        catch (\Exception)
+        {
+            throw new View\Exception\Renderer("Invalid layout/template syntax");
+        }
+    }
+
+    public function __destruct()
+    {
+        $this->render();
+    }
+
+    public function __construct($options = [])
+    {
+        parent::__construct($options);
+
+        if ($this->getWillRenderLayoutView())
+        {
+            $defaultPath      = $this->getDefaultPath();
+            $defaultLayout    = $this->getDefaultLayout();
+            $defaultExtension = $this->getDefaultExtension();
+
+            $view = new View([
+                "file" => APP_PATH."/{$defaultPath}/{$defaultLayout}.{$defaultExtension}"
+            ]);
+
+            $this->setLayoutView($view);
+        }
+
+        if ($this->getWillRenderLayoutView())
+        {
+            /** @var Router $router */
+            $router = Registry::get("router");
+            $controller = $router->getController();
+            $action = $router->getAction();
+
+            $view = new View([
+               "file" => APP_PATH . "/{$defaultPath}/{$controller}/{$action}.{$defaultExtension}"
+            ]);
+
+            $this->setActionView($view);
+        }
+    }
 }
