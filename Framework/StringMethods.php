@@ -181,12 +181,14 @@ class StringMethods
 
     public static function indexOf($string, $substring, $offset = null)
     {
-        $position = strpos($string, $substring, $offset);
-        if (!is_int($position))
-        {
-            return -1;
+        if (!is_array($string)) {
+            $position = strpos($string, $substring, $offset);
+            if (!is_int($position)) {
+                return -1;
+            }
+            return $position;
         }
-        return $position;
+        return -1;
     }
 
     public static function singular($string)

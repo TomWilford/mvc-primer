@@ -9,8 +9,8 @@ class Standard extends Template\Implementation
 {
     protected $_map = [
         "echo" => [
-            "opener"  => "{echo '",
-            "closer"  => "'}",
+            "opener"  => "{echo ",
+            "closer"  => "}",
             "handler" => "_echo"
         ],
         "script" => [
@@ -64,7 +64,7 @@ class Standard extends Template\Implementation
     protected function _echo($tree, $content)
     {
         $raw = $this->_script($tree, $content);
-        return " {$raw}";
+        return " \$_text[] = {$raw};";
     }
 
     protected function _script($tree, $content)
@@ -142,7 +142,7 @@ class Standard extends Template\Implementation
         $object   = $tree["arguments"]["object"];
         $children = $tree["parent"]["children"];
 
-        if (!empty($children[$number + 1]["tag"] && $children[$number + 1]["tag"] == "else"))
+        if (!empty($children[$number + 1]["tag"]) && $children[$number + 1]["tag"] == "else")
         {
             return "if (is_array({$object}) && sizeof({$object}) > 0) {{$inner}}";
         }

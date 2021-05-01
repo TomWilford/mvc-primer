@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use ArrayIterator;
 use Framework\Base;
 use Framework\ArrayMethods;
 use Framework\StringMethods;
@@ -46,14 +47,7 @@ class Template extends Base
 
     protected function _arguments($source, $expression)
     {
-        //TODO - Figure out what this is supposed to be
-        $args = $this->_array([$expression, [
-            $expression => [
-                "opener" => "{",
-                "closer" => "}"
-            ]
-        ]]);
-
+        $args      = $this->_array([$expression]);
         $tags      = $args["tags"];
         $arguments = [];
         $sanitised = StringMethods::sanitise($expression, "()[],.<>*$@");
@@ -66,6 +60,7 @@ class Template extends Base
 
         if (preg_match("#{$sanitised}#", $source, $matches))
         {
+            $tags = array_values($tags);
             foreach ($tags as $i => $tag)
             {
                 $arguments[$tag] = $matches[$i + 1];
@@ -140,7 +135,7 @@ class Template extends Base
         ];
     }
 
-    protected function _array($source)
+    protected function _array($sourceArray)
     {
         $parts       = [];
         $tags        = [];
@@ -149,6 +144,7 @@ class Template extends Base
         $type        = null;
         $delimiter   = null;
 
+        $source = new ArrayIterator($sourceArray);
 
         foreach ($source as $item)
         {
@@ -160,18 +156,15 @@ class Template extends Base
 
             if ($opener !== false)
             {
-                $closer       = strpos($item, $type["closer"]) + strlen($type["closer"]);
-                $openerLength = strlen($type["opener"]);
-                $closerLength = strlen($type["closer"]);
-                $extract      = (strlen($item) - $openerLength) - $closerLength;
-
-                $parts[] = substr($item, $openerLength, $extract);
-                $tags[]  = $type["opener"];
-                $tags[]  = $type["closer"];
+                $closer  = strpos($item, $type["closer"]) + strlen($type["closer"]);
+                $parts[] = substr($item, 0, $opener);
+                $tags[]  = substr($item, $opener, $closer - $opener);
+                $source->append(substr($item, $closer));
             }
             else
             {
                 $parts[] = $item;
+                unset($item);
             }
         }
 
@@ -204,8 +197,8 @@ class Template extends Base
 
             if ($result)
             {
-                $tag = isset($result["tag"]) ? $result["tag"] : "";
-                $arguments = isset($result["arguments"]) ? $result["arguments"] : "";
+                $tag = $result["tag"] ?? "";
+                $arguments = $result["arguments"] ?? "";
 
                 if ($tag)
                 {
@@ -268,7 +261,7 @@ class Template extends Base
         if (is_string($tree))
         {
             $tree = addslashes($tree);
-            return "\$text[] = \"{$tree}\";";
+            return "{$tree}";
         }
 
         if (sizeof($tree["children"]) > 0)
@@ -295,10 +288,12 @@ class Template extends Base
         }
         $array           = $this->_array($template);
         $tree            = $this->_tree($array["all"]);
+
         $this->_code     = $this->header.$this->_script($tree).$this->footer;
         $data            = "\$_data";
         $this->_function = function($_data)
         {
+            var_dump($this->code);
             // If eval() is the answer, you're almost certainly asking the wrong question. -- Rasmus Lerdorf
             // Sorry! -- Tom Wilford
             return eval($this->code);
