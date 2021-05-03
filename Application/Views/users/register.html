@@ -1,0 +1,45 @@
+<h1>Register</h1>
+{if isset($success)}
+  Your account has been created
+{/if}
+{else}
+  <form method="post">
+    <ol>
+      <li>
+        <label for="first">First name:</label>
+        <input type="text" name="first" id="first">
+        {if isset($first_error)}
+          {echo $first_error}
+        {/if}
+      </li>
+      <li>
+        <label for="last">Last name:</label>
+        <input type="text" name="last" id="last">
+        {if isset($last_error)}
+          {echo $last_error}
+        {/if}
+      </li>
+      <li>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+        {if isset($email_error)}
+          {echo $email_error}
+        {/if}
+      </li>
+      <li>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password">
+        {if isset($password_error)}
+        {echo $password_error}
+        {/if}
+      </li>
+      <li class="honeypot" style="display: none; visibility: hidden;">
+        <label for="honeypot">Leave Blank:</label>
+        <input type="text" name="honeypot" id="honeypot">
+      </li>
+      <li>
+        <input type="submit" name="register" value="register">
+      </li>
+    </ol>
+  </form>
+{/else}
