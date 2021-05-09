@@ -21,9 +21,9 @@ Framework\Registry::set("database", $database->initialise());
 $cache = new Framework\Cache();
 Framework\Registry::set("cache", $cache->initialise());
 
-/*// 6. load and initialise the Session class
-$session = new Framework/Session();
-Framework\Registry::set("session", $session->initialise());*/
+// 6. load and initialise the Session class
+$session = new Framework\Session();
+Framework\Registry::set("session", $session->initialise());
 
 // 7. load the Router class and provide teh url + extension
 $router = new Framework\Router([
@@ -38,5 +38,5 @@ $router->dispatch();
 unset($configuration);
 unset($database);
 unset($cache);
-//unset($session);
+unset($session);
 unset($router);
