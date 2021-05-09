@@ -36,7 +36,7 @@ class Cache extends Base
             if ($configuration)
             {
                 $configuration = $configuration->initialise();
-                $parsed        = $configuration->parse("Configuration/_cache");
+                $parsed        = $configuration->parse("../Application/Configuration/_cache");
 
                 if (!empty($parsed->cache->default) && !empty($parsed->cache->default->type))
                 {

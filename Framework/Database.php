@@ -39,7 +39,7 @@ class Database extends Base
             if ($configuration)
             {
                 $configuration = $configuration->initialise();
-                $parsed        = $configuration->parse("Configuration/_database");
+                $parsed        = $configuration->parse("../Application/Configuration/_database");
 
                 if (!empty($parsed->database->default) && !empty($parsed->database->default->type))
                 {

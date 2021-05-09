@@ -35,7 +35,7 @@ class Session extends Base
             if ($configuration)
             {
                 $configuration = $configuration->initialise();
-                $parsed        = $configuration->parse("configuration/session");
+                $parsed        = $configuration->parse("../Application/Configuration/session");
 
                 if (!empty($parsed->session->default) && !empty($parsed->session->default->type))
                 {

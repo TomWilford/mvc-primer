@@ -8,7 +8,7 @@ Framework\Test::add(
         $configuration = new Framework\Configuration();
         return ($configuration instanceof Framework\Configuration);
     },
-    "Configuration instantiates inn uninitialised state",
+    "Configuration instantiates in uninitialised state",
     "Configuration"
 );
 
@@ -35,7 +35,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("./../../Application/Configuration/_configurationTest");
+        $parsed        = $configuration->parse("./../../Application/Configuration/Test/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
@@ -65,7 +65,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("./../../Application/Configuration/_configurationTest");
+        $parsed        = $configuration->parse("./../../Application/Configuration/Test/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
@@ -95,7 +95,7 @@ Framework\Test::add(
         ]);
 
         $configuration = $configuration->initialise();
-        $parsed        = $configuration->parse("./../../Application/Configuration/_configurationTest");
+        $parsed        = $configuration->parse("./../../Application/Configuration/Test/_configurationTest");
 
         return ($parsed->config->first == "hello" && $parsed->config->second == "bar");
     },
