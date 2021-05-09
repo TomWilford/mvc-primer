@@ -6,35 +6,35 @@
   <form method="post">
     <ol>
       <li>
-        <label for="first">First name:</label>
-        <input type="text" name="first" id="first">
+        <label for="first">First Name:</label>
+        <input type="text" name="first" id="first" required>
         {if isset($first_error)}
           {echo $first_error}
         {/if}
       </li>
       <li>
-        <label for="last">Last name:</label>
-        <input type="text" name="last" id="last">
+        <label for="last">Last Name:</label>
+        <input type="text" name="last" id="last" required>
         {if isset($last_error)}
           {echo $last_error}
         {/if}
       </li>
       <li>
         <label for="email">Email:</label>
-        <input type="email" name="email" id="email">
+        <input type="email" name="email" id="email" required>
         {if isset($email_error)}
           {echo $email_error}
         {/if}
       </li>
       <li>
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
+        <input type="password" name="password" id="password" required>
         {if isset($password_error)}
         {echo $password_error}
         {/if}
       </li>
       <li class="honeypot" style="display: none; visibility: hidden;">
-        <label for="honeypot">Leave Blank:</label>
+        <label for="honeypot">Please Leave Blank:</label>
         <input type="text" name="honeypot" id="honeypot">
       </li>
       <li>
