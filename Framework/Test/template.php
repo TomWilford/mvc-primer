@@ -103,7 +103,7 @@ Framework\Test::add(
             "check" => null
         ));
 
-        return ($yes == "yes" && $maybe == "maybe" && $no == "no");
+        return (trim($yes) == "yes" && trim($maybe) == "maybe" && trim($no) == "no");
     },
     "Template parses if, else and elseif tags",
     "Template"

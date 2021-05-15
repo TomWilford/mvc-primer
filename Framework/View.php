@@ -46,10 +46,11 @@ class View extends Base
         {
             return "";
         }
-
+        $content = [];
+        $content[] = file_get_contents($this->file);
         return $this
             ->template
-            ->parse(file_get_contents($this->file))
+            ->parse($content)
             ->process($this->data);
     }
 

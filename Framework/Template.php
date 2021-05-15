@@ -282,8 +282,12 @@ class Template extends Base
 
         if (is_string($tree))
         {
+            if ($tree == "")
+            {
+                return "";
+            }
             $tree = addslashes($tree);
-            return "{$tree}";
+            return "\$_text[] = \"{$tree}\";";
         }
 
         if (sizeof($tree["children"]) > 0)
@@ -345,7 +349,6 @@ class Template extends Base
         try
         {
             $function = $this->_function;
-
             return $function($data);
         }
         catch (\Exception $e)
