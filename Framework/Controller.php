@@ -30,7 +30,7 @@ class Controller extends Base
      * @var
      * @readwrite
      */
-    protected $_willRenderLayout = true;
+    protected $_willRenderLayoutView = true;
 
     /**
      * @var
@@ -42,7 +42,7 @@ class Controller extends Base
      * @var
      * @readwrite
      */
-    protected $_defaultPath = "application/views";
+    protected $_defaultPath = "Application/Views";
 
     /**
      * @var
@@ -60,7 +60,7 @@ class Controller extends Base
      * @var
      * @readwrite
      */
-    protected $_defaultContentType = "text/htm";
+    protected $_defaultContentType = "text/html";
 
     protected function _getExceptionForImplementation($method)
     {
@@ -78,7 +78,7 @@ class Controller extends Base
         $results  = null;
 
         $doAction = $this->getWillRenderActionView() && $this->getActionView();
-        $doLayout = $this->getWillRenderLayout && $this->getLayoutView();
+        $doLayout = $this->getWillRenderLayoutView() && $this->getLayoutView();
 
         try
         {
@@ -106,7 +106,7 @@ class Controller extends Base
                 $this->setWillRenderActionView(false);
             }
         }
-        catch (\Exception)
+        catch (\Exception $e)
         {
             throw new View\Exception\Renderer("Invalid layout/template syntax");
         }
@@ -121,6 +121,7 @@ class Controller extends Base
     {
         parent::__construct($options);
 
+
         if ($this->getWillRenderLayoutView())
         {
             $defaultPath      = $this->getDefaultPath();
@@ -134,7 +135,7 @@ class Controller extends Base
             $this->setLayoutView($view);
         }
 
-        if ($this->getWillRenderLayoutView())
+        if ($this->getWillRenderActionView())
         {
             /** @var Router $router */
             $router = Registry::get("router");
@@ -147,5 +148,6 @@ class Controller extends Base
 
             $this->setActionView($view);
         }
+
     }
 }

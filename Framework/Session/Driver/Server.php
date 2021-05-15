@@ -4,7 +4,7 @@ namespace Framework\Session\Driver;
 
 use Framework\Session;
 
-class Driver extends Session\Driver
+class Server extends Session\Driver
 {
     protected $_prefix = "app_";
 

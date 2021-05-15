@@ -1,6 +1,7 @@
 {
     "name": "jolly-blue-man/mvc-primer",
     "type": "project",
+    "description": "A slightly modernised version of Pro PHP MVC",
     "authors": [
         {
             "name": "Tom Wilford",
@@ -9,7 +10,9 @@
     ],
     "autoload": {
         "psr-4": {
-            "Framework\\": "Framework"
+            "Framework\\":   "Framework",
+            "Shared\\":      "Application/Libraries/Shared",
+            "Controllers\\": "Application/Controllers"
         }
     },
     "require-dev": {

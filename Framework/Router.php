@@ -6,6 +6,7 @@ use Framework\Base;
 use Framework\Registry;
 use Framework\Inspector;
 use Framework\Router\Exception;
+use Controllers\Users;
 
 class Router extends Base
 {
@@ -73,15 +74,16 @@ class Router extends Base
     public function _pass($controller, $action, $parameters = [])
     {
         $name = ucfirst($controller);
+        $name = "Controllers\\{$name}";
 
         $this->_controller = $controller;
         $this->_action     = $action;
 
         try
         {
-            $instance = new $name([
+            $instance = (new $name([
                 "parameters" => $parameters
-            ]);
+            ]));
             Registry::set("controller", $instance);
         }
         catch (\Exception $e)
@@ -140,7 +142,7 @@ class Router extends Base
 
     public function dispatch()
     {
-        $url        = $this->_url;
+        $url        = $this->url;
         $parameters = [];
         $controller = 'index';
         $action     = 'index';

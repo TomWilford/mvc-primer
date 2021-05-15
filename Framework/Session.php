@@ -30,12 +30,13 @@ class Session extends Base
     {
         if (!$this->type)
         {
+            /** @var Configuration $configuration */
             $configuration = Registry::get("configuration");
 
             if ($configuration)
             {
                 $configuration = $configuration->initialise();
-                $parsed        = $configuration->parse("../Application/Configuration/session");
+                $parsed        = $configuration->parse("../Application/Configuration/_session");
 
                 if (!empty($parsed->session->default) && !empty($parsed->session->default->type))
                 {
