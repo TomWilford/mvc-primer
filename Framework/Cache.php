@@ -26,9 +26,7 @@ class Cache extends Base
 
     public function initialise()
     {
-        $type = $this->type;
-
-        if (!$type)
+        if (!$this->type)
         {
             /** @var Configuration $configuration */
             $configuration = Registry::get("configuration");
@@ -47,12 +45,12 @@ class Cache extends Base
             }
         }
 
-        if (!$type)
+        if (!$this->type)
         {
             throw new Exception\Argument("Invalid type");
         }
 
-        switch ($type)
+        switch ($this->type)
         {
             case "memcached":
                 return new Cache\Driver\Memcached($this->options);
