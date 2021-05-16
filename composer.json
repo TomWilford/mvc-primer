@@ -22,6 +22,7 @@
     "require": {
         "ext-memcache": "*",
         "ext-mysqli": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-curl": "*"
     }
 }
