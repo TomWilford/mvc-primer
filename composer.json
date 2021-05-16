@@ -12,7 +12,8 @@
         "psr-4": {
             "Framework\\":   "Framework",
             "Shared\\":      "Application/Libraries/Shared",
-            "Controllers\\": "Application/Controllers"
+            "Controllers\\": "Application/Controllers",
+            "Models\\":      "Application/Models"
         }
     },
     "require-dev": {

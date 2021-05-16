@@ -128,7 +128,7 @@ class Model extends Base
                 continue;
             }
 
-            if ($column != $this->primaryColumn && $column)
+            if (($column != $this->primaryColumn) && $column)
             {
                 $method = "get" . ucfirst($key);
                 $data[$key] = $this->$method();

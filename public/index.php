@@ -34,7 +34,6 @@ Framework\Registry::set("router", $router);
 
 // 8. dispatch the current request
 $router->dispatch();
-die;
 
 unset($configuration);
 unset($database);

@@ -1,10 +1,10 @@
-<h1>Register</h1>
-{if isset($success)}
-  Your account has been created
+<h1>Register </h1>
+{if ($success === true)}
+  {echo 'Your account has been created'}
 {/if}
 {else}
   <form method="post">
-    <ol>
+    <ul>
       <li>
         <label for="first">First Name:</label>
         <input type="text" name="first" id="first" required>
@@ -30,16 +30,14 @@
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required>
         {if isset($password_error)}
-        {echo $password_error}
+          {echo $password_error}
         {/if}
       </li>
       <li class="honeypot" style="display: none; visibility: hidden;">
         <label for="honeypot">Please Leave Blank:</label>
         <input type="text" name="honeypot" id="honeypot">
       </li>
-      <li>
-        <input type="submit" name="register" value="register">
-      </li>
-    </ol>
+    </ul>
+    <input type="submit" name="register" value="register">
   </form>
 {/else}

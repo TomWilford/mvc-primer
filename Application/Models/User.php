@@ -1,7 +1,8 @@
 <?php
 
+namespace Models;
 
-class User extends Shared\Model
+class User extends \Shared\Model
 {
     /**
      * @var $_first
@@ -41,4 +42,10 @@ class User extends Shared\Model
      */
     protected $_password;
 
+    public function save()
+    {
+        $this->table = "user";
+
+        parent::save();
+    }
 }
