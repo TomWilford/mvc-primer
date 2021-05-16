@@ -5,6 +5,12 @@ namespace Models;
 class User extends \Shared\Model
 {
     /**
+     * @var
+     * @readwrite
+     */
+    protected $_table = "user";
+
+    /**
      * @var $_first
      * @column
      * @readwrite

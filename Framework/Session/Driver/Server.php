@@ -6,6 +6,10 @@ use Framework\Session;
 
 class Server extends Session\Driver
 {
+    /**
+     * @var string $_prefix
+     * @readwrite
+     */
     protected $_prefix = "app_";
 
     public function __construct($options = [])

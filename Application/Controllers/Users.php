@@ -74,12 +74,13 @@ class Users extends Controller
 
     public function login()
     {
+        $view  = $this->getActionView();
+
         if (RequestMethods::post("login"))
         {
             $email    = RequestMethods::post("email");
             $password = RequestMethods::post("password");
 
-            $view  = $this->getActionView();
             $error = false;
 
             if (empty($email))
@@ -105,11 +106,11 @@ class Users extends Controller
 
                 if (!empty($user))
                 {
-                    /** @var \Framework\Session $session */
+                    /** @var \Framework\Registry $session */
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
 
-                    header("Location: /users/profile.html");
+                    header("Location: /public/users/profile.html");
                     exit();
                 }
                 else
@@ -118,10 +119,14 @@ class Users extends Controller
                 }
             }
         }
+
+        echo $view->render();
     }
 
     public function profile()
     {
+        $view = $this->getActionView();
+
         $session = Registry::get("session");
         $user    = unserialize($session->get("user", null));
 
@@ -132,6 +137,8 @@ class Users extends Controller
             $user->last  = "Smyf";
         }
 
-        $this->getActionView()->set("user", $user);
+        $view->set("user", $user);
+
+        echo $view->render();
     }
 }

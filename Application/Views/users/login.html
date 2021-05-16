@@ -1,0 +1,20 @@
+<h1>Login</h1>
+<form method="post">
+  <ul>
+    <li>
+      <label for="email">Email: </label>
+      <input type="email" name="email" id="email" required>
+      {if isset($email_error)}
+        {echo $email_error}
+      {/if}
+    </li>
+    <li>
+      <label for="password">Password: </label>
+      <input type="password" name="password" id="password" required>
+      {if isset($password_error)}
+        {echo $password_error}
+      {/if}
+    </li>
+  </ul>
+  <input type="submit" name="login" value="login">
+</form>
