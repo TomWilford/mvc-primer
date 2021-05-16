@@ -132,6 +132,7 @@ class StringMethods
      */
     public static function split($string, $pattern, $limit = null){
         $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
+
         return preg_split(self::_normalize($pattern), $string, $limit, $flags);
     }
 
@@ -181,13 +182,35 @@ class StringMethods
 
     public static function indexOf($string, $substring, $offset = null)
     {
-        if (!is_array($string)) {
+        if (!is_array($string))
+        {
             $position = strpos($string, $substring, $offset);
-            if (!is_int($position)) {
+
+            if (!is_int($position))
+            {
                 return -1;
             }
+
             return $position;
         }
+
+        return -1;
+    }
+
+    public static function lastIndexOf($string, $substring, $offset = null)
+    {
+        if (!is_array($string))
+        {
+            $position = strrpos($string, $substring, $offset);
+
+            if (!is_int($position))
+            {
+                return -1;
+            }
+
+            return $position;
+        }
+
         return -1;
     }
 
