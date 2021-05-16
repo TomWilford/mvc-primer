@@ -284,4 +284,14 @@ class MysqlPDO extends Database\Connector
 
         return $this;
     }
+
+    public function __sleep()
+    {
+        return ['_dsn', '_username', '_password'];
+    }
+
+    public function __wake()
+    {
+        $this->connect();
+    }
 }
