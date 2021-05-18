@@ -5,14 +5,14 @@
       <label for="email">Email: </label>
       <input type="email" name="email" id="email" required>
       {if isset($email_error)}
-        {echo $email_error}
+        <p>{echo $email_error}</p>
       {/if}
     </li>
     <li>
       <label for="password">Password: </label>
       <input type="password" name="password" id="password" required>
       {if isset($password_error)}
-        {echo $password_error}
+        <p>{echo $password_error}</p>
       {/if}
     </li>
   </ul>

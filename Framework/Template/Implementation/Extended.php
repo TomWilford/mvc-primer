@@ -14,7 +14,7 @@ class Extended extends Standard
      * @var string $_defaultPath
      * @readwrite
      */
-    protected $_defaultPath = "application/views";
+    protected $_defaultPath = "Application/Views";
 
     /**
      * @var string $_defaultKey
@@ -75,10 +75,11 @@ class Extended extends Standard
             "implementation" => new self()
         ]);
 
-        $file     = trim($tree["raw"]);
-        $path     = $this->defaultPath;
-        $content  = file_get_contents(APP_PATH."/{$path}/{$file}");
+        $file       = trim($tree["raw"]);
+        $path       = $this->defaultPath;
 
+        $content    = [];
+        $content[]  = file_get_contents(APP_PATH."/{$path}/{$file}");
         $template->parse($content);
         $index = $this->_index++;
 

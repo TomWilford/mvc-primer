@@ -97,7 +97,7 @@ class Controller extends Base
                 header("Content-type: {$defaultContentType}");
                 echo $results;
             }
-            elseif ($doAction)
+            else if ($doAction)
             {
                 header("Content-type: {$defaultContentType}");
                 echo $results;

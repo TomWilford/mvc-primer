@@ -2,6 +2,10 @@
 
 namespace Shared;
 
+use Framework\Database\Connector\MysqlPDO;
+use Framework\Session\Driver\Server;
+use Models\User;
+
 class Controller extends \Framework\Controller
 {
     /**
@@ -10,8 +14,16 @@ class Controller extends \Framework\Controller
      */
     protected $_user;
 
+    /**
+     * Controller constructor.
+     * @param array $options
+     */
     public function __construct($options = [])
     {
+        /** @var MysqlPDO $database */
+        /** @var Server $session */
+        /** @var User $user */
+
         parent::__construct($options);
 
         $database = \Framework\Registry::get("database");
