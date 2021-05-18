@@ -141,4 +141,45 @@ class Users extends Controller
 
         echo $view->render();
     }
+
+    public function search()
+    {
+        $view = $this->getActionView();
+
+        $query     = trim(RequestMethods::post("query"));
+        $order     = RequestMethods::post("order", "modified");
+        $direction = RequestMethods::post("direction", "desc");
+        $page      = RequestMethods::post("page", 1);
+        $limit     = RequestMethods::post("limit", 10);
+
+        $count = 0;
+        $users = false;
+
+        if (RequestMethods::post("search"))
+        {
+            $where = [
+                "SOUNDEX(first) = SOUNDEX(?)" => trim($query),
+                "live = ?"    => 1,
+                "deleted = ?" => 0
+            ];
+
+            $fields = [
+                "id", "first", "last"
+            ];
+
+            $count = User::count($where);
+            $users = User::all($where, $fields, $order, $direction, $limit, $page);
+
+            $view
+                ->set("query", trim($query))
+                ->set("order", $order)
+                ->set("direction", $direction)
+                ->set("page", $page)
+                ->set("limit", $limit)
+                ->set("count", $count)
+                ->set("users", $users);
+        }
+
+        echo $view->render();
+    }
 }

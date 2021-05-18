@@ -1,0 +1,59 @@
+<h1>Search</h1>
+<form method="post">
+  <ul>
+    <li>
+      <label for="query">Query:</label>
+      <input type="text" name="query" id="query" value="{echo $query}">
+    </li>
+    <li>
+      <label for="order">Order:</label>
+      <select name="order" id="order">
+        <option value="created" {if $order == "created"}selected="selected"{/if}>Created</option>
+        <option value="modified" {if $order == "modified"}selected="selected"{/if}>Modified</option>
+        <option value="first" {if $order == "first"}selected="selected"{/if}>First Name</option>
+        <option value="last" {if $order == "last"}selected="selected"{/if}>Last Name</option>
+      </select>
+    </li>
+    <li>
+      <label for="direction">Direction:</label>
+      <select name="direction" id="direction">
+        <option value="asc" {if $direction == "asc"}selected="selected"{/if}>Ascending</option>
+        <option value="desc" {if $direction == "desc"}selected="selected"{/if}>Descending</option>
+      </select>
+    </li>
+    <li>
+      <label for="page">Page:</label>
+      <select name="page" id="page">
+        {if $count == 0}
+          <option value="1">1</option>
+        {/if}
+        {else}
+          {foreach $_page in range(1, ceil($count / $limit))}
+            <option value="{echo $_page}" {if $page == $_page}selected="selected"{/if}>{echo $_page}</option>
+          {/foreach}
+        {/else}
+      </select>
+    </li>
+    <li>
+      <label for="limit">Limit:</label>
+      <select name="limit" id="limit">
+        <option value="10" {if $limit == "10"}selected="selected"{/if}>10</option>
+        <option value="20" {if $limit == "20"}selected="selected"{/if}>20</option>
+        <option value="30" {if $limit == "30"}selected="selected"{/if}>30</option>
+      </select>
+    </li>
+  </ul>
+  <input type="submit" name="search" value="search">
+</form>
+{if $users != false}
+  <table>
+    <tr>
+      <th>Name</th>
+    </tr>
+    {foreach $row in $users}
+      <tr>
+        <td>{echo $row->first} {echo $row->last}</td>
+      </tr>
+    {/foreach}
+  </table>
+{/if}
