@@ -1,0 +1,72 @@
+/* Defaults & Resets */
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+}
+h1, h2{
+    font-family: serif;
+}
+h1{
+    font-size: 1.5rem;
+    padding: 0 .25rem 0 0;
+    display: inline-block;
+    color: #4f88e1;
+}
+h2{
+    font-size: 1.25rem;
+    color: #97b78d;
+}
+input[type=submit]{
+    text-transform: capitalize;
+}
+
+/* Header */
+header{
+    background: rgba(20, 89, 0, 0.1);
+    padding: 1rem;
+}
+header p{
+    font-size: 1rem;
+    display: inline-block;
+    color: rgba(13,36,64,0.3);
+}
+header ul{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-size: .9rem;
+}
+header ul li{
+    display: inline-block;
+    padding: 0 0.5rem 0 0;
+}
+header ul li a,
+header ul li a:after{
+    color: cadetblue;
+}
+header ul li a:hover{
+    color: coral;
+}
+
+/* Body */
+div.body{
+    padding: 0 1rem;
+}
+
+/* Forms */
+form ul{
+    padding: 0;
+    list-style-type: none;
+}
+form ul li{
+    margin: .5rem 1rem 0 0;
+}
+form ul li label{
+    display: inline-block;
+    width: 6.5rem;
+}
+form ul li p{
+    display: inline;
+}
