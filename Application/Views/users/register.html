@@ -1,35 +1,37 @@
-<h2>Register </h2>
-{if ($success === true)}
-  <p>{echo 'Your account has been created'}</p>
-{/if}
-{else}
-  <form method="post">
-    <ul>
-      <li>
-        <label for="first">First Name:</label>
-        <input type="text" name="first" id="first" required>
-        <p>{echo Shared\Markup::errors($errors, "first")}</p>
-      </li>
-      <li>
-        <label for="last">Last Name:</label>
-        <input type="text" name="last" id="last" required>
-        <p>{echo Shared\Markup::errors($errors, "last")}</p>
-      </li>
-      <li>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-        <p>{echo Shared\Markup::errors($errors, "email")}</p>
-      </li>
-      <li>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <p>{echo Shared\Markup::errors($errors, "password")}</p>
-      </li>
-      <li class="honeypot" style="display: none; visibility: hidden;">
-        <label for="honeypot">Please Leave Blank:</label>
-        <input type="text" name="honeypot" id="honeypot">
-      </li>
-    </ul>
-    <input type="submit" name="register" value="register">
-  </form>
-{/else}
+<div class="body register">
+  <h2>Register</h2>
+  {if ($success === true)}
+    <p>{echo 'Your account has been created'}</p>
+  {/if}
+  {else}
+    <form method="post">
+      <ul>
+        <li>
+          <label for="first">First Name:</label>
+          <input type="text" name="first" id="first" required>
+          <p>{echo Shared\Markup::errors($errors, "first")}</p>
+        </li>
+        <li>
+          <label for="last">Last Name:</label>
+          <input type="text" name="last" id="last" required>
+          <p>{echo Shared\Markup::errors($errors, "last")}</p>
+        </li>
+        <li>
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" required>
+          <p>{echo Shared\Markup::errors($errors, "email")}</p>
+        </li>
+        <li>
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" required>
+          <p>{echo Shared\Markup::errors($errors, "password")}</p>
+        </li>
+        <li class="honeypot" style="display: none; visibility: hidden;">
+          <label for="honeypot">Please Leave Blank:</label>
+          <input type="text" name="honeypot" id="honeypot">
+        </li>
+      </ul>
+      <input type="submit" name="register" value="register">
+    </form>
+  {/else}
+</div>

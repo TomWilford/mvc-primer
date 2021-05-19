@@ -1,31 +1,33 @@
-<h2>Settings</h2>
-{if ($success === true)}
-  <p>Your account has been updated</p>
-{/if}
-{else}
-  <form method="post">
-    <ul>
-      <li>
-        <label for="first">First Name:</label>
-        <input type="text" name="first" id="first" value="{echo $user->first}" required>
-        <p>{echo Shared\Markup::errors($errors, "first")}</p>
-      </li>
-      <li>
-        <label for="last">Last Name:</label>
-        <input type="text" name="last" id="last" value="{echo $user->last}" required>
-        <p>{echo Shared\Markup::errors($errors, "last")}</p>
-      </li>
-      <li>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="{echo $user->email}" required>
-        <p>{echo Shared\Markup::errors($errors, "email")}</p>
-      </li>
-      <li>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" value="{echo $user->password}" required>
-        <p>{echo Shared\Markup::errors($errors, "password")}</p>
-      </li>
-    </ul>
-    <input type="submit" name="update" value="update">
-  </form>
-{/else}
+<div class="body settings">
+  <h2>Settings</h2>
+  {if ($success === true)}
+    <p>Your account has been updated</p>
+  {/if}
+  {else}
+    <form method="post">
+      <ul>
+        <li>
+          <label for="first">First Name:</label>
+          <input type="text" name="first" id="first" value="{echo $user->first}" required>
+          <p>{echo Shared\Markup::errors($errors, "first")}</p>
+        </li>
+        <li>
+          <label for="last">Last Name:</label>
+          <input type="text" name="last" id="last" value="{echo $user->last}" required>
+          <p>{echo Shared\Markup::errors($errors, "last")}</p>
+        </li>
+        <li>
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" value="{echo $user->email}" required>
+          <p>{echo Shared\Markup::errors($errors, "email")}</p>
+        </li>
+        <li>
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" value="{echo $user->password}" required>
+          <p>{echo Shared\Markup::errors($errors, "password")}</p>
+        </li>
+      </ul>
+      <input type="submit" name="update" value="update">
+    </form>
+  {/else}
+</div>

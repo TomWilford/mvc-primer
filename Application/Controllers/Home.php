@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
-class Home extends \Shared\Controller
+use Shared\Controller;
+
+class Home extends Controller
 {
     public function index()
     {

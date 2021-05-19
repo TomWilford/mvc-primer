@@ -82,7 +82,7 @@ class Users extends Controller
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
 
-                    header("Location: /public/users/profile.html");
+                    header("Location: /public/users/profile");
                     exit();
                 }
                 else
@@ -121,10 +121,11 @@ class Users extends Controller
         $view = $this->getActionView();
 
         $query     = trim(RequestMethods::post("query"));
+        $query     = "%{$query}%";
         $order     = RequestMethods::post("order", "modified");
         $direction = RequestMethods::post("direction", "desc");
-        $page      = RequestMethods::post("page", 1);
-        $limit     = RequestMethods::post("limit", 10);
+        (int)$page      = RequestMethods::post("page", 1);
+        (int)$limit     = RequestMethods::post("limit", 10);
 
         $count = 0;
         $users = false;
@@ -132,9 +133,9 @@ class Users extends Controller
         if (RequestMethods::post("search"))
         {
             $where = [
-                "SOUNDEX(first) = SOUNDEX(?)" => trim($query),
-                "live = ?"    => 1,
-                "deleted = ?" => 0
+                "CONCAT(first, ' ', last) LIKE ?" => $query,
+                "live = ?"    => true,
+                "deleted = ?" => false
             ];
 
             $fields = [
@@ -145,7 +146,7 @@ class Users extends Controller
             $users = User::all($where, $fields, $order, $direction, $limit, $page);
 
             $view
-                ->set("query", trim($query))
+                ->set("query", trim(str_replace("%", "", $query)))
                 ->set("order", $order)
                 ->set("direction", $direction)
                 ->set("page", $page)
@@ -199,7 +200,7 @@ class Users extends Controller
         $session = Registry::get("session");
         $session->erase("user");
 
-        header("Location: /public/users/login.html");
+        header("Location: /public/users/login");
         exit();
     }
 }

@@ -1,20 +1,22 @@
-<h2>Login</h2>
-<form method="post">
-  <ul>
-    <li>
-      <label for="email">Email: </label>
-      <input type="email" name="email" id="email" required>
-      {if isset($email_error)}
-        <p>{echo $email_error}</p>
-      {/if}
-    </li>
-    <li>
-      <label for="password">Password: </label>
-      <input type="password" name="password" id="password" required>
-      {if isset($password_error)}
-        <p>{echo $password_error}</p>
-      {/if}
-    </li>
-  </ul>
-  <input type="submit" name="login" value="login">
-</form>
+<div class="body login">
+  <h2>Login</h2>
+  <form method="post">
+    <ul>
+      <li>
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" required>
+        {if isset($email_error)}
+          <p>{echo $email_error}</p>
+        {/if}
+      </li>
+      <li>
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password" required>
+        {if isset($password_error)}
+          <p>{echo $password_error}</p>
+        {/if}
+      </li>
+    </ul>
+    <input type="submit" name="login" value="login">
+  </form>
+</div>
