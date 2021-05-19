@@ -14,7 +14,7 @@ class Markup
         // nowt
     }
 
-    public static function errors($array, $key, $separator = "<br>", $before = "<br>", $after = "")
+    public static function errors($array, $key, $separator = "<br>", $before = "", $after = "")
     {
         if (isset($array[$key]))
         {

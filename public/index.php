@@ -33,6 +33,8 @@ try {
     ]);
     Framework\Registry::set("router", $router);
 
+    include("routes.php");
+
     // dispatch
     $router->dispatch();
 
@@ -114,6 +116,9 @@ catch (Exception $e)
     ];
 
     $exception = get_class($e);
+
+
+    error_log(json_encode( $e, JSON_PRETTY_PRINT), 0);
 
     // attempt to locate appropriate template & render
     foreach ($exceptions as $template => $classes)

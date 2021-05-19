@@ -27,7 +27,7 @@ class Template extends Base
      * @var string
      * @readwrite
      */
-    protected $_footer = "return implode(' ', \$_text);";
+    protected $_footer = "return implode('', \$_text);";
 
     /**
      * @var string

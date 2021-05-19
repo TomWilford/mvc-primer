@@ -51,12 +51,24 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         {foreach $row in $users}
           <tr>
             <td>{echo $row->first} {echo $row->last}</td>
+            <td>
+              {if $user->id == $row->id}
+                &nbsp;
+              {/if}
+              {elseif Models\User::hasFriend($user->id, $row->id)}
+                <a href="/public/unfriend/{echo $row->id}">Minus</a>
+              {/elseif}
+              {else}
+                <a href="/public/friend/{echo $row->id}">Add</a>
+              {/else}
+            </td>
           </tr>
         {/foreach}
       </tbody>

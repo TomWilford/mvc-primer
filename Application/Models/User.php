@@ -60,10 +60,42 @@ class User extends \Shared\Model
      */
     protected $_password;
 
-    public function save()
+    public function isFriend($id)
     {
-        $this->table = "user";
+        $friend = Friend::first([
+            "user = ?"   => $this->getId(),
+            "friend = ?" => $id
+        ]);
 
-        parent::save();
+        if ($friend)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function hasFriend($id, $friend)
+    {
+        $user = new self([
+            "id" => $id
+        ]);
+
+        return $user->isFriend($friend);
+    }
+
+    public static function getNameById($id)
+    {
+        $user = self::first([
+            "id = ?"      => $id,
+            "live = ?"    => true,
+            "deleted = ?" => false
+        ]);
+
+        if ($user)
+        {
+            return  $user->first . " " . $user->last;
+        }
+        return "";
     }
 }

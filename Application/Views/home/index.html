@@ -1,3 +1,33 @@
 <div class="body home">
     <h2>Welcome {if isset($user)}{echo $user->first}{/if}</h2>
+    {if (isset($user))}
+    <div class="post">
+        <h3>New Post:</h3>
+        <form method="post" action="/public/messages/add">
+            <label for="new-message">Message:</label><br>
+            <textarea name="body" id="new-message"></textarea><br>
+            <input type="submit" name="share" value="share" />
+        </form>
+    </div>
+    {/if}
+    {if isset($messages)}
+    <div class="messages">
+        <h3>Feed:</h3>
+        {foreach $message in $messages}
+        <p><b>{echo Models\User::getNameById($message->user)}: </b>{echo $message->body}</p>
+            {foreach $reply in Models\Message::fetchReplies($message->id)}
+                <p><b>-- {echo Models\User::getNameById($reply->user)}: </b>{echo $reply->body}</p>
+            {/foreach}
+            <form method="post" action="/public/messages/add">
+                <label for="reply">Reply:</label><br>
+                <textarea name="body" id="reply"></textarea><br>
+                <input type="hidden" name="message" value="{echo $message->id}">
+                <input type="submit" name="share" value="share" />
+            </form>
+        {/foreach}
+    </div>
+    {/if}
+    {else}
+        <p>No messages.</p>
+    {/else}
 </div>

@@ -33,6 +33,7 @@ class Model extends Base
     protected $_types = [
         "autonumber",
         "text",
+        "integer",
         "decimal",
         "boolean",
         "datetime"

@@ -9,7 +9,6 @@ class Simple extends Router\Route
 {
     public function matches($url)
     {
-        $url     = $this->returnMatchingAlias($url);
         $pattern = $this->pattern;
 
         // Get Keys
@@ -22,11 +21,11 @@ class Simple extends Router\Route
         else
         {
             // No Keys In Pattern, Return Simple Match
-            return preg_match("@^{$pattern}$#", $url);
+            return preg_match("#^{$pattern}$#", $url);
         }
 
         // Normalise Route Pattern
-        $pattern = preg_replace("#(:[a-zA-Z0-9]+)#", "([a-zA-Z0-9-_+)", $pattern);
+        $pattern = preg_replace("#(:[a-zA-Z0-9]+)#", "([a-zA-Z0-9-_]+)", $pattern);
 
         // Check Values
         preg_match_all("#^{$pattern}$#", $url, $values);

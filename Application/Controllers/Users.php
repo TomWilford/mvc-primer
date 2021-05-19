@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Framework\Model;
 use Framework\Session;
+use Models\Friend;
 use Models\User;
 use Shared\Controller;
 use Framework\Registry;
@@ -82,7 +83,7 @@ class Users extends Controller
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
 
-                    header("Location: /public/users/profile");
+                    header("Location: /public/profile");
                     exit();
                 }
                 else
@@ -200,7 +201,63 @@ class Users extends Controller
         $session = Registry::get("session");
         $session->erase("user");
 
-        header("Location: /public/users/login");
+        header("Location: /public/login");
         exit();
+    }
+
+    /**
+     * @before _secure
+     */
+    public function friend($id)
+    {
+        $user = $this->getUser();
+
+        $friend = new Friend([
+            "user"   => $user->id,
+            "friend" => $id
+        ]);
+
+        $friend->save();
+
+        header("Location: /public/search");
+        exit();
+    }
+
+    /**
+     * @before _secure
+     */
+    public function unfriend($id)
+    {
+        $user = $this->getUser();
+
+        $friend = Friend::first([
+            "user = ?"   => $user->id,
+            "friend = ?" => $id
+        ]);
+
+        if ($friend)
+        {
+            $friend = new Friend([
+                "id" => $friend->id
+            ]);
+            $friend->delete();
+        }
+
+        header("Location: /public/search");
+        exit();
+    }
+
+    /**
+     * @protected
+     */
+    public function _secure()
+    {
+        $user = $this->getUser();
+
+        if (!$user)
+        {
+            header("Location: /public/login");
+            exit();
+        }
     }
 }
