@@ -5,9 +5,6 @@ body{
     font-family: sans-serif;
     font-size: 0.9rem;
 }
-h1, h2{
-    font-family: serif;
-}
 h1{
     font-size: 1.5rem;
     padding: 0 .25rem 0 0;
@@ -19,8 +16,20 @@ h2{
     color: #97b78d;
     margin: 1.5rem 0 0 0;
 }
+h3{
+    color: lightslategrey;
+    margin: 0;
+    padding: 0;
+}
 input[type=submit]{
     text-transform: capitalize;
+}
+input[type=textarea],
+#new-message,
+#reply{
+    display: block;
+    width: 100%;
+    max-width: 230px;
 }
 
 /* Header */
@@ -71,6 +80,25 @@ form ul li label{
 }
 form ul li p{
     display: inline;
+}
+
+/* Home */
+div.body div.content{
+    display: block;
+    float: left;
+    width: 15rem;
+    background: #28636c0a;
+    box-shadow: rgba(0,0,0,0.05) 1px 1px 5px;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: .25rem;
+    margin: 1rem 1rem 0 0;
+    padding: 1rem 1rem 1.5rem 1rem;
+}
+div.body div.content.messages{
+    width: 30rem;
+}
+div.body div.content.messages hr{
+    border: 1px dashed rgba(0,0,0,0.1);
 }
 
 /* Search */
