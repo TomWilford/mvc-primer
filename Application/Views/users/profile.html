@@ -1,4 +1,11 @@
 <div class="body profile">
     <h2>{echo $user->first} {echo $user->last}</h2>
-    <p>This is a profile page!</p>
+    <p>This is your profile page!</p>
+    {script $file = $user->file;}
+    {if $file}
+        <div class="content">
+            <h3>Your Photo: </h3>
+            <img src="/public/uploads/{echo $file->name}" />
+        </div>
+    {/if}
 </div>

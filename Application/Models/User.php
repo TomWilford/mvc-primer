@@ -98,4 +98,13 @@ class User extends \Shared\Model
         }
         return "";
     }
+
+    public function getFile()
+    {
+        return File::first([
+            "user = ?"    => $this->id,
+            "live = ?"    => true,
+            "deleted = ?" => false
+        ], ["*"], "id", "desc");
+    }
 }

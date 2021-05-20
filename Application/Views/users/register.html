@@ -26,6 +26,10 @@
           <input type="password" name="password" id="password" required>
           <p>{echo Shared\Markup::errors($errors, "password")}</p>
         </li>
+        <li>
+          <label for="photo">Photo:</label>
+          <input type="file" name="photo" id="photo">
+        </li>
         <li class="honeypot" style="display: none; visibility: hidden;">
           <label for="honeypot">Please Leave Blank:</label>
           <input type="text" name="honeypot" id="honeypot">

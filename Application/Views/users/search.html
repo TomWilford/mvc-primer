@@ -1,5 +1,6 @@
 <div class="body search">
   <h2>Search</h2>
+  <div class="content">
   <form method="post">
     <ul>
       <li>
@@ -46,19 +47,23 @@
     </ul>
     <input type="submit" name="search" value="search">
   </form>
+  </div>
   {if $users != false}
     <table>
       <thead>
         <tr>
+          <th class="table-picture">&nbsp;</th>
           <th>Name</th>
-          <th>&nbsp;</th>
+          <th class="table-action">+/-</th>
         </tr>
       </thead>
       <tbody>
         {foreach $row in $users}
+          {script $file = $row->file;}
           <tr>
+            <td class="table-picture">{if isset($file)}<img src="/public/uploads/{echo $file->name}" />{/if}</td>
             <td>{echo $row->first} {echo $row->last}</td>
-            <td>
+            <td class="table-action">
               {if $user->id == $row->id}
                 &nbsp;
               {/if}

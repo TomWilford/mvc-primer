@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Framework\Model;
 use Framework\Session;
+use Models\File;
 use Models\Friend;
 use Models\User;
 use Shared\Controller;
@@ -29,6 +30,7 @@ class Users extends Controller
             if ($user->validate())
             {
                 $user->save();
+                $this->_upload("photo", $user->id);
                 $view->set("success", true);
             }
             else
@@ -79,6 +81,7 @@ class Users extends Controller
 
                 if (!empty($user))
                 {
+                    var_dump($user->id);
                     /** @var Session\Driver\Server $session */
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
@@ -100,10 +103,7 @@ class Users extends Controller
     {
         $view = $this->getActionView();
 
-        /** @var Session\Driver\Server $session */
-        /** @var User $user */
-        $session = Registry::get("session");
-        $user    = unserialize($session->get("user", null));
+        $user = $this->getCurrentUser();
 
         if (empty($user))
         {
@@ -162,22 +162,33 @@ class Users extends Controller
     public function settings()
     {
         $view = $this->getActionView();
-        $user = $this->getUser();
+        $userCurrent = $this->getCurrentUser();
+        $view->set("user", $userCurrent);
 
         if (RequestMethods::post("update"))
         {
             $user = new User([
-                "first"    => RequestMethods::post("first", $user->first),
-                "last"     => RequestMethods::post("last", $user->last),
-                "email"    => RequestMethods::post("email", $user->email),
-                "password" => RequestMethods::post("password", $user->password)
+                "id"       => $userCurrent->id,
+                "first"    => RequestMethods::post("first", $userCurrent->first),
+                "last"     => RequestMethods::post("last", $userCurrent->last),
+                "email"    => RequestMethods::post("email", $userCurrent->email),
+                "password" => RequestMethods::post("password", $userCurrent->password),
+                "live"     => $userCurrent->live,
+                "deleted"  => $userCurrent->deleted,
+                "created"  => $userCurrent->created
             ]);
 
             if ($user->validate())
             {
                 $user->save();
-                $view->set("success", true);
-            }
+                $this->_upload("photo", $userCurrent->id);
+
+                $newUser = User::first(["id = ?" => $userCurrent->id]);
+                /** @var Session\Driver\Server $session */
+                $session = Registry::get("session");
+                $session->set("user", serialize($newUser));
+
+                $view->set("success", true);}
             else
             {
                 $view->set("errors", $user->getErrors());
@@ -186,11 +197,18 @@ class Users extends Controller
         }
         else
         {
-            $view->set("user", $user);
             $view->set("success", false);
         }
 
          $view->render();
+    }
+
+    protected function getCurrentUser()
+    {
+        /** @var Session\Driver\Server $session */
+        /** @var User $user */
+        $session = Registry::get("session");
+        return unserialize($session->get("user", null));
     }
 
     public function logout()
@@ -258,6 +276,42 @@ class Users extends Controller
         {
             header("Location: /public/login");
             exit();
+        }
+    }
+
+    protected function _upload($name, $user)
+    {
+        if (isset($_FILES[$name]))
+        {
+            $file = $_FILES[$name];
+            $path = APP_PATH . "/public/uploads/";
+
+            $time      = new \DateTime();
+            $time      = $time->format("His");
+            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
+            $filename  = "{$user}--{$time}.{$extension}";
+
+            if (move_uploaded_file($file["tmp_name"], $path . $filename))
+            {
+                $meta = getimagesize($path . $filename);
+
+                if ($meta)
+                {
+                    $width  = $meta[0];
+                    $height = $meta[1];
+
+                    $file = new File([
+                        "name"   => $filename,
+                        "mime"   => $file["type"],
+                        "size"   => $file["size"],
+                        "width"  => $width,
+                        "height" => $height,
+                        "user"   => $user
+                    ]);
+
+                    $file->save();
+                }
+            }
         }
     }
 }

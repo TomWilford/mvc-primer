@@ -18,7 +18,7 @@ h2{
 }
 h3{
     color: lightslategrey;
-    margin: 0;
+    margin: 0 0 1rem 0;
     padding: 0;
 }
 input[type=submit]{
@@ -102,22 +102,48 @@ div.body div.content.messages hr{
 }
 
 /* Search */
-div.body.search form{
+div.body.search div.content{
     display: block;
     float: right;
     width: 20rem;
+    margin: 0.5rem 1rem 0 0;
 }
 div.body.search table{
     margin: .5rem 0 0 0;
     width: 30rem;
     border-collapse: collapse;
+    box-shadow: rgba(0,0,0,0.05) 1px 1px 5px;
+    border-radius: .25rem;
 }
 div.body.search table,
 div.body.search table tr{
-    border: 1px solid lightslategrey;
+    border: 1px solid rgba(0,0,0,0.06);
 }
 div.body.search table tr th{
-    background: #97b78d;
-    color: #fff;
+    background: #28636c0a;
+    color: lightslategrey;
     text-align: left;
+}
+div.body.search table .table-action{
+    width: 3rem;
+    text-align: center;
+}
+div.body.search table .table-picture{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+div.body.search table img{
+    width: 1.5rem;
+    margin:.10rem .5rem 0 .10rem;
+}
+
+/* Profile */
+div.body.profile div.content img{
+    width: 100%;
+    display: inline-block;
+}
+
+/* Settings */
+div.body.settings div.content{
+    width: 25rem;
 }

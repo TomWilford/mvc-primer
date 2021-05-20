@@ -12,6 +12,7 @@
         "psr-4": {
             "Framework\\":   "Framework",
             "Shared\\":      "Application/Libraries/Shared",
+            "Fonts\\":      "Application/Libraries/Fonts",
             "Controllers\\": "Application/Controllers",
             "Models\\":      "Application/Models"
         }

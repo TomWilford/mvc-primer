@@ -40,6 +40,11 @@ $routes = [
         "pattern"    => "friend/:id",
         "controller" => "users",
         "action"     => "friend"
+    ],
+    [
+        "pattern"    => "fonts/:id",
+        "controller" => "files",
+        "action"     => "fonts"
     ]
 ];
 
