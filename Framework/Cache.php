@@ -3,6 +3,8 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Events;
+use Framework\Registry;
 use Framework\Cache\Exception;
 
 class Cache extends Base
@@ -26,6 +28,8 @@ class Cache extends Base
 
     public function initialise()
     {
+        Events::fire("framework.cache.initialize.before", array($this->type, $this->options));
+
         if (!$this->type)
         {
             /** @var Configuration $configuration */
@@ -49,6 +53,8 @@ class Cache extends Base
         {
             throw new Exception\Argument("Invalid type");
         }
+
+        Events::fire("framework.cache.initialize.after", array($this->type, $this->options));
 
         switch ($this->type)
         {

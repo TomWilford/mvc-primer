@@ -3,7 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
-//use Framework\Events;
+use Framework\Events;
 use Framework\Registry;
 use Framework\Session\Exception;
 
@@ -28,6 +28,8 @@ class Session extends Base
 
     public function initialise()
     {
+        Events::fire("framework.session.initialize.before", array($this->type, $this->options));
+
         if (!$this->type)
         {
             /** @var Configuration $configuration */
@@ -50,6 +52,8 @@ class Session extends Base
             {
                 throw new Exception\Argument("Invalid type");
             }
+
+            Events::fire("framework.session.initialize.after", array($this->type, $this->options));
 
             switch ($this->type)
             {

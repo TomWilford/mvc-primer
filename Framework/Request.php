@@ -3,7 +3,7 @@
 namespace Framework;
 
 use Framework\Base;
-//use Framework\Events;
+use Framework\Events;
 use Framework\StringMethods;
 use Framework\RequestMethods;
 use Framework\Request\Exception;
@@ -96,7 +96,7 @@ class Request extends Base
 
     public function request($method, $url, $parameters = [])
     {
-        //Events::fire("framework.request.request.before", [$method, $url, $parameters]);
+        Events::fire("framework.request.request.before", [$method, $url, $parameters]);
 
         $request = $this->_request = curl_init();
 
@@ -120,7 +120,7 @@ class Request extends Base
             throw new Exception\Response(ucfirst(curl_errno($request) . " - " . curl_error($request)));
         }
 
-        //Events::fire("framework.request.request.after", [$method, $url, $parameters, $response]);
+        Events::fire("framework.request.request.after", [$method, $url, $parameters, $response]);
 
         curl_close($request);
 

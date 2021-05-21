@@ -3,6 +3,8 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Registry;
+use Framework\Events;
 use Framework\Configuration\Driver\Ini;
 use Framework\Database\Exception;
 
@@ -31,6 +33,8 @@ class Database extends Base
      */
     public function initialise()
     {
+        Events::fire("framework.database.initialize.before", array($this->type, $this->options));
+
         if (!$this->type)
         {
             /** @var false | Configuration $configuration */
@@ -50,22 +54,16 @@ class Database extends Base
             }
         }
 
+        Events::fire("framework.database.initialize.after", array($this->type, $this->options));
+
         if (!$this->type)
         {
             throw new Exception\Argument("Invalid type");
-            //$this->type = "mysql_pdo";
         }
 
         if (!$this->options)
         {
             throw new Exception\Argument("No options provided");
-            /*$this->options = [
-                "host"     => "localhost",
-                "username" => "prophpmvc",
-                "password" => "prophpmvc",
-                "schema"   => "prophpmvc",
-                "port"     => "3306"
-            ];*/
         }
 
         switch ($this->type)

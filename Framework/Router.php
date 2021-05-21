@@ -5,6 +5,7 @@ namespace Framework;
 use Framework\Base;
 use Framework\Registry;
 use Framework\Inspector;
+use Framework\Events;
 use Framework\Router\Exception;
 use Controllers\Users;
 
@@ -147,6 +148,8 @@ class Router extends Base
         $controller = 'index';
         $action     = 'index';
 
+        Events::fire("framework.router.dispatch.before", array($url));
+
         foreach ($this->_routes as $route)
         {
             $matches = $route->matches($url);
@@ -156,6 +159,7 @@ class Router extends Base
                 $action     = $route->action;
                 $parameters = $route->parameters;
 
+                Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
                 $this->_pass($controller, $action, $parameters);
                 return;
             }
@@ -174,6 +178,7 @@ class Router extends Base
             }
         }
 
+        Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
         $this->_pass($controller, $action, $parameters);
     }
 }

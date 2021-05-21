@@ -8,6 +8,18 @@ try {
     require("../Framework/Core.php");
     Framework\Core::initialise();
 
+    //plugins
+    $path = APP_PATH . "/Application/plugins";
+    $iterator = new DirectoryIterator($path);
+
+    foreach ($iterator as $item)
+    {
+        if ($item->isDot() && $item->isDir())
+        {
+            include ($path . "/" . $item->getFilename() . "/initialise.php");
+        }
+    }
+
     // configuration
     $configuration = new Framework\Configuration([
         "type" => "ini"

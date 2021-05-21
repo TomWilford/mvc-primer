@@ -3,6 +3,10 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\View;
+use Framework\Events;
+use Framework\Registry;
+use Framework\Template;
 use Framework\Controller\Exception;
 use Framework\Router\Route;
 
@@ -62,6 +66,12 @@ class Controller extends Base
      */
     protected $_defaultContentType = "text/html";
 
+    /**
+     * @var
+     * @read
+     */
+    protected $_name;
+
     protected function _getExceptionForImplementation($method)
     {
         return new Exception\Implementation("{$method} method not implemented");
@@ -74,6 +84,8 @@ class Controller extends Base
 
     public function render()
     {
+        Events::fire("framework.controller.render.before", array($this->name));
+
         $defaultContentType = $this->getDefaultContentType();
         $results  = null;
 
@@ -110,17 +122,24 @@ class Controller extends Base
         {
             throw new View\Exception\Renderer("Invalid layout/template syntax");
         }
+
+        Events::fire("framework.controller.render.after", array($this->name));
     }
 
     public function __destruct()
     {
+        Events::fire("framework.controller.destruct.before", [$this->name]);
+
         $this->render();
+
+        Events::fire("framework.controller.destruct.after", [$this->name]);
     }
 
     public function __construct($options = [])
     {
         parent::__construct($options);
 
+        Events::fire("framework.controller.construct.before", array($this->name));
 
         if ($this->getWillRenderLayoutView())
         {
@@ -149,5 +168,16 @@ class Controller extends Base
             $this->setActionView($view);
         }
 
+        Events::fire("framework.controller.construct.after", array($this->name));
+    }
+
+    protected function getName()
+    {
+        if (empty($this->_name))
+        {
+            $this->_name = get_class($this);
+        }
+
+        return $this->_name;
     }
 }
