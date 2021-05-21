@@ -48,7 +48,7 @@ class Message extends Model
             "live = ?"   => true,
             "deleted = ?" => false
         ],
-        ["*"], "created", "desc");
+        ["*"], "created", "asc");
     }
 
     public static function fetchReplies($id)
