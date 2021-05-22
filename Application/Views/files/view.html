@@ -1,0 +1,30 @@
+<div class="body view">
+  <h2>View Files</h2>
+  <div class="content">
+    <table>
+      <thead>
+      <tr>
+        <th>Thumbnail</th>
+        <th>Change</th>
+      </tr>
+      </thead>
+      <tbody>
+      {foreach $file in $files}
+      <tr>
+        <td class="table-picture">
+          <img src="/public/uploads/{echo $file->name}">
+        </td>
+        <td>
+          {if $file->deleted}
+            <a href="/public/files/undelete/{echo $file->id}">Restore</a>
+          {/if}
+          {else}
+            <a href="/public/files/delete/{echo $file->id}">Delete</a>
+          {/else}
+        </td>
+      </tr>
+      {/foreach}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="body view">
+  <h2>Edit User</h2>
+  <div class="content">
+    {if ($success === true)}
+      The user has been updated
+    {/if}
+    {else}
+      <form method="post">
+        <ul>
+          <li>
+            <label for="first">First Name:</label>
+            <input type="text" name="first" id="first" value="{echo $editUser->first}" required>
+            <p>{echo Shared\Markup::errors($errors, "first")}</p>
+          </li>
+          <li>
+            <label for="last">Last Name:</label>
+            <input type="text" name="last" id="last" value="{echo $editUser->last}" required>
+            <p>{echo Shared\Markup::errors($errors, "last")}</p>
+          </li>
+          <li>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="{echo $editUser->email}" required>
+            <p>{echo Shared\Markup::errors($errors, "email")}</p>
+          </li>
+          <li>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" value="{echo $editUser->password}" required>
+            <p>{echo Shared\Markup::errors($errors, "password")}</p>
+          </li>
+          <li>
+            <label for="live">Live:</label>
+            <input type="checkbox" name="live" id="live" {if $editUser->live}checked="checked"{/if}>
+          </li>
+          <li>
+            <label for="admin">Admin:</label>
+            <input type="checkbox" name="admin" id="admin" {if $editUser->admin}checked="checked"{/if}>
+          </li>
+        </ul>
+        <input type="submit" name="save" value="save">
+      </form>
+    {/else}
+  </div>
+</div>

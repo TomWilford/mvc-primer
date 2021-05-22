@@ -45,6 +45,31 @@ $routes = [
         "pattern"    => "fonts/:id",
         "controller" => "files",
         "action"     => "fonts"
+    ],
+    [
+        "pattern"    => "users/edit/:id",
+        "controller" => "users",
+        "action"     => "edit"
+    ],
+    [
+        "pattern"    => "users/delete/:id",
+        "controller" => "users",
+        "action"     => "delete"
+    ],
+    [
+        "pattern"    => "users/undelete/:id",
+        "controller" => "users",
+        "action"     => "undelete"
+    ],
+    [
+        "pattern"    => "files/delete/:id",
+        "controller" => "files",
+        "action"     => "delete"
+    ],
+    [
+        "pattern"    => "files/undelete/:id",
+        "controller" => "files",
+        "action"     => "undelete"
     ]
 ];
 

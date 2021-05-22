@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Models\File;
 use Shared\Controller;
 use Fonts\Proxy as Proxy;
 use Fonts\Types as Types;
@@ -94,7 +95,51 @@ class Files extends Controller
         }
         else
         {
-            header("Location: {$path}/{$name}");
+            header("Location: /public/{$path}/{$name}");
         }
+    }
+
+    /**
+     * @before _secure, _admin
+     */
+    public function view()
+    {
+        $this->actionView->set("files", File::all());
+    }
+
+    /**
+     * @before _secure, _admin
+     */
+    public function delete($id)
+    {
+        $file = File::first([
+            "id = ?" => $id
+        ]);
+
+        if ($file)
+        {
+            $file->deleted = true;
+            $file->save();
+        }
+
+        self::redirect("/public/files/view");
+    }
+
+    /**
+     * @before _secure, _admin
+     */
+    public function undelete($id)
+    {
+        $file = File::first([
+            "id = ?" => $id
+        ]);
+
+        if ($file)
+        {
+            $file->deleted = false;
+            $file->save();
+        }
+
+        self::redirect("/public/files/view");
     }
 }

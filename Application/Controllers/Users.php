@@ -86,8 +86,7 @@ class Users extends Controller
                     $session->set("user", serialize($user));
                     $this->user = $user;
 
-                    header("Location: /public/profile");
-                    exit();
+                    self::redirect("/public/profile");
                 }
                 else
                 {
@@ -102,8 +101,7 @@ class Users extends Controller
     public function profile()
     {
         $view = $this->getActionView();
-
-        $user = $this->getCurrentUser();
+        $user = $this->user;
 
         if (empty($user))
         {
@@ -162,7 +160,7 @@ class Users extends Controller
     public function settings()
     {
         $view = $this->getActionView();
-        $userCurrent = $this->getCurrentUser();
+        $userCurrent = $this->user;
         $view->set("user", $userCurrent);
 
         if (RequestMethods::post("update"))
@@ -203,14 +201,6 @@ class Users extends Controller
          $view->render();
     }
 
-    protected function getCurrentUser()
-    {
-        /** @var Session\Driver\Server $session */
-        /** @var User $user */
-        $session = Registry::get("session");
-        return unserialize($session->get("user", null));
-    }
-
     public function logout()
     {
         $this->setUser(false);
@@ -219,8 +209,7 @@ class Users extends Controller
         $session = Registry::get("session");
         $session->erase("user");
 
-        header("Location: /public/login");
-        exit();
+        self::redirect("/public/login");
     }
 
     /**
@@ -237,8 +226,7 @@ class Users extends Controller
 
         $friend->save();
 
-        header("Location: /public/search");
-        exit();
+        self::redirect("/public/search");
     }
 
     /**
@@ -261,8 +249,7 @@ class Users extends Controller
             $friend->delete();
         }
 
-        header("Location: /public/search");
-        exit();
+        self::redirect("/public/search");
     }
 
     protected function _upload($name, $user)
@@ -299,5 +286,85 @@ class Users extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @param $id
+     * @throws Model\Exception\Validation
+     * @before _secure, _admin
+     */
+    public function edit($id)
+    {
+        $errors = [];
+
+        $editUser = User::first([
+            "id = ?" => $id
+        ]);
+
+        if (RequestMethods::post("save"))
+        {
+            $editUser->first    = RequestMethods::post("first");
+            $editUser->last     = RequestMethods::post("last");
+            $editUser->email    = RequestMethods::post("email");
+            $editUser->password = RequestMethods::post("password");
+            $editUser->live     = (boolean) RequestMethods::post("live");
+            $editUser->admin    = (boolean) RequestMethods::post("admin");
+
+            if ($editUser->validate())
+            {
+                $editUser->save();
+                $this->actionView->set("success", true);
+            }
+
+            $errors = $editUser->errors;
+        }
+
+        $this->actionView->set("editUser", $editUser)->set("errors", $errors);
+    }
+
+    /**
+     * @before _secure, _admin
+     */
+    public function view()
+    {
+        $this->actionView->set("users", User::all());
+    }
+
+    /**
+     * @param $id
+     * @before _secure, _admin
+     */
+    public function delete($id)
+    {
+        $user = User::first([
+            "id = ?" => $id
+        ]);
+
+        if ($user)
+        {
+            $user->live = false;
+            $user->save();
+        }
+
+        self::redirect("/public/users/view");
+    }
+
+    /**
+     * @param $id
+     * @before _secure, _admin
+     */
+    public function undelete($id)
+    {
+        $user = User::first([
+            "id = ?" => $id
+        ]);
+
+        if ($user)
+        {
+            $user->live = true;
+            $user->save();
+        }
+
+        self::redirect("/public/users/view");
     }
 }

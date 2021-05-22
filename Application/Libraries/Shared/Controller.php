@@ -67,7 +67,7 @@ class Controller extends \Framework\Controller
 
         );
 
-            Events::add("framework.controller.destruct.after",
+        Events::add("framework.controller.destruct.after",
             function ($name)
             {
                 /** @var MysqlPDO $database */
@@ -75,13 +75,6 @@ class Controller extends \Framework\Controller
                 $database->disconnect();
             }
         );
-
-        /** @var Server $session */
-        $session = Registry::get("session");
-
-        /** @var User $user */
-        $user    = unserialize($session->get("user", null));
-        $this->setUser($user);
     }
 
     public function render()
@@ -123,7 +116,7 @@ class Controller extends \Framework\Controller
 
     public static function redirect($url)
     {
-        header("Location: /public/login");
+        header("Location: {$url}");
         exit();
     }
 
@@ -136,8 +129,7 @@ class Controller extends \Framework\Controller
 
         if (!$user)
         {
-            header("Location: /public/login");
-            exit();
+            self::redirect("/public/login");
         }
     }
 

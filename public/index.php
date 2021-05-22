@@ -14,7 +14,7 @@ try {
 
     foreach ($iterator as $item)
     {
-        if ($item->isDot() && $item->isDir())
+        if (!$item->isDot() && $item->isDir())
         {
             include ($path . "/" . $item->getFilename() . "/initialise.php");
         }

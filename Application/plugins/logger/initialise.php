@@ -1,8 +1,8 @@
 <?php
 
-require '../../../vendor/autoload.php';
+require APP_PATH.'/vendor/autoload.php';
 
-include("logger.php");
+include("Logger.php");
 
 $logger = new Logger([
     "file" => APP_PATH . "/logs/" . (new DateTime())->format("Y-m-d") . ".txt"

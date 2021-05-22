@@ -1,0 +1,29 @@
+<div class="body view">
+  <h2>View Users</h2>
+  <div class="content">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        {foreach $_user in $users}
+          <tr>
+            <td>{echo $_user->first} {echo $_user->last}</td>
+            <td>
+              <a href="/public/users/edit/{echo $_user->id}">Edit</a>
+              {if $user->deleted}
+                <a href="/public/users/undelete/{echo $_user->id}">Restore</a>
+              {/if}
+              {else}
+                <a href="/public/users/delete/{echo $_user->id}">Delete</a>
+              {/else}
+            </td>
+          </tr>
+        {/foreach}
+      </tbody>
+    </table>
+  </div>
+</div>

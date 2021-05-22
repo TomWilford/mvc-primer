@@ -2,6 +2,14 @@
   <li>
     <a href="/public/">Home</a>
   </li>
+  {if (isset($user) && $user->admin)}
+    <li>
+      <a href="/public/users/view">View Users</a>
+    </li>
+    <li>
+      <a href="/public/files/view">View Files</a>
+    </li>
+  {/if}
   {if isset($user)}
     <li>
       <a href="/public/search">Search</a>
