@@ -84,7 +84,7 @@ class Controller extends Base
 
     public function render()
     {
-        Events::fire("framework.controller.render.before", array($this->name));
+        Events::fire("framework.controller.render.before", [$this->name]);
 
         $defaultContentType = $this->getDefaultContentType();
         $results  = null;
@@ -123,7 +123,7 @@ class Controller extends Base
             throw new View\Exception\Renderer("Invalid layout/template syntax");
         }
 
-        Events::fire("framework.controller.render.after", array($this->name));
+        Events::fire("framework.controller.render.after", [$this->name]);
     }
 
     public function __destruct()
@@ -139,7 +139,7 @@ class Controller extends Base
     {
         parent::__construct($options);
 
-        Events::fire("framework.controller.construct.before", array($this->name));
+        Events::fire("framework.controller.construct.before", [$this->name]);
 
         if ($this->getWillRenderLayoutView())
         {
@@ -168,7 +168,7 @@ class Controller extends Base
             $this->setActionView($view);
         }
 
-        Events::fire("framework.controller.construct.after", array($this->name));
+        Events::fire("framework.controller.construct.after", [$this->name]);
     }
 
     protected function getName()

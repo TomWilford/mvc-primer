@@ -81,10 +81,10 @@ class Users extends Controller
 
                 if (!empty($user))
                 {
-                    var_dump($user->id);
                     /** @var Session\Driver\Server $session */
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
+                    $this->user = $user;
 
                     header("Location: /public/profile");
                     exit();
@@ -263,20 +263,6 @@ class Users extends Controller
 
         header("Location: /public/search");
         exit();
-    }
-
-    /**
-     * @protected
-     */
-    public function _secure()
-    {
-        $user = $this->getUser();
-
-        if (!$user)
-        {
-            header("Location: /public/login");
-            exit();
-        }
     }
 
     protected function _upload($name, $user)

@@ -381,7 +381,7 @@ class Mysqli extends Database\Query
         $offset = $this->offset;
         $fields = $this->fields;
 
-        $this->_fields = [$this->from => array("COUNT(1)" => "rows")];
+        $this->_fields = [$this->from => ["COUNT(1)" => "rows"]];
 
         $this->limit(1);
         $row = $this->first();

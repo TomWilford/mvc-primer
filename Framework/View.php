@@ -30,13 +30,13 @@ class View extends Base
     {
         parent::__construct($options);
 
-        Events::fire("framework.view.construct.before", array($this->file));
+        Events::fire("framework.view.construct.before", [$this->file]);
 
         $this->_template = new Template([
             "implementation" => new Template\Implementation\Extended()
         ]);
 
-        Events::fire("framework.view.construct.after", array($this->file, $this->template));
+        Events::fire("framework.view.construct.after", [$this->file, $this->template]);
     }
 
     public function _getExceptionForImplementation($method)
@@ -46,7 +46,7 @@ class View extends Base
 
     public function render()
     {
-        Events::fire("framework.view.render.before", array($this->file));
+        Events::fire("framework.view.render.before", [$this->file]);
 
         if (!file_exists($this->file))
         {

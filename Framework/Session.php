@@ -28,7 +28,7 @@ class Session extends Base
 
     public function initialise()
     {
-        Events::fire("framework.session.initialize.before", array($this->type, $this->options));
+        Events::fire("framework.session.initialize.before", [$this->type, $this->options]);
 
         if (!$this->type)
         {
@@ -53,7 +53,7 @@ class Session extends Base
                 throw new Exception\Argument("Invalid type");
             }
 
-            Events::fire("framework.session.initialize.after", array($this->type, $this->options));
+            Events::fire("framework.session.initialize.after", [$this->type, $this->options]);
 
             switch ($this->type)
             {

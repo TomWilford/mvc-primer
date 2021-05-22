@@ -22,14 +22,14 @@ class Configuration extends Base
 
     public function initialise()
     {
-        Events::fire("framework.configuration.initialize.before", array($this->type, $this->options));
+        Events::fire("framework.configuration.initialize.before", [$this->type, $this->options]);
 
         if (!$this->_type)
         {
             throw new Exception\Argument("Invalid type");
         }
 
-        Events::fire("framework.configuration.initialize.after", array($this->type, $this->options));
+        Events::fire("framework.configuration.initialize.after", [$this->type, $this->options]);
 
         switch ($this->_type)
         {

@@ -60,6 +60,14 @@ class User extends \Shared\Model
      */
     protected $_password;
 
+    /**
+     * @var $_admin
+     * @column
+     * @readwrite
+     * @type boolean
+     */
+    protected $_admin = false;
+
     public function isFriend($id)
     {
         $friend = Friend::first([

@@ -16,11 +16,11 @@ class Files extends Controller
         {
             $proxy = new Proxy();
 
-            $proxy->addFontTypes("{$name}", array(
+            $proxy->addFontTypes("{$name}", [
                 Types::OTF => "{$path}/{$name}.otf",
                 Types::EOT => "{$path}/{$name}.eot",
                 Types::TTF => "{$path}/{$name}.ttf"
-            ));
+            ]);
 
             $weight = "";
             $style = "";

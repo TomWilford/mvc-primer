@@ -18,7 +18,7 @@ class Json extends Configuration\Driver
 
         if (!isset($this->_parsed[$path]))
         {
-            $config = array();
+            $config = [];
 
             $string = file_get_contents("{$path}.json");
 

@@ -33,7 +33,7 @@ class Database extends Base
      */
     public function initialise()
     {
-        Events::fire("framework.database.initialize.before", array($this->type, $this->options));
+        Events::fire("framework.database.initialize.before", [$this->type, $this->options]);
 
         if (!$this->type)
         {
@@ -54,7 +54,7 @@ class Database extends Base
             }
         }
 
-        Events::fire("framework.database.initialize.after", array($this->type, $this->options));
+        Events::fire("framework.database.initialize.after", [$this->type, $this->options]);
 
         if (!$this->type)
         {

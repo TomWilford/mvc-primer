@@ -3,9 +3,9 @@
 namespace Framework;
 
 use Framework\Base;
+use Framework\Events;
 use Framework\Registry;
 use Framework\Inspector;
-use Framework\Events;
 use Framework\Router\Exception;
 use Controllers\Users;
 
@@ -80,6 +80,8 @@ class Router extends Base
         $this->_controller = $controller;
         $this->_action     = $action;
 
+        Events::fire("framework.router.controller.before", [$controller, $parameters]);
+
         try
         {
             $instance = (new $name([
@@ -91,6 +93,8 @@ class Router extends Base
         {
             throw new Exception\Controller("Controller {$name} not found");
         }
+
+        Events::fire("framework.router.controller.after", [$action, $parameters]);
 
         if (!method_exists($instance, $action))
         {
@@ -129,14 +133,21 @@ class Router extends Base
             }
         };
 
+        Events::fire("framework.router.beforehooks.before", [$controller, $parameters]);
         $hooks($methodMeta, "@before");
+        Events::fire("framework.router.beforehooks.after", [$action, $parameters]);
 
+        Events::fire("framework.router.action.before", [$action, $parameters]);
         call_user_func_array([
             $instance,
             $action
         ], is_array($parameters) ? $parameters : []);
+        Events::fire("framework.router.action.after", [$action, $parameters]);
 
+        Events::fire("framework.router.afterhooks.before", [$action, $parameters]);
         $hooks($methodMeta, "@after");
+        Events::fire("framework.router.afterhooks.after", [$action, $parameters]);
+
 
         Registry::erase("controller");
     }
@@ -148,7 +159,7 @@ class Router extends Base
         $controller = 'index';
         $action     = 'index';
 
-        Events::fire("framework.router.dispatch.before", array($url));
+        Events::fire("framework.router.dispatch.before", [$url]);
 
         foreach ($this->_routes as $route)
         {
@@ -159,7 +170,7 @@ class Router extends Base
                 $action     = $route->action;
                 $parameters = $route->parameters;
 
-                Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+                Events::fire("framework.router.dispatch.after", [$url, $controller, $action, $parameters]);
                 $this->_pass($controller, $action, $parameters);
                 return;
             }
@@ -178,7 +189,7 @@ class Router extends Base
             }
         }
 
-        Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+        Events::fire("framework.router.dispatch.after", [$url, $controller, $action, $parameters]);
         $this->_pass($controller, $action, $parameters);
     }
 }

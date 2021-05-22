@@ -12,7 +12,7 @@ class Proxy
     {
         if (!isset($this->_fonts[$type]))
         {
-            $this->_fonts[$type] = array();
+            $this->_fonts[$type] = [];
         }
 
         $this->_fonts[$type][$key] = $file;
@@ -65,11 +65,11 @@ class Proxy
                 $platform = "other";
             }
 
-            return array(
+            return [
                 "browser" => (strtolower($browsers[1]) == "version") ? strtolower($browsers[3]) : strtolower($browsers[1]),
                 "version" => (float) (strtolower($browsers[1]) == "opera") ? strtolower($browsers[4]) : strtolower($browsers[2]),
                 "platform" => strtolower($platform)
-            );
+            ];
         }
 
         return false;
@@ -91,23 +91,23 @@ class Proxy
                     {
                         case "opera":
                         {
-                            return ($sniff["version"] > 10) ? array(Types::TTF, Types::OTF, Types::SVG) : false;
+                            return ($sniff["version"] > 10) ? [Types::TTF, Types::OTF, Types::SVG] : false;
                         }
                         case "safari":
                         {
-                            return ($sniff["version"] > 3.1) ? array(Types::TTF, Types::OTF) : false;
+                            return ($sniff["version"] > 3.1) ? [Types::TTF, Types::OTF] : false;
                         }
                         case "chrome":
                         {
-                            return ($sniff["version"] > 4) ? array(Types::TTF, Types::OTF) : false;
+                            return ($sniff["version"] > 4) ? [Types::TTF, Types::OTF] : false;
                         }
                         case "firefox":
                         {
-                            return ($sniff["version"] > 3.5) ? array(Types::TTF, Types::OTF) : false;
+                            return ($sniff["version"] > 3.5) ? [Types::TTF, Types::OTF] : false;
                         }
                         case "ie":
                         {
-                            return ($sniff["version"] > 4) ? array(Types::EOT) : false;
+                            return ($sniff["version"] > 4) ? [Types::EOT] : false;
                         }
                     }
                 }
@@ -122,7 +122,7 @@ class Proxy
         $support = $this->detectSupport($agent);
         if ($support)
         {
-            $fonts = array();
+            $fonts = [];
             foreach ($support as $type)
             {
                 $font = $this->getFont($key, $type);
@@ -133,6 +133,6 @@ class Proxy
             }
             return $fonts;
         }
-        return array();
+        return [];
     }
 }

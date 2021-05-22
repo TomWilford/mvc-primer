@@ -324,7 +324,7 @@ class Model extends Base
         return $this->_primary;
     }
 
-    public static function first($where = array(), $fields = array("*"), $order = null, $direction = null)
+    public static function first($where = [], $fields = ["*"], $order = null, $direction = null)
     {
         $model = new static();
         return $model->_first($where, $fields, $order, $direction);

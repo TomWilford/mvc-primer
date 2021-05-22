@@ -56,9 +56,9 @@ Framework\Test::add(
         $template->parse(["
             {foreach \$number in \$numbers}{echo \$number_i}{echo \$number}{/foreach}"]
         );
-        $processed = $template->process(array(
-            "numbers" => array(1, 2, 3)
-        ));
+        $processed = $template->process([
+            "numbers" => [1, 2, 3]
+        ]);
 
         return (trim($processed) == "0 1 1 2 2 3");
     },
@@ -72,9 +72,9 @@ Framework\Test::add(
         $template->parse(["
             {for \$number in \$numbers}{echo \$number_i}{echo \$number}{/for}
         "]);
-        $processed = $template->process(array(
-            "numbers" => array(1, 2, 3)
-        ));
+        $processed = $template->process([
+            "numbers" => [1, 2, 3]
+        ]);
 
         return (trim($processed) == "0 1 1 2 2 3");
     },
@@ -91,17 +91,17 @@ Framework\Test::add(
             {else}{echo 'no'}{/else}
         "]);
 
-        $yes = $template->process(array(
+        $yes = $template->process([
             "check" => "yes"
-        ));
+        ]);
 
-        $maybe = $template->process(array(
+        $maybe = $template->process([
             "check" => "maybe"
-        ));
+        ]);
 
-        $no = $template->process(array(
+        $no = $template->process([
             "check" => null
-        ));
+        ]);
 
         return (trim($yes) == "yes" && trim($maybe) == "maybe" && trim($no) == "no");
     },
