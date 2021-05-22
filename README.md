@@ -1,20 +1,22 @@
 # mvc-primer
 
 ## What's this then?
-Just what everyone wanted, a new  PHP Framework! Sort of, but not really. 
+Just what everyone wanted, a new  PHP Framework! Well, sort of, but not really. 
 
-It's (pretty much) the framework from Pro PHP MVC by Chris Pitt but a bit modernised and (kind of) ready for PHP 8.0. And it works! There's a Vagrant file & accompanying set of commands to get the framework up and running (LAMP on CentOs/7). That's it really! 
+It's (pretty much) the framework from Pro PHP MVC by Chris Pitt (2012) but a bit modernised and (kind of) ready for PHP 8.0. And it works! There's a Vagrant file & accompanying set of commands to get the framework up and running (LAMP on CentOs/7). That's it really!
 
 ### "A bit modernised"?
 * Autoloading          > _Replaced with composer_
 * MySQLi               > _Replaced with PDO_
 * Deprecated functions > _Replaced with non-deprecated alternatives_
-* Genral Formatting    > _Generally better_
 * ~~array()             > Replaced with \[\]~~
+* Genral Formatting    > _Generally better_
 
 ### Anything else? 
 Yes! 
+
 I got a little carried away with the HTML and CSS.
+
 I improved the query builder slightly... 
 
 aaaand... 
