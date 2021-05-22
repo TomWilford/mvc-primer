@@ -17,7 +17,9 @@ Yes!
 
 I got a little carried away with the HTML and CSS.
 
-I improved the query builder slightly... 
+I improved the query builder slightly
+
+Added a few handy DocBlocks here and there... 
 
 aaaand... 
 
@@ -30,9 +32,11 @@ also...
 * Vagrant 
 * VirtualBox 
 
-#### Method:
+#### Method (sorry):
 1. Clone
 2. Do the vagrant stuff 
 3. SSH into the machine
 4. Manually run through commands in /vagrant/startup.sh
-5. Go to http://localhost:8081/public/ and register 
+5. Go to http://localhost:8081/public/ and register for an account! 
+
+#### Thanks!
