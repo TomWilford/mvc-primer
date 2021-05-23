@@ -10,20 +10,15 @@ It's (pretty much) the framework from Pro PHP MVC by Chris Pitt (2012) but a bit
 * MySQLi               > _Replaced with PDO._
 * Deprecated functions > _Replaced with non-deprecated alternatives._
 * ~~array()             > Replaced with \[\]~~
-* General formatting   > _Generally better._
+* General formatting   > _Generally better. It's all PSR-2!_
 
 ### Anything else? 
 Yes! 
 
 * I got a little carried away with the HTML and CSS.
 * I improved the query builder slightly.
-* Added a few handy DocBlocks here and there... 
-
-* _aaaand..._
-
-* _also..._
-
-* (sorry Chris Pitt) there were... maybe just a _few_ errors. But they're gone now. 
+* Added a few handy DocBlocks here and there
+* ...And (sorry Chris Pitt) there were maybe just a _couple_ errors. But they're gone now. 
 
 ## Instructions
 #### You will need: 
