@@ -6,11 +6,11 @@ Just what everyone wanted, a new  PHP Framework! Well, sort of, but not really.
 It's (pretty much) the framework from Pro PHP MVC by Chris Pitt (2012) but a bit modernised and (kind of) ready for PHP 8.0. And it works! There's a Vagrant file & accompanying set of commands to get the framework up and running (LAMP on CentOs/7). That's it really!
 
 ### "A bit modernised"?
-* Autoloading          > _Replaced with composer_
-* MySQLi               > _Replaced with PDO_
-* Deprecated functions > _Replaced with non-deprecated alternatives_
+* Autoloading          > _Replaced with Composer._
+* MySQLi               > _Replaced with PDO._
+* Deprecated functions > _Replaced with non-deprecated alternatives._
 * ~~array()             > Replaced with \[\]~~
-* Genral Formatting    > _Generally better_
+* General formatting   > _Generally better._
 
 ### Anything else? 
 Yes! 
