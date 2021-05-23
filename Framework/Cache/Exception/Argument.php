@@ -2,7 +2,9 @@
 
 namespace Framework\Cache\Exception;
 
-class Argument extends \Framework\Cache\Exception
+use Framework\Cache\Exception;
+
+class Argument extends Exception
 {
 
 }

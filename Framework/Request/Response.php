@@ -32,8 +32,7 @@ class Response extends Base
 
     public function __construct($options = [])
     {
-        if (!empty($options["response"]))
-        {
+        if (!empty($options["response"])) {
             $response = $this->_response = $options["response"];
             unset($options["response"]);
         }
@@ -55,8 +54,7 @@ class Response extends Base
         $this->_headers["Status-Code"]  = $matches[2];
         $this->_headers["Status"]       = $matches[2] . " " . $matches[3];
 
-        foreach ($headers as $header)
-        {
+        foreach ($headers as $header) {
             preg_match('#(.*?)\:\s(.*)#', $header, $matches);
             $this->_headers[$matches[1]] = $matches[2];
         }

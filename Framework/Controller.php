@@ -92,34 +92,27 @@ class Controller extends Base
         $doAction = $this->getWillRenderActionView() && $this->getActionView();
         $doLayout = $this->getWillRenderLayoutView() && $this->getLayoutView();
 
-        try
-        {
-            if ($doAction)
-            {
+        try {
+            if ($doAction) {
                 $view    = $this->getActionView();
                 $results = $view->render();
             }
 
-            if ($doLayout)
-            {
+            if ($doLayout) {
                 $view    = $this->getLayoutView();
                 $view->set("template", $results);
                 $results = $view->render();
 
                 header("Content-type: {$defaultContentType}");
                 echo $results;
-            }
-            else if ($doAction)
-            {
+            } elseif ($doAction) {
                 header("Content-type: {$defaultContentType}");
                 echo $results;
 
                 $this->setWillRenderLayoutView(false);
                 $this->setWillRenderActionView(false);
             }
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             throw new View\Exception\Renderer("Invalid layout/template syntax");
         }
 
@@ -141,8 +134,7 @@ class Controller extends Base
 
         Events::fire("framework.controller.construct.before", [$this->name]);
 
-        if ($this->getWillRenderLayoutView())
-        {
+        if ($this->getWillRenderLayoutView()) {
             $defaultPath      = $this->getDefaultPath();
             $defaultLayout    = $this->getDefaultLayout();
             $defaultExtension = $this->getDefaultExtension();
@@ -154,8 +146,7 @@ class Controller extends Base
             $this->setLayoutView($view);
         }
 
-        if ($this->getWillRenderActionView())
-        {
+        if ($this->getWillRenderActionView()) {
             /** @var Router $router */
             $router = Registry::get("router");
             $controller = $router->getController();
@@ -173,8 +164,7 @@ class Controller extends Base
 
     protected function getName()
     {
-        if (empty($this->_name))
-        {
+        if (empty($this->_name)) {
             $this->_name = get_class($this);
         }
 

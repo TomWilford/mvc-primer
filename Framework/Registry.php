@@ -18,10 +18,10 @@ class Registry
 
     public static function get($key, $default = null)
     {
-        if (isset(self::$_instances[$key]))
-        {
+        if (isset(self::$_instances[$key])) {
             return self::$_instances[$key];
         }
+
         return $default;
     }
 
@@ -37,8 +37,7 @@ class Registry
 
     public static function getAll()
     {
-        if (isset(self::$_instances))
-        {
+        if (isset(self::$_instances)) {
             return self::$_instances;
         }
 
@@ -47,13 +46,12 @@ class Registry
 
     public static function isClassRegistered($className)
     {
-        foreach (self::getAll() as $key => $value)
-        {
-            if ($key == $className)
-            {
+        foreach (self::getAll() as $key => $value) {
+            if ($key == $className) {
                 return true;
             }
         }
+
         return false;
     }
 }

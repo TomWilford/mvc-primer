@@ -24,15 +24,13 @@ class Configuration extends Base
     {
         Events::fire("framework.configuration.initialize.before", [$this->type, $this->options]);
 
-        if (!$this->_type)
-        {
+        if (!$this->_type) {
             throw new Exception\Argument("Invalid type");
         }
 
         Events::fire("framework.configuration.initialize.after", [$this->type, $this->options]);
 
-        switch ($this->_type)
-        {
+        switch ($this->_type) {
             case "ini":
                 return new Configuration\Driver\Ini($this->_options);
                 break;
@@ -46,5 +44,4 @@ class Configuration extends Base
                 throw new Exception\Argument("Invalid Type");
         }
     }
-
 }

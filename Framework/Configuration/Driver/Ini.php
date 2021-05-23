@@ -3,26 +3,22 @@
 namespace Framework\Configuration\Driver;
 
 use Framework\ArrayMethods;
-use Framework\Configuration;
+use Framework\Configuration\Driver;
 use Framework\Configuration\Exception;
 
-class Ini extends Configuration\Driver
+class Ini extends Driver
 {
     protected function _pair($config, $key, $value)
     {
-        if (strstr($key, "."))
-        {
+        if (strstr($key, ".")) {
             $parts = explode(".", $key, 2);
 
-            if (empty($config[$parts[0]]))
-            {
+            if (empty($config[$parts[0]])) {
                 $config[$parts[0]] = [];
             }
 
             $config[$parts[0]] = $this->_pair($config[$parts[0]], $parts[1], $value);
-        }
-        else
-        {
+        } else {
             $config[$key] = $value;
         }
 
@@ -31,13 +27,11 @@ class Ini extends Configuration\Driver
 
     public function parse($path)
     {
-        if (empty($path))
-        {
+        if (empty($path)) {
             throw new Exception\Argument("\$path argument is not valid");
         }
 
-        if (!isset($this->_parsed[$path]))
-        {
+        if (!isset($this->_parsed[$path])) {
             $config = [];
 
             ob_start();
@@ -47,13 +41,11 @@ class Ini extends Configuration\Driver
 
             $pairs = parse_ini_string($string);
 
-            if ($pairs == false)
-            {
+            if ($pairs == false) {
                 throw new Exception\Syntax("Could not parse ini configuration file");
             }
 
-            foreach ($pairs as $key => $value)
-            {
+            foreach ($pairs as $key => $value) {
                 $config = $this->_pair($config, $key, $value);
             }
 

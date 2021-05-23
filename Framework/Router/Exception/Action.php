@@ -2,7 +2,9 @@
 
 namespace Framework\Router\Exception;
 
-class Action extends \Framework\Router\Exception
+use Framework\Router\Exception;
+
+class Action extends Exception
 {
 
 }

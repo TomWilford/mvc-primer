@@ -2,7 +2,9 @@
 
 namespace Framework\Core\Exception;
 
-class Primary extends \Framework\Core\Exception
+use Framework\Core\Exception;
+
+class Primary extends Exception
 {
 
 }

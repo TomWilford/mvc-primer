@@ -3,8 +3,7 @@
 require '../../vendor/autoload.php';
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache();
 
         return ($cache instanceof Framework\Cache);
@@ -14,8 +13,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -28,8 +26,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -42,8 +39,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -52,12 +48,9 @@ Framework\Test::add(
         $cache = $cache->connect();
         $cache = $cache->disconnect();
 
-        try
-        {
+        try {
             $cache->get("anything");
-        }
-        catch (Framework\Cache\Exception\Service $e)
-        {
+        } catch (Framework\Cache\Exception\Service $e) {
             return ($cache instanceof Framework\Cache\Driver\Memcached);
         }
         return false;
@@ -67,8 +60,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
            "type" => "memcached"
         ]);
@@ -83,8 +75,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
            "type" => "memcached"
         ]);
@@ -99,8 +90,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -115,8 +105,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);
@@ -133,8 +122,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $cache = new Framework\Cache([
             "type" => "memcached"
         ]);

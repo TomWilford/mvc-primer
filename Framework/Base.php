@@ -18,10 +18,8 @@ class Base
     {
         $this->_inspector = new Inspector($this);
 
-        if (is_array($options) || is_object($options))
-        {
-            foreach ($options as $key => $value)
-            {
+        if (is_array($options) || is_object($options)) {
+            foreach ($options as $key => $value) {
                 $key    = ucfirst($key);
                 $method = "set{$key}";
                 $this->$method($value);
@@ -31,8 +29,7 @@ class Base
 
     public function  __call($name, $arguments)
     {
-        if (empty($this->_inspector))
-        {
+        if (empty($this->_inspector)) {
             throw new Exception("Call parent::__construct!");
         }
 
@@ -40,23 +37,19 @@ class Base
         $property   = '';
 
         $getMatches = StringMethods::match($name, "^get([a-zA-Z0-9]+)$");
-        if (!empty($getMatches))
-        {
+        if (!empty($getMatches)) {
             $normalised = lcfirst($getMatches[0]);
             $property   = "_{$normalised}";
         }
 
-        if (property_exists($this, $property))
-        {
+        if (property_exists($this, $property)) {
             $meta = $this->_inspector->getPropertyMeta($property);
 
-            if (empty($meta["@readwrite"]) && empty($meta["@read"]))
-            {
+            if (empty($meta["@readwrite"]) && empty($meta["@read"])) {
                 throw $this->_getException($normalised, "writeonly");
             }
 
             if (isset($this->$property)){
-
                 return $this->$property;
             }
 
@@ -64,16 +57,13 @@ class Base
         }
 
         $setMatches = StringMethods::match($name, "^set([a-zA-Z0-9]+)$");
-        if (!empty($setMatches))
-        {
+        if (!empty($setMatches)) {
             $normalised = lcfirst($setMatches[0]);
             $property   = "_{$normalised}";
 
-            if (property_exists($this, $property))
-            {
+            if (property_exists($this, $property)) {
                 $meta = $this->_inspector->getPropertyMeta($property);
-                if (empty($meta["@readwrite"]) && empty($meta["@write"]))
-                {
+                if (empty($meta["@readwrite"]) && empty($meta["@write"])) {
                     throw $this->_getException($normalised, "readonly");
                 }
 
@@ -89,20 +79,17 @@ class Base
     public function __get($name)
     {
         $function = "get".ucfirst($name);
-
         return $this->$function();
     }
 
     public function __set($name, $value)
     {
         $function = "set".ucfirst($name);
-        
         return $this->$function($value);
     }
 
     protected function _getException($request, $type){
-        switch ($type)
-        {
+        switch ($type) {
             case "readonly":
                 return new Exception\ReadOnly("{$request} is read-only");
             case "writeonly":
@@ -119,5 +106,4 @@ class Base
                 return new Exception("Not sure what's going on here");
         }
     }
-
 }

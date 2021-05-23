@@ -30,18 +30,15 @@ class Cache extends Base
     {
         Events::fire("framework.cache.initialize.before", [$this->type, $this->options]);
 
-        if (!$this->type)
-        {
+        if (!$this->type) {
             /** @var Configuration $configuration */
             $configuration = Registry::get("configuration");
 
-            if ($configuration)
-            {
+            if ($configuration) {
                 $configuration = $configuration->initialise();
                 $parsed        = $configuration->parse("../Application/Configuration/_cache");
 
-                if (!empty($parsed->cache->default) && !empty($parsed->cache->default->type))
-                {
+                if (!empty($parsed->cache->default) && !empty($parsed->cache->default->type)) {
                     $this->type    = $parsed->cache->default->type;
                     unset($parsed->cache->default->type);
                     $this->options = (array) $parsed->cache->default;
@@ -49,21 +46,17 @@ class Cache extends Base
             }
         }
 
-        if (!$this->type)
-        {
+        if (!$this->type) {
             throw new Exception\Argument("Invalid type");
         }
 
         Events::fire("framework.cache.initialize.after", [$this->type, $this->options]);
 
-        switch ($this->type)
-        {
+        switch ($this->type) {
             case "memcached":
                 return new Cache\Driver\Memcached($this->options);
-                break;
             default:
                 throw new Exception\Argument("Invalid type");
-                break;
         }
     }
 }

@@ -30,8 +30,7 @@ class Controller extends \Framework\Controller
 
         // schedule: load user from session
         Events::add("framework.router.beforehooks.before",
-            function ($name, $parameters)
-            {
+            function ($name, $parameters) {
                 /** @var Server $session */
                 $session = Registry::get("session");
 
@@ -41,8 +40,7 @@ class Controller extends \Framework\Controller
                 /** @var User $user */
                 $user = $session->get("user");
 
-                if ($user)
-                {
+                if ($user) {
                     $controller->user = User::first([
                         "id = ?" => $user
                     ]);
@@ -51,16 +49,14 @@ class Controller extends \Framework\Controller
         );
 
         Events::add("framework.router.beforehooks.after",
-            function ($name, $parameters)
-            {
+            function ($name, $parameters) {
                 /** @var Server $session */
                 $session = Registry::get("session");
 
                 /** @var \Framework\Controller $controller */
                 $controller = Registry::get("controller");
 
-                if ($controller->user)
-                {
+                if ($controller->user) {
                     $session->set("user", $controller->user->id);
                 }
             }
@@ -68,8 +64,7 @@ class Controller extends \Framework\Controller
         );
 
         Events::add("framework.controller.destruct.after",
-            function ($name)
-            {
+            function ($name) {
                 /** @var MysqlPDO $database */
                 $database = Registry::get("database");
                 $database->disconnect();
@@ -81,13 +76,11 @@ class Controller extends \Framework\Controller
     {
         if ($this->getUser())
         {
-            if ($this->getActionView())
-            {
+            if ($this->getActionView()) {
                 $this->getActionView()->set("user", $this->getUser());
             }
 
-            if ($this->getLayoutView())
-            {
+            if ($this->getLayoutView()) {
                 $this->getLayoutView()->set("user", $this->getUser());
             }
         }
@@ -100,12 +93,9 @@ class Controller extends \Framework\Controller
         /** @var Server $session */
         $session = Registry::get("session");
 
-        if ($user)
-        {
+        if ($user) {
             $session->set("user", $user->id);
-        }
-        else
-        {
+        } else {
             $session->erase("user");
         }
 
@@ -127,8 +117,7 @@ class Controller extends \Framework\Controller
     {
         $user = $this->getUser();
 
-        if (!$user)
-        {
+        if (!$user) {
             self::redirect("/public/login");
         }
     }
@@ -139,8 +128,7 @@ class Controller extends \Framework\Controller
      */
     public function _admin()
     {
-        if (!$this->user->admin)
-        {
+        if (!$this->user->admin) {
             throw new \Framework\Router\Exception\Controller("Not a valid admin user account");
         }
     }

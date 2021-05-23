@@ -2,7 +2,9 @@
 
 namespace Framework\Model\Exception;
 
-class Validation extends \Framework\Model\Exception
+use Framework\Model\Exception;
+
+class Validation extends Exception
 {
 
 }

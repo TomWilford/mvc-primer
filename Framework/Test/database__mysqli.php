@@ -17,8 +17,7 @@ $options = [
 ];
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $database = new Framework\Database();
         return ($database instanceof Framework\Database);
     },
@@ -27,8 +26,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
 
@@ -39,8 +37,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -52,8 +49,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -74,8 +70,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -87,8 +82,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();

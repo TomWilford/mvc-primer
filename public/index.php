@@ -56,9 +56,7 @@ try {
     unset($cache);
     unset($session);
     unset($router);
-}
-catch (Exception $e)
-{
+} catch (Exception $e) {
     $exceptions = [
         "500" => [
             "Framework\Cache\Exception",
@@ -129,16 +127,12 @@ catch (Exception $e)
 
     $exception = get_class($e);
 
-
     error_log(json_encode( $e, JSON_PRETTY_PRINT), 0);
 
     // attempt to locate appropriate template & render
-    foreach ($exceptions as $template => $classes)
-    {
-        foreach ($classes as $class)
-        {
-            if ($class == $exception)
-            {
+    foreach ($exceptions as $template => $classes) {
+        foreach ($classes as $class) {
+            if ($class == $exception) {
                 header("Content-type: text/html");
                 include(APP_PATH."/Application/Views/errors/{$template}.php");
                 exit;

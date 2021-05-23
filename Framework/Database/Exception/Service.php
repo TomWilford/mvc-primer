@@ -2,7 +2,9 @@
 
 namespace Framework\Database\Exception;
 
-class Service extends \Framework\Database\Exception
+use Framework\Database\Exception;
+
+class Service extends Exception
 {
 
 }

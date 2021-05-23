@@ -12,20 +12,17 @@ class Messages extends Controller
     {
         $user = $this->getUser();
 
-        if (RequestMethods::post("share"))
-        {
+        if (RequestMethods::post("share")) {
             $message = new Message([
                 "body"    => RequestMethods::post("body"),
                 "message" => RequestMethods::post("message"),
                 "user"    => $user->id
             ]);
 
-            if ($message->validate())
-            {
+            if ($message->validate()) {
                 $message->save();
 
-                header("Location: /public/");
-                exit();
+                self::redirect("/public/");
             }
         }
     }

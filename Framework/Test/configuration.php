@@ -3,8 +3,7 @@
 require '../../vendor/autoload.php';
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration();
         return ($configuration instanceof Framework\Configuration);
     },
@@ -14,8 +13,7 @@ Framework\Test::add(
 
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "ini"
         ]);
@@ -28,8 +26,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "ini"
         ]);
@@ -44,8 +41,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "json"
         ]);
@@ -58,8 +54,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "json"
         ]);
@@ -74,8 +69,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "array"
         ]);
@@ -88,8 +82,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function ()
-    {
+    function () {
         $configuration = new Framework\Configuration([
             "type" => "array"
         ]);

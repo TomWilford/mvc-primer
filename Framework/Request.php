@@ -70,8 +70,7 @@ class Request extends Base
 
     public function get($url, $parameters = [])
     {
-        if (!empty($parameters))
-        {
+        if (!empty($parameters)) {
             $url .= StringMethods::indexOf($url, "?") ? "&" : "?";
             $url .= is_string($parameters) ? $parameters : http_build_query($parameters, "", "&");
         }
@@ -100,8 +99,7 @@ class Request extends Base
 
         $request = $this->_request = curl_init();
 
-        if (is_array($parameters))
-        {
+        if (is_array($parameters)) {
             $parameters = http_build_query($parameters, "", "&");
         }
 
@@ -109,14 +107,11 @@ class Request extends Base
 
         $response = curl_exec($request);
 
-        if ($response)
-        {
+        if ($response) {
             $response = new Request\Response([
                 "response" => $response
             ]);
-        }
-        else
-        {
+        } else {
             throw new Exception\Response(ucfirst(curl_errno($request) . " - " . curl_error($request)));
         }
 
@@ -141,8 +136,7 @@ class Request extends Base
 
     protected function _setRequestMethod($method)
     {
-        switch (strtoupper($method))
-        {
+        switch (strtoupper($method)) {
             case "HEAD":
                 $this->_setOption(CURLOPT_NOBODY, true);
                 break;
@@ -168,28 +162,23 @@ class Request extends Base
             ->_setOption(CURLOPT_RETURNTRANSFER, true)
             ->_setOption(CURLOPT_USERAGENT, $this->agent);
 
-        if (!empty($parameters))
-        {
+        if (!empty($parameters)) {
             $this->_setOption(CURLOPT_POSTFIELDS, $parameters);
         }
 
-        if ($this->willFollow)
-        {
+        if ($this->willFollow) {
             $this->_setOption(CURLOPT_FOLLOWLOCATION, true);
         }
 
-        if ($this->willShareSession)
-        {
+        if ($this->willShareSession) {
             $this->_setOption(CURLOPT_COOKIE, session_name() . "=" . session_id());
         }
 
-        if ($this->referer)
-        {
+        if ($this->referer) {
             $this->_setOption(CURLOPT_REFERER, $this->referer);
         }
 
-        foreach ($this->_options as $key => $value)
-        {
+        foreach ($this->_options as $key => $value) {
             $this->_setOption(constant($this->_normalise($key)), $value);
         }
 
@@ -200,8 +189,7 @@ class Request extends Base
     {
         $headers = [];
 
-        foreach ($this->headers as $key => $value)
-        {
+        foreach ($this->headers as $key => $value) {
             $headers[] = $key . ': ' . $value;
         }
 

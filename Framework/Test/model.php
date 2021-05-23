@@ -16,7 +16,7 @@ $database = $database->connect();
 
 Framework\Registry::set("database", $database);
 
-class Example extends Framework\Model
+class Example extends \Framework\Model
 {
     /**
      * @readwrite
@@ -43,8 +43,7 @@ class Example extends Framework\Model
 }
 
 Framework\Test::add(
-    function () use ($database)
-    {
+    function () use ($database) {
         $example = new Example();
         return ($database->sync($example) instanceof Framework\Database\Connector\MysqlPDO);
     },
@@ -53,8 +52,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($database)
-    {
+    function () use ($database) {
         $example = new Example([
             "name"    => "foo",
             "created" => date("Y-m-d H:i:s")
@@ -67,8 +65,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($database)
-    {
+    function () use ($database) {
         return (Example::count() == 1);
     },
     "Model fetches number of rows",
@@ -76,8 +73,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($database)
-    {
+    function () use ($database) {
         $example = new Example([
             "name"    => "bar",
             "created" => date("Y-m-d H:i:s")

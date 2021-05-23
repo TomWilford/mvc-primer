@@ -2,7 +2,9 @@
 
 namespace Models;
 
-class User extends \Shared\Model
+use Shared\Model;
+
+class User extends Model
 {
     /**
      * @var

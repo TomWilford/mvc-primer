@@ -11,8 +11,7 @@ class Logger
     {
         $total = 0;
 
-        foreach ($values as $value)
-        {
+        foreach ($values as $value) {
             $total += $value;
         }
 
@@ -26,8 +25,7 @@ class Logger
 
     public function __construct($options)
     {
-        if (!isset($options["file"]))
-        {
+        if (!isset($options["file"])) {
             throw new Exception("Log file invalid.");
         }
 
@@ -50,8 +48,7 @@ class Logger
         $last     = $this->_start;
         $times    = [];
 
-        foreach ($this->_entries as $entry)
-        {
+        foreach ($this->_entries as $entry) {
             $messages .= $entry["message"] ."\n";
             $times[]   = $entry["time"] - $last;
             $last      = $entry["time"];

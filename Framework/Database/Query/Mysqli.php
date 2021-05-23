@@ -68,18 +68,15 @@ class Mysqli extends Database\Query
 
     protected function _quote($value)
     {
-        if (is_string($value))
-        {
+        if (is_string($value)) {
             $escaped = $this->connector->escape($value);
             return "'{$escaped}'";
         }
 
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             $buffer = [];
 
-            foreach ($value as $i)
-            {
+            foreach ($value as $i) {
                 array_push($buffer, $this->_quote($i));
             }
 
@@ -87,13 +84,11 @@ class Mysqli extends Database\Query
             return "({$buffer})";
         }
 
-        if (is_null($value))
-        {
+        if (is_null($value)) {
             return "NULL";
         }
 
-        if (is_bool($value))
-        {
+        if (is_bool($value)) {
             return (int) $value;
         }
 
@@ -102,15 +97,13 @@ class Mysqli extends Database\Query
 
     public function from($from, $fields = ["*"])
     {
-        if (empty($from))
-        {
+        if (empty($from)) {
             throw new Exception\Argument("Invalid argument");
         }
 
         $this->_from = $from;
 
-        if ($fields)
-        {
+        if ($fields) {
             $this->_fields[$from] = $fields;
         }
 
@@ -119,13 +112,11 @@ class Mysqli extends Database\Query
 
     public function join($join, $on, $fields = [])
     {
-        if (empty($join))
-        {
+        if (empty($join)) {
             throw new Exception\Argument("Invalid argument");
         }
 
-        if (empty($on))
-        {
+        if (empty($on)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -137,8 +128,7 @@ class Mysqli extends Database\Query
 
     public function limit($limit, $page = 1)
     {
-        if (empty($limit))
-        {
+        if (empty($limit)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -150,8 +140,7 @@ class Mysqli extends Database\Query
 
     public function order($order, $direction = "asc")
     {
-        if (empty($order))
-        {
+        if (empty($order)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -165,15 +154,13 @@ class Mysqli extends Database\Query
     {
         $arguments = func_get_args();
 
-        if (sizeof($arguments) < 1)
-        {
+        if (sizeof($arguments) < 1) {
             throw new Exception\Argument("Invalid argument");
         }
 
         $arguments[0] = preg_replace("#\?#", "%s", $arguments[0]);
 
-        foreach (array_slice($arguments, 1, null, true) as $i => $parameter)
-        {
+        foreach (array_slice($arguments, 1, null, true) as $i => $parameter) {
             $arguments[$i] = $this->_quote($arguments[$i]);
         }
 
@@ -188,16 +175,11 @@ class Mysqli extends Database\Query
         $where    = $order = $limit = $join = "";
         $template = "SELECT %s FROM %s %s %s %s %s";
 
-        foreach ($this->fields as $table => $_fields)
-        {
-            foreach ($_fields as $field => $alias)
-            {
-                if (is_string($field))
-                {
+        foreach ($this->fields as $table => $_fields) {
+            foreach ($_fields as $field => $alias) {
+                if (is_string($field)) {
                     $fields[] = "{$field} AS {$alias}";
-                }
-                else
-                {
+                } else {
                     $fields[]  = $alias;
                 }
             }
@@ -206,28 +188,24 @@ class Mysqli extends Database\Query
         $fields = join(", ", $fields);
 
         $_join = $this->join;
-        if (!empty($_join))
-        {
+        if (!empty($_join)) {
             $join = join(" ", $_join);
         }
 
         $_where = $this->where;
-        if (!empty($_where))
-        {
+        if (!empty($_where)) {
             $joined = join(" AND ", $_where);
             $where  = "WHERE {$joined}";
         }
 
         $_order = $this->order;
-        if (!empty($_order))
-        {
+        if (!empty($_order)) {
             $_direction = $this->direction;
             $order = "ORDER BY {$_order} {$_direction}";
         }
 
         $_limit = $this->limit;
-        if (!empty($_limit))
-        {
+        if (!empty($_limit)) {
             $_offset = $this->offset;
 
             if ($_offset)
@@ -249,8 +227,7 @@ class Mysqli extends Database\Query
         $values   = [];
         $template = "INSERT INTO `%s` (%s) VALUES (%s)";
 
-        foreach ($data as $field => $value)
-        {
+        foreach ($data as $field => $value) {
             $fields[] = $field;
             $values[] =$this->_quote($value);
         }
@@ -267,23 +244,20 @@ class Mysqli extends Database\Query
         $where    = $limit = "";
         $template = "UPDATE %s SET %s %s %s";
 
-        foreach ($data as $field => $value)
-        {
+        foreach ($data as $field => $value) {
             $parts[] = "{$field} = " . $this->_quote($value);
         }
 
         $parts = join(", ", $parts);
 
         $_where = $this->where;
-        if (!empty($_where))
-        {
+        if (!empty($_where)) {
             $joined = join(", ", $_where);
             $where  = "WHERE {$joined}";
         }
 
         $_limit = $this->limit;
-        if (!empty($_limit))
-        {
+        if (!empty($_limit)) {
             $_offset = $this->offset;
             $limit = "LIMIT {$_limit} {$_offset}";
         }
@@ -297,15 +271,13 @@ class Mysqli extends Database\Query
         $template = "DELETE FROM %s %s %s";
 
         $_where   = $this->where;
-        if (!empty($_where))
-        {
+        if (!empty($_where)) {
             $joined = join(", ", $_where);
             $where  = "WHERE {$joined}";
         }
 
         $_limit = $this->limit;
-        if (!empty($_limit))
-        {
+        if (!empty($_limit)) {
             $_offset = $this->offset;
             $limit   = "LIMIT {$_limit} {$_offset}";
         }
@@ -316,24 +288,19 @@ class Mysqli extends Database\Query
     public function save($data)
     {
         $isInsert = sizeof($this->_where) == 0;
-        if ($isInsert)
-        {
+        if ($isInsert) {
             $sql = $this->_buildInsert($data);
-        }
-        else
-        {
+        } else {
             $sql = $this->_buildUpdate($data);
         }
 
         $result = $this->_connector->execute($sql);
 
-        if ($result === false)
-        {
+        if ($result === false) {
             throw new Exception\Sql();
         }
 
-        if ($isInsert)
-        {
+        if ($isInsert) {
             return $this->_connector->lastInsertId;
         }
 
@@ -345,8 +312,7 @@ class Mysqli extends Database\Query
         $sql    = $this->_buildDelete();
         $result = $this->_connector->execute($sql);
 
-        if ($result === false)
-        {
+        if ($result === false) {
             throw new Exception\Sql();
         }
 
@@ -363,12 +329,10 @@ class Mysqli extends Database\Query
         $all   = $this->all();
         $first = ArrayMethods::first($all);
 
-        if ($limit)
-        {
+        if ($limit) {
             $this->_limit  = $limit;
         }
-        if ($offset)
-        {
+        if ($offset) {
             $this->_offset = $limit;
         }
 
@@ -388,16 +352,13 @@ class Mysqli extends Database\Query
 
         $this->_fields = $fields;
 
-        if ($fields)
-        {
+        if ($fields) {
             $this->_fields = $fields;
         }
-        if ($limit)
-        {
+        if ($limit) {
             $this->_limit  = $limit;
         }
-        if ($offset)
-        {
+        if ($offset) {
             $this->_offset = $offset;
         }
 
@@ -409,16 +370,14 @@ class Mysqli extends Database\Query
         $sql    = $this->_buildSelect();
         $result = $this->connector->execute($sql);
 
-        if ($result === false)
-        {
+        if ($result === false) {
             $error = $this->connector->lastError;
             throw new Exception\Sql("There was an error with your SQL query: {$error}");
         }
 
         $rows = [];
 
-        for ($i = 0; $i < $result->num_rows; $i++)
-        {
+        for ($i = 0; $i < $result->num_rows; $i++) {
             $rows[] = $result->fetch_array(MYSQLI_ASSOC);
         }
 

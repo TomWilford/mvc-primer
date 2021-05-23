@@ -2,7 +2,9 @@
 
 namespace Framework\Core\Exception;
 
-class WriteOnly extends \Framework\Core\Exception
+use Framework\Core\Exception;
+
+class WriteOnly extends Exception
 {
 
 }

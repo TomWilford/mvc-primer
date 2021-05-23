@@ -30,40 +30,33 @@ class Session extends Base
     {
         Events::fire("framework.session.initialize.before", [$this->type, $this->options]);
 
-        if (!$this->type)
-        {
+        if (!$this->type) {
             /** @var Configuration $configuration */
             $configuration = Registry::get("configuration");
 
-            if ($configuration)
-            {
+            if ($configuration) {
                 $configuration = $configuration->initialise();
-                $parsed        = $configuration->parse("../Application/Configuration/_session");
+                $parsed = $configuration->parse("../Application/Configuration/_session");
 
-                if (!empty($parsed->session->default) && !empty($parsed->session->default->type))
-                {
+                if (!empty($parsed->session->default) && !empty($parsed->session->default->type)) {
                     $this->type = $parsed->session->default->type;
                     unset($parsed->session->default->type);
-                    $this->options = (array) $parsed->session->default;
+                    $this->options = (array)$parsed->session->default;
                 }
             }
+        }
 
-            if (!$this->type)
-            {
+        if (!$this->type) {
+            throw new Exception\Argument("Invalid type");
+        }
+
+        Events::fire("framework.session.initialize.after", [$this->type, $this->options]);
+
+        switch ($this->type) {
+            case "server":
+                return new Session\Driver\Server($this->options);
+            default:
                 throw new Exception\Argument("Invalid type");
-            }
-
-            Events::fire("framework.session.initialize.after", [$this->type, $this->options]);
-
-            switch ($this->type)
-            {
-                case "server":
-                    return new Session\Driver\Server($this->options);
-                    break;
-                default:
-                    throw new Exception\Argument("Invalid type");
-                    break;
-            }
         }
     }
 }

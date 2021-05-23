@@ -2,9 +2,9 @@
 
 namespace Framework\Session\Driver;
 
-use Framework\Session;
+use Framework\Session\Driver;
 
-class Server extends Session\Driver
+class Server extends Driver
 {
     /**
      * @var string $_prefix
@@ -20,8 +20,7 @@ class Server extends Session\Driver
 
     public function get($key, $default = null)
     {
-        if (isset($_SESSION[$this->prefix.$key]))
-        {
+        if (isset($_SESSION[$this->prefix.$key])) {
             return $_SESSION[$this->prefix.$key];
         }
 

@@ -2,10 +2,10 @@
 
 namespace Framework\Router\Route;
 
-use Framework\Router;
 use Framework\ArrayMethods;
+use Framework\Router\Route;
 
-class Simple extends Router\Route
+class Simple extends Route
 {
     public function matches($url)
     {
@@ -14,12 +14,9 @@ class Simple extends Router\Route
         // Get Keys
         preg_match_all("#:([a-zA-Z0-9]+)#", $pattern, $keys);
 
-        if (sizeof($keys) && sizeof($keys[0]) && sizeof($keys[1]))
-        {
+        if (sizeof($keys) && sizeof($keys[0]) && sizeof($keys[1])) {
             $keys = $keys[1];
-        }
-        else
-        {
+        } else {
             // No Keys In Pattern, Return Simple Match
             return preg_match("#^{$pattern}$#", $url);
         }
@@ -30,8 +27,7 @@ class Simple extends Router\Route
         // Check Values
         preg_match_all("#^{$pattern}$#", $url, $values);
 
-        if (sizeof($values) && sizeof($values[0]) && sizeof($values[1]))
-        {
+        if (sizeof($values) && sizeof($values[0]) && sizeof($values[1])) {
             // Unset The Matched URL
             unset($values[0]);
 

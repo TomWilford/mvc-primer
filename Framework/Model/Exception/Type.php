@@ -2,7 +2,9 @@
 
 namespace Framework\Model\Exception;
 
-class Type extends \Framework\Model\Exception
+use Framework\Model\Exception;
+
+class Type extends Exception
 {
 
 }

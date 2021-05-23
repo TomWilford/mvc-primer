@@ -73,8 +73,7 @@ $routes = [
     ]
 ];
 
-foreach ($routes as $route)
-{
+foreach ($routes as $route) {
     $router->addRoute(new \Framework\Router\Route\Simple($route));
 }
 

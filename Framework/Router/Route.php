@@ -45,8 +45,7 @@ class Route extends Base
 
     public function returnMatchingAlias($url)
     {
-        if (in_array($url, array_keys($this->_aliases)))
-        {
+        if (in_array($url, array_keys($this->_aliases))) {
             return $this->_aliases[$url];
         }
         return $url;

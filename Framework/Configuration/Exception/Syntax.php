@@ -2,7 +2,9 @@
 
 namespace Framework\Configuration\Exception;
 
-class Syntax extends \Framework\Configuration\Exception
+use Framework\Configuration\Exception;
+
+class Syntax extends Exception
 {
 
 }

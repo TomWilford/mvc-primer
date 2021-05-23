@@ -2,9 +2,9 @@
 
 namespace Framework\Controller\Exception;
 
-use Framework\Core;
+use Framework\Controller\Exception;
 
-class Argument extends Core\Exception\Argument
+class Argument extends Exception
 {
 
 }

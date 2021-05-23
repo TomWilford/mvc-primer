@@ -3,7 +3,7 @@
 namespace Controllers;
 
 use Framework\Model;
-use Framework\Session;
+use Framework\Session\Driver\Server;
 use Models\File;
 use Models\Friend;
 use Models\User;
@@ -18,8 +18,7 @@ class Users extends Controller
     {
         $view  = $this->getActionView();
 
-        if (RequestMethods::post("register") && empty(RequestMethods::post("honeypot")))
-        {
+        if (RequestMethods::post("register") && empty(RequestMethods::post("honeypot"))) {
             $user = new User([
                 "first"    => RequestMethods::post("first"),
                 "last"     => RequestMethods::post("last"),
@@ -27,20 +26,15 @@ class Users extends Controller
                 "password" => RequestMethods::post("password")
             ]);
 
-            if ($user->validate())
-            {
+            if ($user->validate()) {
                 $user->save();
                 $this->_upload("photo", $user->id);
                 $view->set("success", true);
-            }
-            else
-            {
+            } else {
                 $view->set("errors", $user->getErrors());
                 $view->set("success", false);
             }
-        }
-        else
-        {
+        } else {
             $view->set("success", false);
         }
 
@@ -51,27 +45,23 @@ class Users extends Controller
     {
         $view  = $this->getActionView();
 
-        if (RequestMethods::post("login"))
-        {
+        if (RequestMethods::post("login")) {
             $email    = RequestMethods::post("email");
             $password = RequestMethods::post("password");
 
             $error = false;
 
-            if (empty($email))
-            {
+            if (empty($email)) {
                 $view->set("email_error", "Email not provided");
                 $error = true;
             }
 
-            if (empty($password))
-            {
+            if (empty($password)) {
                 $view->set("password_error", "Password not provided");
                 $error = true;
             }
 
-            if (!$error)
-            {
+            if (!$error) {
                 $user = User::first([
                     "email = ?"    => $email,
                     "password = ?" => $password,
@@ -79,17 +69,14 @@ class Users extends Controller
                     "deleted = ?"  => false
                 ]);
 
-                if (!empty($user))
-                {
-                    /** @var Session\Driver\Server $session */
+                if (!empty($user)) {
+                    /** @var Server $session */
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
                     $this->user = $user;
 
                     self::redirect("/public/profile");
-                }
-                else
-                {
+                } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
                 }
             }
@@ -103,8 +90,7 @@ class Users extends Controller
         $view = $this->getActionView();
         $user = $this->user;
 
-        if (empty($user))
-        {
+        if (empty($user)) {
             $user = new StdClass();
             $user->first = "Mx. ";
             $user->last  = "Smyf";
@@ -119,18 +105,17 @@ class Users extends Controller
     {
         $view = $this->getActionView();
 
-        $query     = trim(RequestMethods::post("query"));
-        $query     = "%{$query}%";
-        $order     = RequestMethods::post("order", "modified");
-        $direction = RequestMethods::post("direction", "desc");
-        (int)$page      = RequestMethods::post("page", 1);
-        (int)$limit     = RequestMethods::post("limit", 10);
+        $query      = trim(RequestMethods::post("query"));
+        $query      = "%{$query}%";
+        $order      = RequestMethods::post("order", "modified");
+        $direction  = RequestMethods::post("direction", "desc");
+        (int)$page  = RequestMethods::post("page", 1);
+        (int)$limit = RequestMethods::post("limit", 10);
 
         $count = 0;
         $users = false;
 
-        if (RequestMethods::post("search"))
-        {
+        if (RequestMethods::post("search")) {
             $where = [
                 "CONCAT(first, ' ', last) LIKE ?" => $query,
                 "live = ?"    => true,
@@ -163,8 +148,7 @@ class Users extends Controller
         $userCurrent = $this->user;
         $view->set("user", $userCurrent);
 
-        if (RequestMethods::post("update"))
-        {
+        if (RequestMethods::post("update")) {
             $user = new User([
                 "id"       => $userCurrent->id,
                 "first"    => RequestMethods::post("first", $userCurrent->first),
@@ -176,19 +160,17 @@ class Users extends Controller
                 "created"  => $userCurrent->created
             ]);
 
-            if ($user->validate())
-            {
+            if ($user->validate()) {
                 $user->save();
                 $this->_upload("photo", $userCurrent->id);
 
                 $newUser = User::first(["id = ?" => $userCurrent->id]);
-                /** @var Session\Driver\Server $session */
+                /** @var Server $session */
                 $session = Registry::get("session");
                 $session->set("user", serialize($newUser));
 
-                $view->set("success", true);}
-            else
-            {
+                $view->set("success", true);
+            } else {
                 $view->set("errors", $user->getErrors());
                 $view->set("success", false);
             }
@@ -205,7 +187,7 @@ class Users extends Controller
     {
         $this->setUser(false);
 
-        /** @var Session\Driver\Server $session */
+        /** @var Server $session */
         $session = Registry::get("session");
         $session->erase("user");
 
@@ -241,8 +223,7 @@ class Users extends Controller
             "friend = ?" => $id
         ]);
 
-        if ($friend)
-        {
+        if ($friend) {
             $friend = new Friend([
                 "id" => $friend->id
             ]);
@@ -256,20 +237,16 @@ class Users extends Controller
     {
         if (isset($_FILES[$name]))
         {
-            $file = $_FILES[$name];
-            $path = APP_PATH . "/public/uploads/";
-
-            $time      = new \DateTime();
-            $time      = $time->format("His");
+            $file      = $_FILES[$name];
+            $path      = APP_PATH . "/public/uploads/";
+            $time      = (new \DateTime())->format("His");
             $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
             $filename  = "{$user}--{$time}.{$extension}";
 
-            if (move_uploaded_file($file["tmp_name"], $path . $filename))
-            {
+            if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
                 $meta = getimagesize($path . $filename);
 
-                if ($meta)
-                {
+                if ($meta) {
                     $width  = $meta[0];
                     $height = $meta[1];
 
@@ -310,8 +287,7 @@ class Users extends Controller
             $editUser->live     = (boolean) RequestMethods::post("live");
             $editUser->admin    = (boolean) RequestMethods::post("admin");
 
-            if ($editUser->validate())
-            {
+            if ($editUser->validate()) {
                 $editUser->save();
                 $this->actionView->set("success", true);
             }
@@ -340,8 +316,7 @@ class Users extends Controller
             "id = ?" => $id
         ]);
 
-        if ($user)
-        {
+        if ($user) {
             $user->live = false;
             $user->save();
         }
@@ -359,8 +334,7 @@ class Users extends Controller
             "id = ?" => $id
         ]);
 
-        if ($user)
-        {
+        if ($user) {
             $user->live = true;
             $user->save();
         }

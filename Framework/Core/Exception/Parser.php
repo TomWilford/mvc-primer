@@ -2,7 +2,9 @@
 
 namespace Framework\Core\Exception;
 
-class Parser extends \Framework\Core\Exception
+use Framework\Core\Exception;
+
+class Parser extends Exception
 {
 
 }

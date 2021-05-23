@@ -13,8 +13,7 @@ class Home extends Controller
         $user = $this->getUser();
         $view = $this->getActionView();
 
-        if ($user)
-        {
+        if ($user) {
             $friends = Friend::all([
                "user = ?"    => $user->id,
                "live = ?"    => true,
@@ -23,8 +22,7 @@ class Home extends Controller
             ["friend"]);
 
             $ids = [];
-            foreach ($friends as $friend)
-            {
+            foreach ($friends as $friend) {
                 $ids[] = $friend->friend;
             }
             $ids = implode(", ", $ids);

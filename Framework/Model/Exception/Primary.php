@@ -2,7 +2,9 @@
 
 namespace Framework\Model\Exception;
 
-class Primary extends \Framework\Model\Exception
+use Framework\Model\Exception;
+
+class Primary extends Exception
 {
 
 }

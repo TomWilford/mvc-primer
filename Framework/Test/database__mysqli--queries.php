@@ -17,8 +17,7 @@ $options = [
 ];
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -43,8 +42,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -64,8 +62,7 @@ Framework\Test::add(
 
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -82,8 +79,7 @@ Framework\Test::add(
 
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -96,8 +92,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -110,8 +105,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -127,8 +121,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -144,8 +137,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -161,8 +153,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -180,8 +171,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -200,8 +190,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -219,8 +208,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -241,8 +229,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();
@@ -262,8 +249,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($options)
-    {
+    function () use ($options) {
         $database = new Framework\Database($options);
         $database = $database->initialise();
         $database = $database->connect();

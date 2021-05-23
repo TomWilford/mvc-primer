@@ -88,7 +88,7 @@ class Standard extends Template\Implementation
 
     protected function _for($tree, $content)
     {
-        $object = $tree["arguments"]["object"];
+        $object  = $tree["arguments"]["object"];
         $element = $tree["arguments"]["element"];
 
         return $this->_loop(
@@ -120,8 +120,8 @@ class Standard extends Template\Implementation
     protected function _macro($tree, $content)
     {
         $arguments = $tree["arguments"];
-        $name = $arguments["name"];
-        $args = $arguments["args"];
+        $name      = $arguments["name"];
+        $args      = $arguments["args"];
 
         return "function {$name}({$args}) {
                 \$_text = [];

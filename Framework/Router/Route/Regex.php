@@ -2,9 +2,9 @@
 
 namespace Framework\Router\Route;
 
-use Framework\Router;
+use Framework\Router\Route;
 
-class Regex extends Router\Route
+class Regex extends Route
 {
     /**
      * @readwrite
@@ -19,8 +19,7 @@ class Regex extends Router\Route
 
         preg_match_all("#^{$pattern}$#", $url, $values);
 
-        if (sizeof($values) && sizeof($values[0]) && sizeof($values[1]))
-        {
+        if (sizeof($values) && sizeof($values[0]) && sizeof($values[1])) {
             $derived = array_combine($this->keys, $values[1]);
             $this->parameters = array_merge($this->parameters, $derived);
 

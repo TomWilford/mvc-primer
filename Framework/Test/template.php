@@ -4,8 +4,7 @@ require '../../vendor/autoload.php';
 
 /*
 Framework\Test::add(
-    function () use ($template)
-    {
+    function () use ($template) {
         return ();
     },
     "Template ",
@@ -18,8 +17,7 @@ $template = new Framework\Template([
 ]);
 
 Framework\Test::add(
-    function () use ($template)
-    {
+    function () use ($template) {
         return ($template instanceof Framework\Template);
     },
     "Template instantiates",
@@ -27,8 +25,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($template)
-    {
+    function () use ($template) {
         $template->parse(["{echo 'hello world'}"]);
         $processed = $template->process();
 
@@ -39,8 +36,7 @@ Framework\Test::add(
 );
 
 Framework\Test::add(
-    function () use ($template)
-    {
+    function () use ($template) {
         $template->parse(["{script \$_text[] =  'foo bar'; }"]);
         $processed = $template->process();
 

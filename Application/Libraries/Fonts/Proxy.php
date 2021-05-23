@@ -10,8 +10,7 @@ class Proxy
 
     public function addFont($key, $type, $file)
     {
-        if (!isset($this->_fonts[$type]))
-        {
+        if (!isset($this->_fonts[$type])) {
             $this->_fonts[$type] = [];
         }
 
@@ -21,8 +20,7 @@ class Proxy
 
     public function addFontTypes($key, $types)
     {
-        foreach ($types as $type => $file)
-        {
+        foreach ($types as $type => $file) {
             $this->addFont($key, $type, $file);
         }
 
@@ -31,8 +29,7 @@ class Proxy
 
     public function removeFont($key, $type)
     {
-        if (isset($this->_fonts[$type][$key]))
-        {
+        if (isset($this->_fonts[$type][$key])) {
             unset($this->_fonts[$type][$key]);
         }
 
@@ -41,8 +38,7 @@ class Proxy
 
     public function getFont($key, $type)
     {
-        if (isset($this->_fonts[$type][$key]))
-        {
+        if (isset($this->_fonts[$type][$key])) {
             return $this->_fonts[$type][$key];
         }
 
@@ -54,14 +50,10 @@ class Proxy
         $browser = "#(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)#i";
         $platform = "#(ipod|iphone|ipad|webos|android|win|mac|linux)#i";
 
-        if (preg_match($browser, $agent, $browsers))
-        {
-            if (preg_match($platform, $agent, $platforms))
-            {
+        if (preg_match($browser, $agent, $browsers)) {
+            if (preg_match($platform, $agent, $platforms)) {
                 $platform = $platforms[1];
-            }
-            else
-            {
+            } else {
                 $platform = "other";
             }
 
@@ -79,38 +71,26 @@ class Proxy
     {
         $sniff = $this->sniff($agent);
 
-        if ($sniff)
-        {
-            switch ($sniff["platform"])
-            {
+        if ($sniff) {
+            switch ($sniff["platform"]) {
                 case "win":
                 case "mac":
                 case "linux":
-                {
-                    switch ($sniff["browser"])
-                    {
+                default:
+                    switch ($sniff["browser"]) {
                         case "opera":
-                        {
                             return ($sniff["version"] > 10) ? [Types::TTF, Types::OTF, Types::SVG] : false;
-                        }
                         case "safari":
-                        {
                             return ($sniff["version"] > 3.1) ? [Types::TTF, Types::OTF] : false;
-                        }
                         case "chrome":
-                        {
                             return ($sniff["version"] > 4) ? [Types::TTF, Types::OTF] : false;
-                        }
                         case "firefox":
-                        {
                             return ($sniff["version"] > 3.5) ? [Types::TTF, Types::OTF] : false;
-                        }
                         case "ie":
-                        {
                             return ($sniff["version"] > 4) ? [Types::EOT] : false;
-                        }
+                        default:
+                            return [Types::TTF, Types::OTF];
                     }
-                }
             }
         }
 
@@ -120,19 +100,21 @@ class Proxy
     public function serve($key, $agent)
     {
         $support = $this->detectSupport($agent);
-        if ($support)
-        {
+
+        if ($support) {
             $fonts = [];
-            foreach ($support as $type)
-            {
+
+            foreach ($support as $type) {
                 $font = $this->getFont($key, $type);
-                if ($font)
-                {
+
+                if ($font) {
                     $fonts[$type] = $this->getFont($key, $type);
                 }
             }
+
             return $fonts;
         }
+
         return [];
     }
 }

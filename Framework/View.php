@@ -48,10 +48,10 @@ class View extends Base
     {
         Events::fire("framework.view.render.before", [$this->file]);
 
-        if (!file_exists($this->file))
-        {
+        if (!file_exists($this->file)) {
             return "";
         }
+
         $content = [];
         $content[] = file_get_contents($this->file);
         return $this
@@ -62,8 +62,7 @@ class View extends Base
 
     public function get($key, $default = "")
     {
-        if (isset($this->data[$key]))
-        {
+        if (isset($this->data[$key])) {
             return $this->data[$key];
         }
 
@@ -72,15 +71,13 @@ class View extends Base
 
     protected function _set($key, $value)
     {
-        if (!is_string($key) && !is_numeric($key))
-        {
+        if (!is_string($key) && !is_numeric($key)) {
             throw new Exception\Data("Key must be a string or a number");
         }
 
         $data = $this->data;
 
-        if (!$data)
-        {
+        if (!$data) {
             $data = [];
         }
 
@@ -90,10 +87,8 @@ class View extends Base
 
     public function set($key, $value = null)
     {
-        if (is_array($key))
-        {
-            foreach ($key as $_key => $value)
-            {
+        if (is_array($key)) {
+            foreach ($key as $_key => $value) {
                 $this->_set($_key, $value);
             }
 

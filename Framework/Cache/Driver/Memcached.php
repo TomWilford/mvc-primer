@@ -2,11 +2,11 @@
 
 namespace Framework\Cache\Driver;
 
-use Framework\Cache;
+use Framework\Cache\Driver;
 use Framework\Cache\Exception;
 use Memcache;
 
-class Memcached extends Cache\Driver
+class Memcached extends Driver
 {
     /**
      * @var Memcache Memcache
@@ -38,10 +38,10 @@ class Memcached extends Cache\Driver
         $isEmpty    = empty($this->_service);
         $isInstance = $this->_service instanceof Memcache;
 
-        if ($this->isConnected && $isInstance && !$isEmpty)
-        {
+        if ($this->isConnected && $isInstance && !$isEmpty) {
             return true;
         }
+
         return false;
     }
 
@@ -55,8 +55,7 @@ class Memcached extends Cache\Driver
             );
             $this->isConnected = true;
         }
-        catch (\Exception $e)
-        {
+        catch (\Exception $e) {
             throw new Exception\Service("Unable to connect to service" . $e->getMessage(), $e->getCode());
         }
 
@@ -65,8 +64,7 @@ class Memcached extends Cache\Driver
 
     public function disconnect()
     {
-        if ($this->_isValidService())
-        {
+        if ($this->_isValidService()) {
 
             $this->_service->close();
             $this->isConnected = false;
@@ -77,18 +75,17 @@ class Memcached extends Cache\Driver
 
     public function get($key, $default = null)
     {
-        if (!$this->_isValidService())
-        {
+        if (!$this->_isValidService()) {
             throw new Exception\Service("Not connected to a valid service");
         }
+
         $flags = 2;
 
         $key = $this->_keyPrefix . $key;
 
         $value = $this->_service->get($key, $flags);
 
-        if ($value)
-        {
+        if ($value) {
             return $value;
         }
 
@@ -97,26 +94,25 @@ class Memcached extends Cache\Driver
 
     public function set($key, $value, $duration = 120)
     {
-        if (!$this->_isValidService())
-        {
+        if (!$this->_isValidService()) {
             throw new Exception\Service("Not connected to a valid service");
         }
-        $key = $this->_keyPrefix . $key;
 
+        $key = $this->_keyPrefix . $key;
         $this->_service->set($key, $value, MEMCACHE_COMPRESSED, $duration);
+
         return $this;
     }
 
     public function erase($key)
     {
-        if (!$this->_isValidService())
-        {
+        if (!$this->_isValidService()) {
             throw new Exception\Service("Not connected to a valid service");
         }
 
         $key = $this->_keyPrefix . $key;
-
         $this->_service->delete($key);
+
         return $this;
     }
 }

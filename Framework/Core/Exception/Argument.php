@@ -2,7 +2,9 @@
 
 namespace Framework\Core\Exception;
 
-class Argument extends \Framework\Core\Exception
+use Framework\Core\Exception;
+
+class Argument extends Exception
 {
 
 }

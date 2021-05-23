@@ -2,7 +2,7 @@
 
 namespace Framework\Database;
 
-use \Framework\Base;
+use Framework\Base;
 use Framework\Database;
 use Framework\Database\Exception;
 
@@ -13,5 +13,4 @@ class Query extends Base
      * @readwrite
      */
     protected $_connector;
-
 }

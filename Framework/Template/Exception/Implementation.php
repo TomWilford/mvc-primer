@@ -2,7 +2,9 @@
 
 namespace Framework\Template\Exception;
 
-class Implementation extends \Framework\Template\Exception
+use Framework\Template\Exception;
+
+class Implementation extends Exception
 {
 
 }

@@ -69,9 +69,6 @@ class StringMethods
         // do nothing
     }
 
-    /**
-     *
-     */
     private function __clone()
     {
         // nowt
@@ -111,13 +108,11 @@ class StringMethods
     {
         preg_match_all(self::_normalize($pattern), $string, $matches, PREG_PATTERN_ORDER);
 
-        if (!empty($matches[1]))
-        {
+        if (!empty($matches[1])) {
             return $matches[1];
         }
 
-        if (!empty($matches[0]))
-        {
+        if (!empty($matches[0])) {
             return $matches[0];
         }
 
@@ -138,21 +133,15 @@ class StringMethods
 
     public static function sanitise($string, $mask)
     {
-        if (is_array($mask))
-        {
+        if (is_array($mask)) {
             $parts = $mask;
-        }
-        else if (is_string($mask))
-        {
+        } elseif (is_string($mask)) {
             $parts = str_split($mask);
-        }
-        else
-        {
+        } else {
             return $string;
         }
 
-        foreach ($parts as $part)
-        {
+        foreach ($parts as $part) {
             $normalised = self::_normalize("\\{$part}");
             $string     = preg_replace(
                 "{$normalised}m",
@@ -169,10 +158,8 @@ class StringMethods
         $unique = "";
         $parts  = str_split($string);
 
-        foreach ($parts as $part)
-        {
-            if (!strstr($unique, $part))
-            {
+        foreach ($parts as $part) {
+            if (!strstr($unique, $part)) {
                 $unique .= $part;
             }
         }
@@ -182,12 +169,10 @@ class StringMethods
 
     public static function indexOf($string, $substring, $offset = null)
     {
-        if (!is_array($string))
-        {
+        if (!is_array($string)) {
             $position = strpos($string, $substring, $offset);
 
-            if (!is_int($position))
-            {
+            if (!is_int($position)) {
                 return -1;
             }
 
@@ -199,12 +184,10 @@ class StringMethods
 
     public static function lastIndexOf($string, $substring, $offset = null)
     {
-        if (!is_array($string))
-        {
+        if (!is_array($string)) {
             $position = strrpos($string, $substring, $offset);
 
-            if (!is_int($position))
-            {
+            if (!is_int($position)) {
                 return -1;
             }
 
@@ -218,35 +201,29 @@ class StringMethods
     {
         $result = $string;
 
-        foreach (self::$_singular as $rule => $replacement)
-        {
+        foreach (self::$_singular as $rule => $replacement) {
             $rule = self::_normalize($rule);
 
-            if (preg_match($rule, $string))
-            {
+            if (preg_match($rule, $string)) {
                 $result = preg_replace($rule, $replacement, $string);
                 break;
             }
-
-            return $result;
         }
+        return $result;
     }
 
     public static function plural($string)
     {
         $result = $string;
 
-        foreach (self::$_plural as $rule => $replacement)
-        {
+        foreach (self::$_plural as $rule => $replacement) {
             $rule = self::_normalize($rule);
 
-            if (preg_match($rule, $string))
-            {
+            if (preg_match($rule, $string)) {
                 $result = preg_replace($rule, $replacement, $string);
                 break;
             }
-
-            return $result;
         }
+        return $result;
     }
 }

@@ -4,8 +4,8 @@ namespace Controllers;
 
 use Models\File;
 use Shared\Controller;
-use Fonts\Proxy as Proxy;
-use Fonts\Types as Types;
+use Fonts\Proxy;
+use Fonts\Types;
 
 class Files extends Controller
 {
@@ -13,8 +13,7 @@ class Files extends Controller
     {
         $path = "/fonts";
 
-        if (!file_exists("{$path}/{$name}"))
-        {
+        if (!file_exists("{$path}/{$name}")) {
             $proxy = new Proxy();
 
             $proxy->addFontTypes("{$name}", [
@@ -27,10 +26,8 @@ class Files extends Controller
             $style = "";
             $font = explode("-", $name);
 
-            if (sizeof($font) > 1)
-            {
-                switch (strtolower($font[1]))
-                {
+            if (sizeof($font) > 1) {
+                switch (strtolower($font[1])) {
                     case "Bold":
                         $weight = "bold";
                         break;
@@ -49,30 +46,24 @@ class Files extends Controller
             $sniff = $proxy->sniff($_SERVER["HTTP_USER_AGENT"]);
             $served = $proxy->serve($font, $_SERVER["HTTP_USER_AGENT"]);
 
-            if (sizeof($served) > 0)
-            {
+            if (sizeof($served) > 0) {
                 $keys = array_keys($served);
                 $declarations .= "@font-face {";
                 $declarations .= "font-family: \"{$font}\";";
 
-                if ($weight)
-                {
+                if ($weight) {
                     $declarations .= "font-weight: {$weight};";
                 }
-                if ($style)
-                {
+                if ($style) {
                     $declarations .= "font-style: {$style};";
                 }
 
                 $type = $keys[0];
                 $url = $served[$type];
 
-                if ($sniff && strtolower($sniff["browser"]) == "ie")
-                {
+                if ($sniff && strtolower($sniff["browser"]) == "ie") {
                     $declarations .= "src: url(\"{$url}\");";
-                }
-                else
-                {
+                } else {
                     $declarations .= "src: url(\"{$url}\") format(\"{$type}\");";
                 }
 
@@ -81,20 +72,15 @@ class Files extends Controller
 
             header("Content-type: text/css");
 
-            if ($declarations)
-            {
+            if ($declarations) {
                 echo $declarations;
-            }
-            else
-            {
+            } else {
                 echo "/* no fonts to show */";
             }
 
             $this->willRenderLayoutView = false;
             $this->willRenderActionView = false;
-        }
-        else
-        {
+        } else {
             header("Location: /public/{$path}/{$name}");
         }
     }
@@ -116,8 +102,7 @@ class Files extends Controller
             "id = ?" => $id
         ]);
 
-        if ($file)
-        {
+        if ($file) {
             $file->deleted = true;
             $file->save();
         }
@@ -134,8 +119,7 @@ class Files extends Controller
             "id = ?" => $id
         ]);
 
-        if ($file)
-        {
+        if ($file) {
             $file->deleted = false;
             $file->save();
         }

@@ -50,13 +50,12 @@ class Router extends Base
 
     public function removeRoute($route)
     {
-        foreach ($this->_routes as $i => $stored)
-        {
-            if ($stored == $route)
-            {
+        foreach ($this->_routes as $i => $stored) {
+            if ($stored == $route) {
                 unset($this->_routes[$i]);
             }
         }
+
         return $this;
     }
 
@@ -64,8 +63,7 @@ class Router extends Base
     {
         $list = [];
 
-        foreach ($this->_routes as $route)
-        {
+        foreach ($this->_routes as $route) {
             $list[$route->pattern] = get_class($route);
         }
 
@@ -82,22 +80,18 @@ class Router extends Base
 
         Events::fire("framework.router.controller.before", [$controller, $parameters]);
 
-        try
-        {
+        try {
             $instance = (new $name([
                 "parameters" => $parameters
             ]));
             Registry::set("controller", $instance);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             throw new Exception\Controller("Controller {$name} not found");
         }
 
         Events::fire("framework.router.controller.after", [$action, $parameters]);
 
-        if (!method_exists($instance, $action))
-        {
+        if (!method_exists($instance, $action)) {
             $instance->willRenderLayoutView = false;
             $instance->willRenderActionView = false;
 
@@ -107,23 +101,24 @@ class Router extends Base
         $inspector  = new Inspector($instance);
         $methodMeta = $inspector->getMethodMeta($action);
 
-        if (!empty($methodMeta['@protected']) || !empty($methodMeta['@private']))
-        {
+        if (!empty($methodMeta['@protected']) || !empty($methodMeta['@private'])) {
             throw new Exception\Action("Action {$action} not found");
         }
 
-        $hooks = function ($meta, $type) use ($inspector, $instance)
-        {
-            if (isset($meta[$type]))
-            {
+        $hooks = function (
+            $meta,
+            $type
+        ) use (
+            $inspector,
+            $instance
+        ) {
+            if (isset($meta[$type])) {
                 $run = [];
 
-                foreach ($meta[$type] as $method)
-                {
+                foreach ($meta[$type] as $method) {
                     $hookMeta = $inspector->getMethodMeta($method);
 
-                    if (in_array($method, $run) && !empty($hookMeta['@once']))
-                    {
+                    if (in_array($method, $run) && !empty($hookMeta['@once'])) {
                         continue;
                     }
 
@@ -148,7 +143,6 @@ class Router extends Base
         $hooks($methodMeta, "@after");
         Events::fire("framework.router.afterhooks.after", [$action, $parameters]);
 
-
         Registry::erase("controller");
     }
 
@@ -161,11 +155,10 @@ class Router extends Base
 
         Events::fire("framework.router.dispatch.before", [$url]);
 
-        foreach ($this->_routes as $route)
-        {
+        foreach ($this->_routes as $route) {
             $matches = $route->matches($url);
-            if ($matches)
-            {
+
+            if ($matches) {
                 $controller = $route->controller;
                 $action     = $route->action;
                 $parameters = $route->parameters;
@@ -178,12 +171,10 @@ class Router extends Base
 
         $parts = explode("/", trim($url, "/"));
 
-        if (sizeof($parts) > 0)
-        {
+        if (sizeof($parts) > 0) {
             $controller = $parts[0];
 
-            if (sizeof($parts) >= 2)
-            {
+            if (sizeof($parts) >= 2) {
                 $action = $parts[1];
                 $parameters = array_slice($parts, 2);
             }

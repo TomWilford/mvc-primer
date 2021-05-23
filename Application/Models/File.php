@@ -2,7 +2,6 @@
 
 namespace Models;
 
-use phpDocumentor\Reflection\Types\Context;
 use Shared\Model;
 
 class File extends Model

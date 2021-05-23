@@ -96,24 +96,21 @@ class Model extends Base
         $raw     = $primary["raw"];
         $name    = $primary["name"];
 
-        if (!empty($this->$raw))
-        {
+        if (!empty($this->$raw)) {
             $previous = $this->connector->query()
                         ->selectFirst($this->table)
                         ->where("{$name} = ?", $this->$raw)
                         ->run();
 
 
-            if ($previous == null)
-            {
+            if ($previous == null) {
                 throw new Exception\Primary("Primary key value invalid");
             }
 
-            foreach ($previous as $key => $item)
-            {
+            foreach ($previous as $key => $item) {
                 $prop = "_{$key}";
-                if (!empty($previous->$key) && !isset($this->$prop))
-                {
+
+                if (!empty($previous->$key) && !isset($this->$prop)) {
                     $this->$key = $previous->$key;
                 }
             }
@@ -127,8 +124,7 @@ class Model extends Base
         $raw     = $primary["raw"];
         $name    = $primary["name"];
 
-        if (!empty($this->$raw))
-        {
+        if (!empty($this->$raw)) {
             return $this->connector->query()
                     ->delete($this->table)
                     ->where("{$name} = ?", $this->$raw)
@@ -142,8 +138,7 @@ class Model extends Base
 
         $query = $instance->connector->query()->delete($instance->table);
 
-        foreach ($where as $clause => $value)
-        {
+        foreach ($where as $clause => $value) {
             $query->where($clause, $value);
         }
 
@@ -157,17 +152,14 @@ class Model extends Base
         $name      = $primary["name"];
         $data      = [];
 
-        foreach ($this->columns as $key => $column)
-        {
-            if (!$column["read"])
-            {
+        foreach ($this->columns as $key => $column) {
+            if (!$column["read"]) {
                 $prop       = $column["raw"];
                 $data[$key] = $this->$prop;
                 continue;
             }
 
-            if (($column != $this->primaryColumn) && $column)
-            {
+            if (($column != $this->primaryColumn) && $column) {
                 $method = "get" . ucfirst($key);
                 $data[$key] = $this->$method();
                 continue;
@@ -176,16 +168,14 @@ class Model extends Base
 
         $query = $this->connector->query()->save($this->table, $data);
 
-        if (!empty($this->$raw))
-        {
+        if (!empty($this->$raw)) {
             $query->where("{$name} = ?", $this->$raw);
         }
 
         $result = $query->run();
         $result = $result->fetchAll();
 
-        if ($result > 0)
-        {
+        if ($result > 0) {
             $this->$raw = $result;
         }
 
@@ -194,8 +184,7 @@ class Model extends Base
 
     public function getTable()
     {
-        if (empty($this->_table))
-        {
+        if (empty($this->_table)) {
             $this->_table = strtolower(StringMethods::singular(get_class($this)));
         }
 
@@ -204,12 +193,10 @@ class Model extends Base
 
     public function getConnector()
     {
-        if (empty($this->_connector))
-        {
+        if (empty($this->_connector)) {
             $database = Registry::get("database");
 
-            if (!$database)
-            {
+            if (!$database) {
                 throw new Exception\Connector("No connector available");
             }
 
@@ -230,8 +217,7 @@ class Model extends Base
             $inspector  = new Inspector($this);
             $properties = $inspector->getClassProperties();
 
-            $first = function ($array, $key)
-            {
+            $first = function ($array, $key) {
                 if (!empty($array[$key]) && sizeof($array[$key]) == 1)
                 {
                     return $array[$key][0];
@@ -242,8 +228,7 @@ class Model extends Base
             foreach ($properties as $property) {
                 $propertyMeta = $inspector->getPropertyMeta($property);
 
-                if (!empty($propertyMeta["@column"]))
-                {
+                if (!empty($propertyMeta["@column"])) {
                     $name      = preg_replace("#^_#", "", $property);
                     $primary   = !empty($propertyMeta["@primary"]);
                     $type      = $first($propertyMeta, "@type");
@@ -257,13 +242,11 @@ class Model extends Base
                     $label     = $first($propertyMeta, "@label");
 
 
-                    if (!in_array($type, $types))
-                    {
+                    if (!in_array($type, $types)) {
                         throw new Exception\Type("{$type} is not a valid type");
                     }
 
-                    if ($primary)
-                    {
+                    if ($primary) {
                         $primaries++;
                     }
 
@@ -282,8 +265,7 @@ class Model extends Base
                 }
             }
 
-            if ($primaries !== 1)
-            {
+            if ($primaries !== 1) {
                 throw new Exception\Primary("{$class} must have exactly one @ primary column");
             }
 
@@ -295,8 +277,7 @@ class Model extends Base
 
     public function getColumn($name)
     {
-        if (!empty($this->_columns[$name]))
-        {
+        if (!empty($this->_columns[$name])) {
             return $this->_columns[$name];
         }
 
@@ -305,14 +286,11 @@ class Model extends Base
 
     public function getPrimaryColumn()
     {
-        if (!isset($this->_primary))
-        {
+        if (!isset($this->_primary)) {
             $primary = null;
 
-            foreach ($this->columns as $column)
-            {
-                if ($column["primary"])
-                {
+            foreach ($this->columns as $column) {
+                if ($column["primary"]) {
                     $primary = $column;
                     break;
                 }
@@ -334,13 +312,11 @@ class Model extends Base
     {
         $query = $this->connector->query()->selectFirst($this->table, $fields);
 
-        foreach ($where as $clause => $value)
-        {
+        foreach ($where as $clause => $value) {
             $query->where($clause, $value);
         }
 
-        if ($order != null)
-        {
+        if ($order != null) {
             $query->order($order, $direction);
         }
 
@@ -348,8 +324,7 @@ class Model extends Base
         $first  = $result->fetch();
         $class = get_class($this);
 
-        if ($first)
-        {
+        if ($first) {
             return (new $class(
                 $first
             ));
@@ -369,18 +344,15 @@ class Model extends Base
     {
         $query = $this->connector->query()->select($this->table, $fields);
 
-        foreach ($where as $clause => $value)
-        {
+        foreach ($where as $clause => $value) {
             $query->where($clause, $value);
         }
 
-        if ($order != null)
-        {
+        if ($order != null) {
             $query->order($order, $direction);
         }
 
-        if ($limit != null)
-        {
+        if ($limit != null) {
             $query->limit($limit, $page);
         }
 
@@ -389,8 +361,7 @@ class Model extends Base
 
         $results = $query->run();
 
-        foreach ($results->fetchAll() as $row)
-        {
+        foreach ($results->fetchAll() as $row) {
             $rows[] = (new $class(
                 $row
             ));
@@ -410,8 +381,7 @@ class Model extends Base
     {
         $query = $this->connector->query()->countAll($this->table);
 
-        foreach ($where as $clause => $value)
-        {
+        foreach ($where as $clause => $value) {
             $query->where($clause, $value);
         }
 
@@ -454,10 +424,8 @@ class Model extends Base
     {
         $this->_errors = [];
 
-        foreach ($this->columns as $column)
-        {
-            if ($column["validate"])
-            {
+        foreach ($this->columns as $column) {
+            if ($column["validate"]) {
                 $pattern    = "#[a-z]+\(([a-zA-Z0-9, ]+)\)#";
 
                 $raw        = $column["raw"];
@@ -467,8 +435,7 @@ class Model extends Base
 
                 $defined    = $this->getValidators();
 
-                foreach ($validators as $validator)
-                {
+                foreach ($validators as $validator) {
                     $function  = $validator;
                     $arguments = [
                         $this->$raw
@@ -476,36 +443,31 @@ class Model extends Base
 
                     $match = StringMethods::match($validator, $pattern);
 
-                    if (count($match) > 0)
-                    {
+                    if (count($match) > 0) {
                         $matches   = StringMethods::split($match[0], ",\s*");
                         $arguments = array_merge($arguments, $matches);
                         $offset    = StringMethods::indexOf($validator, "(");
                         $function  = substr($validator, 0, $offset);
                     }
 
-                    if (!isset($defined[$function]))
-                    {
+                    if (!isset($defined[$function])) {
                         throw new Exception\Validation("The {$function} validator is not defined");
                     }
 
                     $template = $defined[$function];
 
-                    if (!call_user_func_array([$this, $template["handler"]], $arguments))
-                    {
+                    if (!call_user_func_array([$this, $template["handler"]], $arguments)) {
                         $replacements = array_merge([
                            $label ? : $raw
                         ], $arguments);
 
                         $message = $template["message"];
 
-                        foreach ($replacements as $i => $replacement)
-                        {
+                        foreach ($replacements as $i => $replacement) {
                             $message = str_replace("{{$i}}", $replacement, $message);
                         }
 
-                        if (!isset($this->_errors[$name]))
-                        {
+                        if (!isset($this->_errors[$name])) {
                             $this->_errors[$name] = [];
                         }
 

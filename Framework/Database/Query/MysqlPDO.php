@@ -98,10 +98,10 @@ class MysqlPDO extends Database\Query
      */
     public function string($sql, $arguments = [])
     {
-        if (!$arguments)
-        {
+        if (!$arguments) {
             return $this->connector->q($sql);
         }
+
         return $this->connector->prepareAndExecute($sql, $arguments);
     }
 
@@ -116,8 +116,7 @@ class MysqlPDO extends Database\Query
      */
     public function select($from, $fields = ["*"])
     {
-        if (empty($from))
-        {
+        if (empty($from)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -139,8 +138,7 @@ class MysqlPDO extends Database\Query
      */
     public function selectFirst($from, $fields = ["*"])
     {
-        if (empty($from))
-        {
+        if (empty($from)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -159,8 +157,7 @@ class MysqlPDO extends Database\Query
      */
     public function countAll($from)
     {
-        if (empty($from))
-        {
+        if (empty($from)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -182,8 +179,7 @@ class MysqlPDO extends Database\Query
      */
     public function insert($into, $arguments)
     {
-        if (empty($into) || empty($arguments))
-        {
+        if (empty($into) || empty($arguments)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -203,8 +199,7 @@ class MysqlPDO extends Database\Query
      */
     public function delete($from)
     {
-        if (empty($from))
-        {
+        if (empty($from)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -225,8 +220,7 @@ class MysqlPDO extends Database\Query
      */
     public function update($table, $arguments)
     {
-        if (empty($table) || empty($arguments))
-        {
+        if (empty($table) || empty($arguments)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -248,8 +242,7 @@ class MysqlPDO extends Database\Query
      */
     public function save($table, $arguments)
     {
-        if (empty($table))
-        {
+        if (empty($table)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -271,13 +264,11 @@ class MysqlPDO extends Database\Query
      */
     public function join($join, $on, $fields = [])
     {
-        if (empty($join))
-        {
+        if (empty($join)) {
             throw new Exception\Argument("Invalid argument");
         }
 
-        if (empty($on))
-        {
+        if (empty($on)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -299,8 +290,7 @@ class MysqlPDO extends Database\Query
      */
     public function limit($limit, $page = 1)
     {
-        if (empty($limit))
-        {
+        if (empty($limit)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -320,8 +310,7 @@ class MysqlPDO extends Database\Query
      */
     public function order($order, $direction = "asc")
     {
-        if (empty($order))
-        {
+        if (empty($order)) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -341,8 +330,7 @@ class MysqlPDO extends Database\Query
     {
         $arguments   = func_get_args();
 
-        if (sizeof($arguments) < 1)
-        {
+        if (sizeof($arguments) < 1) {
             throw new Exception\Argument("Invalid argument");
         }
 
@@ -359,8 +347,7 @@ class MysqlPDO extends Database\Query
      */
     private function _processArguments($arguments)
     {
-        foreach ($arguments as $field => $value)
-        {
+        foreach ($arguments as $field => $value) {
             $this->_fields[] = $field;
             $this->_values[] = $value;
         }
@@ -376,27 +363,20 @@ class MysqlPDO extends Database\Query
      */
     public function run()
     {
-        switch ($this->_clause)
-        {
+        switch ($this->_clause) {
             case "SELECT":
                 return $this->string($this->_buildSelect(), $this->_arguments);
-                break;
             case "INSERT":
                 return $this->string($this->_buildInsert(), $this->_arguments);
-                break;
             case "UPDATE":
                 return $this->string($this->_buildUpdate(), $this->_arguments);
-                break;
             case "DELETE":
                 return $this->string($this->_buildDelete(), $this->_arguments);
-                break;
             case "SAVE":
-                if ($this->_where)
-                {
+                if ($this->_where) {
                     return $this->string($this->_buildUpdate(), $this->_arguments);
                 }
                 return $this->string($this->_buildInsert(), $this->_arguments);
-                break;
             default:
                 throw new Exception\Argument("Invalid argument");
         }
@@ -440,8 +420,7 @@ class MysqlPDO extends Database\Query
         $fields  = implode(", ", $this->_fields);
 
         $_values = [];
-        foreach ($this->_values as $value)
-        {
+        foreach ($this->_values as $value) {
             $this->_arguments[] = $value;
             $_values[]          = "?";
         }
@@ -465,8 +444,7 @@ class MysqlPDO extends Database\Query
         }
         $fields = implode(", ", $_fields);
 
-        foreach ($this->_values as $value)
-        {
+        foreach ($this->_values as $value) {
             $this->_arguments[] = $value;
         }
 
@@ -505,8 +483,8 @@ class MysqlPDO extends Database\Query
      */
     private function _buildWhere($where)
     {
-
         $_where = implode(" AND ", $where);
+
         return ($_where) ? "WHERE {$_where}" : "";
     }
 
@@ -519,11 +497,9 @@ class MysqlPDO extends Database\Query
      */
     private function _buildLimit($limit, $offset)
     {
-        if ($limit)
-        {
+        if ($limit) {
             return ($offset) ? "LIMIT {$limit}, {$offset}" : "LIMIT {$limit}";
         }
         return "";
     }
-
 }

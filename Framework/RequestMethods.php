@@ -16,8 +16,7 @@ class RequestMethods
 
     public static function get($key, $default = "")
     {
-        if (!empty($_GET[$key]))
-        {
+        if (!empty($_GET[$key])) {
             return $_GET[$key];
         }
 
@@ -26,8 +25,7 @@ class RequestMethods
 
     public static function post($key, $default = "")
     {
-        if (!empty($_POST[$key]))
-        {
+        if (!empty($_POST[$key])) {
             return $_POST[$key];
         }
 
@@ -36,8 +34,7 @@ class RequestMethods
 
     public static function server($key, $default = "")
     {
-        if (!empty($_SERVER[$key]))
-        {
+        if (!empty($_SERVER[$key])) {
             return $_SERVER[$key];
         }
 
@@ -46,8 +43,7 @@ class RequestMethods
 
     public static function cookie($key, $default = "")
     {
-        if (!empty($_COOKIE[$key]))
-        {
+        if (!empty($_COOKIE[$key])) {
             return $_COOKIE[$key];
         }
 

@@ -53,8 +53,7 @@ class Model extends \Framework\Model
         $raw = $primary["raw"];
         $now = new \DateTime();
 
-        if (empty($this->$raw))
-        {
+        if (empty($this->$raw)) {
             $this->setCreated($now->format("Y-m-d H:i:s"));
             $this->setDeleted(false);
             $this->setLive(true);

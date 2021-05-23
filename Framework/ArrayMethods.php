@@ -37,23 +37,22 @@ class ArrayMethods
      * @return array|string[]
      */
     public static function trim($array){
-        return array_map(function ($item){
-            return trim($item);
-        }, $array);
+        return array_map(
+            function ($item) {
+                return trim($item);
+            },
+            $array
+        );
     }
 
     public static function toObject($array)
     {
         $result = new stdClass();
 
-        foreach ($array as $key => $value)
-        {
-            if (is_array($value))
-            {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
                 $result->{$key} = self::toObject($value);
-            }
-            else
-            {
+            } else {
                 $result->{$key} = $value;
             }
         }
@@ -63,14 +62,10 @@ class ArrayMethods
 
     public static function flatten($array, $return = [])
     {
-        foreach ($array as $key => $value)
-        {
-            if (is_array($value) || is_object($value))
-            {
+        foreach ($array as $key => $value) {
+            if (is_array($value) || is_object($value)) {
                 $return = self::flatten($value, $return);
-            }
-            else
-            {
+            } else {
                 $return[]= $value;
             }
         }
@@ -80,8 +75,7 @@ class ArrayMethods
 
     public static function first($array)
     {
-        if (sizeof($array) == 0)
-        {
+        if (sizeof($array) == 0) {
             return null;
         }
 
@@ -91,8 +85,7 @@ class ArrayMethods
 
     public static function last($array)
     {
-        if (sizeof($array) == 0)
-        {
+        if (sizeof($array) == 0) {
             return null;
         }
 

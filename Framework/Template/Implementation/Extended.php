@@ -93,8 +93,7 @@ class Extended extends Standard
     {
         $address = trim($tree['raw'], "/");
 
-        if (StringMethods::indexOf($address, "http") != 0)
-        {
+        if (StringMethods::indexOf($address, "http") != 0) {
             $host    = RequestMethods::server("HTTP_HOST");
             $address = "http://{$host}/{$address}";
         }
@@ -107,8 +106,7 @@ class Extended extends Standard
 
     protected function _getKey($tree)
     {
-        if (empty($tree["arguments"]["key"]))
-        {
+        if (empty($tree["arguments"]["key"])) {
             return null;
         }
 
@@ -117,8 +115,7 @@ class Extended extends Standard
 
     protected function _setValue($key, $value)
     {
-        if (!empty($key))
-        {
+        if (!empty($key)) {
             $data = Registry::get($this->defaultKey, []);
             $data[$key] = $value;
 
@@ -130,8 +127,7 @@ class Extended extends Standard
     {
         $data = Registry::get($this->defaultKey);
 
-        if (isset($data[$key]))
-        {
+        if (isset($data[$key])) {
             return $data[$key];
         }
 
@@ -140,15 +136,13 @@ class Extended extends Standard
 
     public function set($key, $value)
     {
-        if (StringMethods::indexOf($value, "\$_text") > -1)
-        {
+        if (StringMethods::indexOf($value, "\$_text") > -1) {
             $first = StringMethods::indexOf($value, "\"");
             $last  = StringMethods::lastIndexOf($value, "\"");
             $value = stripslashes(substr($value, $first + 1, ($last - $first) - 1));
         }
 
-        if (is_array($key))
-        {
+        if (is_array($key)) {
             $key = $this->_getKey($key);
         }
 
@@ -157,8 +151,7 @@ class Extended extends Standard
 
     public function append($key, $value)
     {
-        if (is_array($key))
-        {
+        if (is_array($key)) {
             $key = $this->_getKey($key);
         }
 
@@ -168,8 +161,7 @@ class Extended extends Standard
 
     public function prepend($key, $value)
     {
-        if (is_array($key))
-        {
+        if (is_array($key)) {
             $key = $this->_getKey($key);
         }
 
