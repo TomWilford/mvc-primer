@@ -1,5 +1,4 @@
 <?php
-
 namespace Shared;
 
 class Model extends \Framework\Model

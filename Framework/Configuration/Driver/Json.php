@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Configuration\Driver;
 
 use Framework\ArrayMethods;

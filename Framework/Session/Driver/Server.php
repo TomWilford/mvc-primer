@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Session\Driver;
 
 use Framework\Session\Driver;

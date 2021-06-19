@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\View\Exception;
 
 use Framework\Core;

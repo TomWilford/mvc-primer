@@ -1,5 +1,4 @@
 <?php
-
 namespace Fonts;
 
 class Types

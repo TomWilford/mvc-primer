@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Cache;
 
 use Framework\Base;

@@ -1,5 +1,4 @@
 <?php
-
 namespace Shared;
 
 use Framework\Database\Connector\MysqlPDO;

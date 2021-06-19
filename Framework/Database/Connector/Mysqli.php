@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Database\Connector;
 
 use Framework\Database;

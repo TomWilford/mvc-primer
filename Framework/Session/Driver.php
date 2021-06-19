@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Session;
 
 use Framework\Base;

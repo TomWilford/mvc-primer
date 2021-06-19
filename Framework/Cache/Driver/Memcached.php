@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Cache\Driver;
 
 use Framework\Cache\Driver;

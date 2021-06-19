@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Request;
 
 use Framework\Base;

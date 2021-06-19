@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Database\Query;
 
 use Framework\Database;

@@ -1,5 +1,4 @@
 <?php
-
 namespace Shared;
 
 class Markup

@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Configuration;
 
 use Framework\Base;

@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Template\Implementation;
 
 use Framework\Request;

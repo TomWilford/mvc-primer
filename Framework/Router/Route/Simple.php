@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Router\Route;
 
 use Framework\ArrayMethods;

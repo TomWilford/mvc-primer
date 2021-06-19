@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\View;
 
 use Framework\Core;

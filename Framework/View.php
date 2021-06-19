@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework;
 
 use Framework\Events;

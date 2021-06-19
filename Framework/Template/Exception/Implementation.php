@@ -1,5 +1,4 @@
 <?php
-
 namespace Framework\Template\Exception;
 
 use Framework\Template\Exception;
