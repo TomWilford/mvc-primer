@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Framework\Core\Exception;
 use Framework\Model;
 use Framework\Session\Driver\Server;
 use Models\File;
@@ -18,14 +19,26 @@ class Users extends Controller
         $view  = $this->getActionView();
 
         if (RequestMethods::post("register") && empty(RequestMethods::post("honeypot"))) {
+            $error    = false;
+            $first    = RequestMethods::post("first", "", FILTER_SANITIZE_STRING);
+            $last     = RequestMethods::post("last", "", FILTER_SANITIZE_STRING);
+            $email    = RequestMethods::post("email", "", FILTER_SANITIZE_EMAIL);
+            $password = password_hash(RequestMethods::post("password"), PASSWORD_DEFAULT, ["cost" => "12"]);
+
+            if (!$this->isValidEmail($email)) {
+                $error = true;
+                $view->set("success", false);
+                $view->set('errors', ['email' => 'Email address and/or password are incorrect']);
+            }
+
             $user = new User([
-                "first"    => RequestMethods::post("first"),
-                "last"     => RequestMethods::post("last"),
-                "email"    => RequestMethods::post("email"),
-                "password" => RequestMethods::post("password")
+                "first"    => $first,
+                "last"     => $last,
+                "email"    => $email,
+                "password" => $password
             ]);
 
-            if ($user->validate()) {
+            if ($user->validate() && !$error) {
                 $user->save();
                 $this->_upload("photo", $user->id);
                 $view->set("success", true);
@@ -45,30 +58,39 @@ class Users extends Controller
         $view  = $this->getActionView();
 
         if (RequestMethods::post("login")) {
-            $email    = RequestMethods::post("email");
+            $error    = false;
+            $email    = RequestMethods::post("email", "", FILTER_SANITIZE_EMAIL);
             $password = RequestMethods::post("password");
 
-            $error = false;
-
             if (empty($email)) {
-                $view->set("email_error", "Email not provided");
                 $error = true;
+                $view->set("email_error", "Email not provided");
+            }
+
+            if (!$this->isValidEmail($email)) {
+                $error = true;
+                $view->set("email_error", "Email address and/or password are incorrect");
             }
 
             if (empty($password)) {
-                $view->set("password_error", "Password not provided");
                 $error = true;
+                $view->set("password_error", "Password not provided");
             }
 
             if (!$error) {
                 $user = User::first([
                     "email = ?"    => $email,
-                    "password = ?" => $password,
                     "live = ?"     => true,
                     "deleted = ?"  => false
                 ]);
 
-                if (!empty($user)) {
+                if (!empty($user) && password_verify($password, $user->password)) {
+                    $checkedPassword = $this->checkAndRehashPassword($user->password);
+                    if ($user->password != $checkedPassword) {
+                        $user->password = $checkedPassword;
+                        $user->save();
+                    }
+
                     /** @var Server $session */
                     $session = Registry::get("session");
                     $session->set("user", serialize($user));
@@ -97,19 +119,19 @@ class Users extends Controller
 
         $view->set("user", $user);
 
-         $view->render();
+        $view->render();
     }
 
     public function search()
     {
         $view = $this->getActionView();
 
-        $query      = trim(RequestMethods::post("query"));
+        $query      = trim(RequestMethods::post("query", "", FILTER_SANITIZE_STRING));
         $query      = "%{$query}%";
-        $order      = RequestMethods::post("order", "modified");
-        $direction  = RequestMethods::post("direction", "desc");
-        (int)$page  = RequestMethods::post("page", 1);
-        (int)$limit = RequestMethods::post("limit", 10);
+        $order      = RequestMethods::post("order", "modified", FILTER_SANITIZE_STRING);
+        $direction  = RequestMethods::post("direction", "desc", FILTER_SANITIZE_STRING);
+        (int)$page  = RequestMethods::post("page", 1, FILTER_SANITIZE_NUMBER_INT);
+        (int)$limit = RequestMethods::post("limit", 10, FILTER_SANITIZE_NUMBER_INT);
 
         $count = 0;
         $users = false;
@@ -148,18 +170,30 @@ class Users extends Controller
         $view->set("user", $userCurrent);
 
         if (RequestMethods::post("update")) {
+            $error    = false;
+            $email    = RequestMethods::post("email", $userCurrent->email, FILTER_SANITIZE_EMAIL);
+            $password = RequestMethods::post("password");
+            $password = password_verify($password, $userCurrent->password)
+                ? $this->checkAndRehashPassword($userCurrent->password)
+                : password_hash($password, PASSWORD_DEFAULT, ['cost' => 15]);
+
+            if (!$this->isValidEmail($email)) {
+                $error = true;
+                $view->set('errors', ['email' => 'Email address and/or password are incorrect']);
+            }
+
             $user = new User([
                 "id"       => $userCurrent->id,
-                "first"    => RequestMethods::post("first", $userCurrent->first),
-                "last"     => RequestMethods::post("last", $userCurrent->last),
-                "email"    => RequestMethods::post("email", $userCurrent->email),
-                "password" => RequestMethods::post("password", $userCurrent->password),
+                "first"    => RequestMethods::post("first", $userCurrent->first, FILTER_SANITIZE_STRING),
+                "last"     => RequestMethods::post("last", $userCurrent->last, FILTER_SANITIZE_STRING),
+                "email"    => $email,
+                "password" => $password,
                 "live"     => $userCurrent->live,
                 "deleted"  => $userCurrent->deleted,
                 "created"  => $userCurrent->created
             ]);
 
-            if ($user->validate()) {
+            if ($user->validate() && !$error) {
                 $user->save();
                 $this->_upload("photo", $userCurrent->id);
 
@@ -279,14 +313,26 @@ class Users extends Controller
 
         if (RequestMethods::post("save"))
         {
-            $editUser->first    = RequestMethods::post("first");
-            $editUser->last     = RequestMethods::post("last");
-            $editUser->email    = RequestMethods::post("email");
-            $editUser->password = RequestMethods::post("password");
+            $error = false;
+            $email    = RequestMethods::post("email", $editUser->email, FILTER_SANITIZE_EMAIL);
+            $password = RequestMethods::post("password");
+            $password = password_verify($password, $editUser->password)
+                ? $this->checkAndRehashPassword($editUser->password)
+                : password_hash($password, PASSWORD_DEFAULT, ['cost' => 15]);
+
+            if (!$this->isValidEmail($email)) {
+                $error = true;
+                $this->actionView->set("success", false);
+            }
+
+            $editUser->first    = RequestMethods::post("first", $editUser->first, FILTER_SANITIZE_STRING);
+            $editUser->last     = RequestMethods::post("last", $editUser->last, FILTER_SANITIZE_STRING);
+            $editUser->email    = $email;
+            $editUser->password = $password;
             $editUser->live     = (boolean) RequestMethods::post("live");
             $editUser->admin    = (boolean) RequestMethods::post("admin");
 
-            if ($editUser->validate()) {
+            if ($editUser->validate() && !$error) {
                 $editUser->save();
                 $this->actionView->set("success", true);
             }
@@ -339,5 +385,22 @@ class Users extends Controller
         }
 
         self::redirect("/public/users/view");
+    }
+
+    private function isValidEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    private function checkAndRehashPassword($password)
+    {
+        $currentHashAlgorithm = PASSWORD_DEFAULT;
+        $currentHashOptions   = ['cost' => 15];
+
+        if (password_needs_rehash($password, $currentHashAlgorithm, $currentHashOptions)) {
+            $password = password_hash($password, $currentHashAlgorithm, $currentHashOptions);
+        }
+
+        return $password;
     }
 }
