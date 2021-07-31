@@ -85,7 +85,7 @@ class Users extends Controller
                 ]);
 
                 if (!empty($user) && password_verify($password, $user->password)) {
-                    $checkedPassword = $this->checkAndRehashPassword($user->password);
+                    $checkedPassword = $this->checkAndRehashPassword($user->password, $password);
                     if ($user->password != $checkedPassword) {
                         $user->password = $checkedPassword;
                         $user->save();
@@ -174,7 +174,7 @@ class Users extends Controller
             $email    = RequestMethods::post("email", $userCurrent->email, FILTER_SANITIZE_EMAIL);
             $password = RequestMethods::post("password");
             $password = password_verify($password, $userCurrent->password)
-                ? $this->checkAndRehashPassword($userCurrent->password)
+                ? $this->checkAndRehashPassword($userCurrent->password , $password)
                 : password_hash($password, PASSWORD_DEFAULT, ['cost' => 15]);
 
             if (!$this->isValidEmail($email)) {
@@ -317,7 +317,7 @@ class Users extends Controller
             $email    = RequestMethods::post("email", $editUser->email, FILTER_SANITIZE_EMAIL);
             $password = RequestMethods::post("password");
             $password = password_verify($password, $editUser->password)
-                ? $this->checkAndRehashPassword($editUser->password)
+                ? $this->checkAndRehashPassword($editUser->password, $password)
                 : password_hash($password, PASSWORD_DEFAULT, ['cost' => 15]);
 
             if (!$this->isValidEmail($email)) {
@@ -392,13 +392,14 @@ class Users extends Controller
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    private function checkAndRehashPassword($password)
+    private function checkAndRehashPassword($existingPassword, $inputPassword)
     {
         $currentHashAlgorithm = PASSWORD_DEFAULT;
         $currentHashOptions   = ['cost' => 15];
+        $password             = $existingPassword;
 
-        if (password_needs_rehash($password, $currentHashAlgorithm, $currentHashOptions)) {
-            $password = password_hash($password, $currentHashAlgorithm, $currentHashOptions);
+        if (password_needs_rehash($existingPassword, $currentHashAlgorithm, $currentHashOptions)) {
+            $password = password_hash($inputPassword, $currentHashAlgorithm, $currentHashOptions);
         }
 
         return $password;
