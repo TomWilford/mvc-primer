@@ -13,8 +13,8 @@ class Messages extends Controller
 
         if (RequestMethods::post("share")) {
             $message = new Message([
-                "body"    => RequestMethods::post("body"),
-                "message" => RequestMethods::post("message"),
+                "body"    => RequestMethods::post("body", "", FILTER_SANITIZE_STRING),
+                "message" => RequestMethods::post("message", "", FILTER_SANITIZE_STRING),
                 "user"    => $user->id
             ]);
 
